@@ -1,4 +1,7 @@
 import type { CollectionConfig } from 'payload'
+import { isSuperAdmin } from '../access/isSuperAdmin'
+import { isAdminOrSuperAdmin } from '../access/isAdminOrSuperAdmin'
+import { hasTenantAccess } from '../access/hasTenantAccess'
 
 export const HeroCareEmailTemplates: CollectionConfig = {
   slug: 'herocare-email-templates',
@@ -10,12 +13,23 @@ export const HeroCareEmailTemplates: CollectionConfig = {
     group: 'HeroCare',
     useAsTitle: 'name',
   },
+  access: {
+    read: hasTenantAccess('tenant'),
+    create: isAdminOrSuperAdmin,
+    update: hasTenantAccess('tenant'),
+    delete: isSuperAdmin,
+  },
   fields: [
+    {
+      name: 'tenant',
+      type: 'relationship',
+      relationTo: 'tenants',
+      required: true,
+    },
     {
       name: 'name',
       type: 'select',
       required: true,
-      unique: true,
       options: [
         { label: 'Admin Notification', value: 'admin-notification' },
         { label: 'Customer Notification', value: 'customer-notification' },

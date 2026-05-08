@@ -75,6 +75,7 @@ export interface Config {
     'herocare-website': HerocareWebsite;
     'herocare-image-gallery': HerocareImageGallery;
     'herocare-brand-assets': HerocareBrandAsset;
+    'herocare-email-templates': HerocareEmailTemplate;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -90,6 +91,7 @@ export interface Config {
     'herocare-website': HerocareWebsiteSelect<false> | HerocareWebsiteSelect<true>;
     'herocare-image-gallery': HerocareImageGallerySelect<false> | HerocareImageGallerySelect<true>;
     'herocare-brand-assets': HerocareBrandAssetsSelect<false> | HerocareBrandAssetsSelect<true>;
+    'herocare-email-templates': HerocareEmailTemplatesSelect<false> | HerocareEmailTemplatesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -231,6 +233,7 @@ export interface FormSubmission {
  */
 export interface HerocareWebsite {
   id: number;
+  tenant: number | Tenant;
   title?: string | null;
   logo?: (number | null) | Media;
   logoDark?: (number | null) | Media;
@@ -491,6 +494,7 @@ export interface HerocareBrandAsset {
   id: number;
   name: string;
   description?: string | null;
+  tenant?: (number | null) | Tenant;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -502,6 +506,23 @@ export interface HerocareBrandAsset {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "herocare-email-templates".
+ */
+export interface HerocareEmailTemplate {
+  id: number;
+  tenant: number | Tenant;
+  name: 'admin-notification' | 'customer-notification';
+  subjectLine: string;
+  logo?: (number | null) | HerocareBrandAsset;
+  heading: string;
+  bodyText: string;
+  buttonText?: string | null;
+  buttonURL?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -558,6 +579,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'herocare-brand-assets';
         value: number | HerocareBrandAsset;
+      } | null)
+    | ({
+        relationTo: 'herocare-email-templates';
+        value: number | HerocareEmailTemplate;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -689,6 +714,7 @@ export interface FormSubmissionsSelect<T extends boolean = true> {
  * via the `definition` "herocare-website_select".
  */
 export interface HerocareWebsiteSelect<T extends boolean = true> {
+  tenant?: T;
   title?: T;
   logo?: T;
   logoDark?: T;
@@ -933,6 +959,7 @@ export interface HerocareImageGallerySelect<T extends boolean = true> {
 export interface HerocareBrandAssetsSelect<T extends boolean = true> {
   name?: T;
   description?: T;
+  tenant?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -944,6 +971,22 @@ export interface HerocareBrandAssetsSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "herocare-email-templates_select".
+ */
+export interface HerocareEmailTemplatesSelect<T extends boolean = true> {
+  tenant?: T;
+  name?: T;
+  subjectLine?: T;
+  logo?: T;
+  heading?: T;
+  bodyText?: T;
+  buttonText?: T;
+  buttonURL?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

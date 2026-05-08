@@ -1,4 +1,7 @@
 import type { CollectionConfig } from 'payload'
+import { isSuperAdmin } from '../access/isSuperAdmin'
+import { isAdminOrSuperAdmin } from '../access/isAdminOrSuperAdmin'
+import { hasTenantAccess } from '../access/hasTenantAccess'
 
 export const APIKeys: CollectionConfig = {
   slug: 'api-keys',
@@ -11,10 +14,10 @@ export const APIKeys: CollectionConfig = {
     group: 'Admin',
   },
   access: {
-    read: () => true,
-    create: () => true,
-    update: () => true,
-    delete: () => true,
+    read: hasTenantAccess('tenant'),
+    create: isSuperAdmin,
+    update: hasTenantAccess('tenant'),
+    delete: isSuperAdmin,
   },
   fields: [
     {

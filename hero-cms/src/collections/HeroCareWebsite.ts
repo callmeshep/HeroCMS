@@ -1,4 +1,7 @@
 import type { CollectionConfig } from 'payload'
+import { isSuperAdmin } from '../access/isSuperAdmin'
+import { isAdminOrSuperAdmin } from '../access/isAdminOrSuperAdmin'
+import { hasTenantAccess } from '../access/hasTenantAccess'
 
 export const HeroCareWebsite: CollectionConfig = {
   slug: 'herocare-website',
@@ -10,7 +13,19 @@ export const HeroCareWebsite: CollectionConfig = {
     useAsTitle: 'title',
     group: 'HeroCare',
   },
+  access: {
+    read: hasTenantAccess('tenant'),
+    create: isAdminOrSuperAdmin,
+    update: hasTenantAccess('tenant'),
+    delete: isSuperAdmin,
+  },
   fields: [
+    {
+      name: 'tenant',
+      type: 'relationship',
+      relationTo: 'tenants',
+      required: true,
+    },
     {
       name: 'title',
       type: 'text',
@@ -111,7 +126,6 @@ export const HeroCareWebsite: CollectionConfig = {
         {
           label: 'Homeowners',
           fields: [
-            // Hero Block
             {
               name: 'heroHeadlineLine1',
               label: 'Hero — Headline Line 1',
@@ -144,7 +158,6 @@ export const HeroCareWebsite: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
             },
-            // What's Included Block
             {
               name: 'includedHeadlineLine1',
               label: "What's Included — Headline Line 1",
@@ -172,7 +185,6 @@ export const HeroCareWebsite: CollectionConfig = {
                 { name: 'ctaLink', label: 'CTA Button Link', type: 'text' },
               ],
             },
-            // How It Works Block
             {
               name: 'howItWorksHeadline',
               label: 'How It Works — Headline',
@@ -188,7 +200,6 @@ export const HeroCareWebsite: CollectionConfig = {
                 { name: 'body', type: 'textarea' },
               ],
             },
-            // Why Us Block
             {
               name: 'whyUsHeadlineLine1',
               label: 'Why Us — Headline Line 1',
@@ -224,7 +235,6 @@ export const HeroCareWebsite: CollectionConfig = {
                 { name: 'body', type: 'textarea' },
               ],
             },
-            // FAQs Block
             {
               name: 'faqsHeadlineLine1',
               label: 'FAQs — Headline Line 1',
@@ -249,7 +259,6 @@ export const HeroCareWebsite: CollectionConfig = {
                 { name: 'answer', type: 'textarea', required: true },
               ],
             },
-            // CTA Block
             {
               name: 'ctaHeadlineLine1',
               label: 'CTA — Headline Line 1',
@@ -281,7 +290,6 @@ export const HeroCareWebsite: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
             },
-            // Pop-up Form
             {
               name: 'popupHeadline',
               label: 'Pop-up — Headline',
@@ -308,7 +316,6 @@ export const HeroCareWebsite: CollectionConfig = {
               label: 'Pop-up — Thank You Message',
               type: 'text',
             },
-            // Thank You Page
             {
               name: 'thankYouHeadlineLine1',
               label: 'Thank You — Headline Line 1',
@@ -353,7 +360,6 @@ export const HeroCareWebsite: CollectionConfig = {
         {
           label: 'Landlords',
           fields: [
-            // Hero Block
             {
               name: 'landlordHeroHeadlineLine1',
               label: 'Hero — Headline Line 1',
@@ -381,7 +387,6 @@ export const HeroCareWebsite: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
             },
-            // What's Included Block
             {
               name: 'landlordIncludedHeadlineLine1',
               label: "What's Included — Headline Line 1",
@@ -409,7 +414,6 @@ export const HeroCareWebsite: CollectionConfig = {
                 { name: 'ctaLink', label: 'CTA Button Link', type: 'text' },
               ],
             },
-            // How It Works Block
             {
               name: 'landlordHowItWorksHeadline',
               label: 'How It Works — Headline',
@@ -425,7 +429,6 @@ export const HeroCareWebsite: CollectionConfig = {
                 { name: 'body', type: 'textarea' },
               ],
             },
-            // Why Us Block
             {
               name: 'landlordWhyUsHeadlineLine1',
               label: 'Why Us — Headline Line 1',
@@ -461,7 +464,6 @@ export const HeroCareWebsite: CollectionConfig = {
                 { name: 'body', type: 'textarea' },
               ],
             },
-            // FAQs Block
             {
               name: 'landlordFaqsHeadlineLine1',
               label: 'FAQs — Headline Line 1',
@@ -486,7 +488,6 @@ export const HeroCareWebsite: CollectionConfig = {
                 { name: 'answer', type: 'textarea', required: true },
               ],
             },
-            // CTA Block
             {
               name: 'landlordCtaHeadlineLine1',
               label: 'CTA — Headline Line 1',
@@ -518,7 +519,6 @@ export const HeroCareWebsite: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
             },
-            // Pop-up Form
             {
               name: 'landlordPopupHeadline',
               label: 'Pop-up — Headline',
@@ -552,7 +552,6 @@ export const HeroCareWebsite: CollectionConfig = {
         {
           label: 'Pricing',
           fields: [
-            // Hero Block
             {
               name: 'pricingHeroHeadlineLine1',
               label: 'Hero — Headline Line 1',
@@ -568,7 +567,6 @@ export const HeroCareWebsite: CollectionConfig = {
               label: 'Hero — Subheading',
               type: 'text',
             },
-            // Call-out Fee Selector
             {
               name: 'calloutFeeLabel',
               label: 'Call-out Fee Selector — Label',
@@ -587,7 +585,6 @@ export const HeroCareWebsite: CollectionConfig = {
                 { name: 'value', label: 'Fee Value (e.g. £75)', type: 'text', required: true },
               ],
             },
-            // Plans
             {
               name: 'plans',
               label: 'Plans',
@@ -602,7 +599,6 @@ export const HeroCareWebsite: CollectionConfig = {
                 { name: 'highlightColour', label: 'Highlight Colour', type: 'text' },
               ],
             },
-            // Feature Rows
             {
               name: 'featureRows',
               label: 'Feature Rows',
@@ -615,7 +611,6 @@ export const HeroCareWebsite: CollectionConfig = {
                 { name: 'includedInPlan3', label: 'Included in Plan 3', type: 'checkbox' },
               ],
             },
-            // About Your Plan Page
             {
               name: 'aboutYourPlanAccordion',
               label: 'About Your Plan — Accordion Items',

@@ -1,4 +1,7 @@
 import type { CollectionConfig } from 'payload'
+import { isSuperAdmin } from '../access/isSuperAdmin'
+import { isAdminOrSuperAdmin } from '../access/isAdminOrSuperAdmin'
+import { hasTenantAccess } from '../access/hasTenantAccess'
 
 export const FormSubmissions: CollectionConfig = {
   slug: 'form-submissions',
@@ -8,10 +11,10 @@ export const FormSubmissions: CollectionConfig = {
     defaultColumns: ['name', 'journey', 'submittedAt', 'webhookStatus'],
   },
   access: {
-    read: () => true,
-    create: () => true,
-    update: () => true,
-    delete: () => true,
+    read: hasTenantAccess('tenant'),
+    create: isAdminOrSuperAdmin,
+    update: hasTenantAccess('tenant'),
+    delete: isSuperAdmin,
   },
   fields: [
     {

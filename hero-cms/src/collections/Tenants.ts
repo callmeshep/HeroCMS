@@ -1,4 +1,6 @@
 import type { CollectionConfig } from 'payload'
+import { isSuperAdmin } from '../access/isSuperAdmin'
+import { isAdminOrSuperAdmin } from '../access/isAdminOrSuperAdmin'
 
 export const Tenants: CollectionConfig = {
   slug: 'tenants',
@@ -6,7 +8,10 @@ export const Tenants: CollectionConfig = {
     useAsTitle: 'name',
   },
   access: {
-    read: () => true,
+    read: isAdminOrSuperAdmin,
+    create: isSuperAdmin,
+    update: isSuperAdmin,
+    delete: isSuperAdmin,
   },
   fields: [
     {

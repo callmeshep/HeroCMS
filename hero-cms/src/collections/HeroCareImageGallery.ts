@@ -1,4 +1,7 @@
 import type { CollectionConfig } from 'payload'
+import { isSuperAdmin } from '../access/isSuperAdmin'
+import { isAdminOrSuperAdmin } from '../access/isAdminOrSuperAdmin'
+import { hasTenantAccess } from '../access/hasTenantAccess'
 
 export const HeroCareImageGallery: CollectionConfig = {
   slug: 'herocare-image-gallery',
@@ -8,6 +11,12 @@ export const HeroCareImageGallery: CollectionConfig = {
   },
   admin: {
     group: 'HeroCare',
+  },
+  access: {
+    read: hasTenantAccess('tenant'),
+    create: isAdminOrSuperAdmin,
+    update: hasTenantAccess('tenant'),
+    delete: isSuperAdmin,
   },
   upload: {
     staticDir: 'media/herocare',
@@ -23,7 +32,6 @@ export const HeroCareImageGallery: CollectionConfig = {
       name: 'tenant',
       type: 'relationship',
       relationTo: 'tenants',
-      defaultValue: async () => null,
       admin: {
         hidden: true,
       },
