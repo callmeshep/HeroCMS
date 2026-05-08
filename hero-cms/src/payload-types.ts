@@ -73,6 +73,8 @@ export interface Config {
     'api-keys': ApiKey;
     'form-submissions': FormSubmission;
     'herocare-website': HerocareWebsite;
+    'herocare-image-gallery': HerocareImageGallery;
+    'herocare-brand-assets': HerocareBrandAsset;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -86,6 +88,8 @@ export interface Config {
     'api-keys': ApiKeysSelect<false> | ApiKeysSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'herocare-website': HerocareWebsiteSelect<false> | HerocareWebsiteSelect<true>;
+    'herocare-image-gallery': HerocareImageGallerySelect<false> | HerocareImageGallerySelect<true>;
+    'herocare-brand-assets': HerocareBrandAssetsSelect<false> | HerocareBrandAssetsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -461,6 +465,46 @@ export interface HerocareWebsite {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "herocare-image-gallery".
+ */
+export interface HerocareImageGallery {
+  id: number;
+  alt: string;
+  tenant?: (number | null) | Tenant;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "herocare-brand-assets".
+ */
+export interface HerocareBrandAsset {
+  id: number;
+  name: string;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -506,6 +550,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'herocare-website';
         value: number | HerocareWebsite;
+      } | null)
+    | ({
+        relationTo: 'herocare-image-gallery';
+        value: number | HerocareImageGallery;
+      } | null)
+    | ({
+        relationTo: 'herocare-brand-assets';
+        value: number | HerocareBrandAsset;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -854,6 +906,44 @@ export interface HerocareWebsiteSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "herocare-image-gallery_select".
+ */
+export interface HerocareImageGallerySelect<T extends boolean = true> {
+  alt?: T;
+  tenant?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "herocare-brand-assets_select".
+ */
+export interface HerocareBrandAssetsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

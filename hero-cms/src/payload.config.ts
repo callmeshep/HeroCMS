@@ -11,6 +11,9 @@ import { Tenants } from './collections/Tenants'
 import { APIKeys } from './collections/APIKeys'
 import { FormSubmissions } from './collections/FormSubmissions'
 import { HeroCareWebsite } from './collections/HeroCareWebsite'
+import { HeroCareImageGallery } from './collections/HeroCareImageGallery'
+import { HeroCareBrandAssets } from './collections/HeroCareBrandAssets'
+import { HeroCareEmailTemplates } from './collections/HeroCareEmailTemplates'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -22,7 +25,17 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Tenants, APIKeys, FormSubmissions, HeroCareWebsite],
+  collections: [
+    Users,
+    Media,
+    Tenants,
+    APIKeys,
+    FormSubmissions,
+    HeroCareWebsite,
+    HeroCareImageGallery,
+    HeroCareBrandAssets,
+    HeroCareEmailTemplates,
+  ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
