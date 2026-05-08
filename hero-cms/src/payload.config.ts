@@ -30,8 +30,6 @@ export default buildConfig({
     theme: 'light',
     meta: {
       titleSuffix: '— Hero CMS',
-      favicon: '/api/emergency-hero-brand-assets/file/Asset%204.svg',
-      ogImage: '/api/emergency-hero-brand-assets/file/Asset%203.svg',
     },
     components: {
       graphics: {
