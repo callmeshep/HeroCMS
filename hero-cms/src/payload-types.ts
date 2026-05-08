@@ -71,11 +71,13 @@ export interface Config {
     media: Media;
     tenants: Tenant;
     'api-keys': ApiKey;
+    'all-form-submissions': AllFormSubmission;
     'form-submissions': FormSubmission;
     'herocare-website': HerocareWebsite;
     'herocare-image-gallery': HerocareImageGallery;
     'herocare-brand-assets': HerocareBrandAsset;
     'herocare-email-templates': HerocareEmailTemplate;
+    'emergency-hero-brand-assets': EmergencyHeroBrandAsset;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -87,11 +89,13 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     tenants: TenantsSelect<false> | TenantsSelect<true>;
     'api-keys': ApiKeysSelect<false> | ApiKeysSelect<true>;
+    'all-form-submissions': AllFormSubmissionsSelect<false> | AllFormSubmissionsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'herocare-website': HerocareWebsiteSelect<false> | HerocareWebsiteSelect<true>;
     'herocare-image-gallery': HerocareImageGallerySelect<false> | HerocareImageGallerySelect<true>;
     'herocare-brand-assets': HerocareBrandAssetsSelect<false> | HerocareBrandAssetsSelect<true>;
     'herocare-email-templates': HerocareEmailTemplatesSelect<false> | HerocareEmailTemplatesSelect<true>;
+    'emergency-hero-brand-assets': EmergencyHeroBrandAssetsSelect<false> | EmergencyHeroBrandAssetsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -206,6 +210,24 @@ export interface ApiKey {
   resendFromEmail?: string | null;
   crmWebhookURL?: string | null;
   crmAPIKey?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "all-form-submissions".
+ */
+export interface AllFormSubmission {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  journey?: ('homeowner' | 'landlord') | null;
+  name?: string | null;
+  postcode?: string | null;
+  companyName?: string | null;
+  numberOfProperties?: number | null;
+  phoneNumber?: string | null;
+  submittedAt?: string | null;
+  webhookStatus?: ('pending' | 'sent' | 'failed') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -526,6 +548,27 @@ export interface HerocareEmailTemplate {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-hero-brand-assets".
+ */
+export interface EmergencyHeroBrandAsset {
+  id: number;
+  name: string;
+  description?: string | null;
+  tenant?: (number | null) | Tenant;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -565,6 +608,10 @@ export interface PayloadLockedDocument {
         value: number | ApiKey;
       } | null)
     | ({
+        relationTo: 'all-form-submissions';
+        value: number | AllFormSubmission;
+      } | null)
+    | ({
         relationTo: 'form-submissions';
         value: number | FormSubmission;
       } | null)
@@ -583,6 +630,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'herocare-email-templates';
         value: number | HerocareEmailTemplate;
+      } | null)
+    | ({
+        relationTo: 'emergency-hero-brand-assets';
+        value: number | EmergencyHeroBrandAsset;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -689,6 +740,23 @@ export interface ApiKeysSelect<T extends boolean = true> {
   resendFromEmail?: T;
   crmWebhookURL?: T;
   crmAPIKey?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "all-form-submissions_select".
+ */
+export interface AllFormSubmissionsSelect<T extends boolean = true> {
+  tenant?: T;
+  journey?: T;
+  name?: T;
+  postcode?: T;
+  companyName?: T;
+  numberOfProperties?: T;
+  phoneNumber?: T;
+  submittedAt?: T;
+  webhookStatus?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -987,6 +1055,26 @@ export interface HerocareEmailTemplatesSelect<T extends boolean = true> {
   buttonURL?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-hero-brand-assets_select".
+ */
+export interface EmergencyHeroBrandAssetsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  tenant?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
