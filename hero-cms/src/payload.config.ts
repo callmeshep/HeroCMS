@@ -5,8 +5,6 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 import { s3Storage } from '@payloadcms/storage-s3'
-import { EmergencyHeroBrandAssets } from './collections/EmergencyHeroBrandAssets'
-import { AllFormSubmissions } from './collections/AllFormSubmissions'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -17,6 +15,8 @@ import { HeroCareWebsite } from './collections/HeroCareWebsite'
 import { HeroCareImageGallery } from './collections/HeroCareImageGallery'
 import { HeroCareBrandAssets } from './collections/HeroCareBrandAssets'
 import { HeroCareEmailTemplates } from './collections/HeroCareEmailTemplates'
+import { EmergencyHeroBrandAssets } from './collections/EmergencyHeroBrandAssets'
+import { AllFormSubmissions } from './collections/AllFormSubmissions'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
