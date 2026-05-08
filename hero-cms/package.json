@@ -56,6 +56,11 @@
       "sharp",
       "esbuild",
       "unrs-resolver"
+    ],
+    "approvedBuilds": [
+      "sharp",
+      "esbuild",
+      "unrs-resolver"
     ]
   }
 }
