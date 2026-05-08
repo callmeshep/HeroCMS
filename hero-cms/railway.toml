@@ -6,8 +6,3 @@ buildCommand = "pnpm install && pnpm build"
 startCommand = "pnpm payload migrate && pnpm start"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 3
-
-[deploy]
-startCommand = "pnpm start"
-restartPolicyType = "ON_FAILURE"
-restartPolicyMaxRetries = 3
