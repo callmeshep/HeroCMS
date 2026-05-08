@@ -34,10 +34,10 @@ export default buildConfig({
     components: {
       graphics: {
         Logo: {
-          path: './graphics/Logo',
+          path: '@/graphics/Logo',
         },
         Icon: {
-          path: './graphics/Icon',
+          path: '@/graphics/Icon',
         },
       },
     },
