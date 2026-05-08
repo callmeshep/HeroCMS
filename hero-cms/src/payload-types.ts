@@ -69,6 +69,10 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    tenants: Tenant;
+    'api-keys': ApiKey;
+    'form-submissions': FormSubmission;
+    'herocare-website': HerocareWebsite;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +82,10 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    tenants: TenantsSelect<false> | TenantsSelect<true>;
+    'api-keys': ApiKeysSelect<false> | ApiKeysSelect<true>;
+    'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
+    'herocare-website': HerocareWebsiteSelect<false> | HerocareWebsiteSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -123,6 +131,11 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: number;
+  role: 'super-admin' | 'admin';
+  /**
+   * Assigned tenants — applies to Admin role only
+   */
+  tenants?: (number | Tenant)[] | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -144,6 +157,20 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenants".
+ */
+export interface Tenant {
+  id: number;
+  name: string;
+  /**
+   * URL-safe identifier e.g. herocare
+   */
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
@@ -160,6 +187,277 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "api-keys".
+ */
+export interface ApiKey {
+  id: number;
+  tenant: number | Tenant;
+  cloudflareDeployHook?: string | null;
+  resendFromName?: string | null;
+  resendFromEmail?: string | null;
+  crmWebhookURL?: string | null;
+  crmAPIKey?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-submissions".
+ */
+export interface FormSubmission {
+  id: number;
+  tenant: number | Tenant;
+  journey: 'homeowner' | 'landlord';
+  name: string;
+  postcode?: string | null;
+  companyName?: string | null;
+  numberOfProperties?: number | null;
+  phoneNumber: string;
+  submittedAt?: string | null;
+  webhookStatus?: ('pending' | 'sent' | 'failed') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "herocare-website".
+ */
+export interface HerocareWebsite {
+  id: number;
+  title?: string | null;
+  logo?: (number | null) | Media;
+  logoDark?: (number | null) | Media;
+  favicon?: (number | null) | Media;
+  phoneNumber?: string | null;
+  navCtaText?: string | null;
+  navCtaLink?: string | null;
+  topBarHomeownersLabel?: string | null;
+  topBarHomeownersURL?: string | null;
+  topBarLandlordsLabel?: string | null;
+  topBarLandlordsURL?: string | null;
+  emergencyHeroLogo?: (number | null) | Media;
+  emergencyHeroLink?: string | null;
+  trustpilotRating?: number | null;
+  trustpilotReviewCount?: number | null;
+  trustpilotLink?: string | null;
+  heroHeadlineLine1?: string | null;
+  heroHeadlineLine2?: string | null;
+  heroBulletPoints?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  heroFormSubheading?: string | null;
+  heroFormCtaText?: string | null;
+  heroImage?: (number | null) | Media;
+  includedHeadlineLine1?: string | null;
+  includedHeadlineLine2?: string | null;
+  includedSubheading?: string | null;
+  includedCards?:
+    | {
+        icon?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        ctaText?: string | null;
+        ctaLink?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  howItWorksHeadline?: string | null;
+  howItWorksSteps?:
+    | {
+        image?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  whyUsHeadlineLine1?: string | null;
+  whyUsHeadlineLine2?: string | null;
+  whyUsSubheading?: string | null;
+  whyUsCtaText?: string | null;
+  whyUsCtaLink?: string | null;
+  whyUsCards?:
+    | {
+        image?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  faqsHeadlineLine1?: string | null;
+  faqsHeadlineLine2?: string | null;
+  faqsSubheading?: string | null;
+  faqItems?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  ctaHeadlineLine1?: string | null;
+  ctaHeadlineLine2?: string | null;
+  ctaSubheading?: string | null;
+  ctaButtonText?: string | null;
+  ctaButtonLink?: string | null;
+  ctaImage?: (number | null) | Media;
+  popupHeadline?: string | null;
+  popupSubheading?: string | null;
+  popupImage?: (number | null) | Media;
+  popupCtaText?: string | null;
+  popupThankYouMessage?: string | null;
+  thankYouHeadlineLine1?: string | null;
+  thankYouHeadlineLine2?: string | null;
+  thankYouPlanHeadlineLine1?: string | null;
+  thankYouPlanHeadlineLine2?: string | null;
+  thankYouPlanCards?:
+    | {
+        icon?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        ctaText?: string | null;
+        ctaLink?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  thankYouSeeEverythingText?: string | null;
+  landlordHeroHeadlineLine1?: string | null;
+  landlordHeroHeadlineLine2?: string | null;
+  landlordHeroBulletPoints?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  landlordHeroCtaText?: string | null;
+  landlordHeroImage?: (number | null) | Media;
+  landlordIncludedHeadlineLine1?: string | null;
+  landlordIncludedHeadlineLine2?: string | null;
+  landlordIncludedSubheading?: string | null;
+  landlordIncludedCards?:
+    | {
+        icon?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        ctaText?: string | null;
+        ctaLink?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  landlordHowItWorksHeadline?: string | null;
+  landlordHowItWorksSteps?:
+    | {
+        image?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  landlordWhyUsHeadlineLine1?: string | null;
+  landlordWhyUsHeadlineLine2?: string | null;
+  landlordWhyUsSubheading?: string | null;
+  landlordWhyUsCtaText?: string | null;
+  landlordWhyUsCtaLink?: string | null;
+  landlordWhyUsCards?:
+    | {
+        image?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  landlordFaqsHeadlineLine1?: string | null;
+  landlordFaqsHeadlineLine2?: string | null;
+  landlordFaqsSubheading?: string | null;
+  landlordFaqItems?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  landlordCtaHeadlineLine1?: string | null;
+  landlordCtaHeadlineLine2?: string | null;
+  landlordCtaSubheading?: string | null;
+  landlordCtaButtonText?: string | null;
+  landlordCtaButtonLink?: string | null;
+  landlordCtaImage?: (number | null) | Media;
+  landlordPopupHeadline?: string | null;
+  landlordPopupSubheading?: string | null;
+  landlordPopupImage?: (number | null) | Media;
+  landlordPopupCtaText?: string | null;
+  landlordPopupThankYouMessage?: string | null;
+  pricingHeroHeadlineLine1?: string | null;
+  pricingHeroHeadlineLine2?: string | null;
+  pricingHeroSubheading?: string | null;
+  calloutFeeLabel?: string | null;
+  calloutFeeDescription?: string | null;
+  calloutFeeOptions?:
+    | {
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  plans?:
+    | {
+        name: string;
+        priceHighCallout?: string | null;
+        priceLowCallout?: string | null;
+        pricePeriod?: string | null;
+        ctaText?: string | null;
+        stripeLink?: string | null;
+        highlightColour?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  featureRows?:
+    | {
+        icon?: (number | null) | Media;
+        featureName: string;
+        includedInPlan1?: boolean | null;
+        includedInPlan2?: boolean | null;
+        includedInPlan3?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  aboutYourPlanAccordion?:
+    | {
+        icon?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  aboutYourPlanCtaHeadlineLine1?: string | null;
+  aboutYourPlanCtaHeadlineLine2?: string | null;
+  aboutYourPlanCtaPhone?: string | null;
+  policies?:
+    | {
+        title: string;
+        content?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -192,6 +490,22 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'tenants';
+        value: number | Tenant;
+      } | null)
+    | ({
+        relationTo: 'api-keys';
+        value: number | ApiKey;
+      } | null)
+    | ({
+        relationTo: 'form-submissions';
+        value: number | FormSubmission;
+      } | null)
+    | ({
+        relationTo: 'herocare-website';
+        value: number | HerocareWebsite;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -240,6 +554,8 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  role?: T;
+  tenants?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -274,6 +590,270 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenants_select".
+ */
+export interface TenantsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "api-keys_select".
+ */
+export interface ApiKeysSelect<T extends boolean = true> {
+  tenant?: T;
+  cloudflareDeployHook?: T;
+  resendFromName?: T;
+  resendFromEmail?: T;
+  crmWebhookURL?: T;
+  crmAPIKey?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-submissions_select".
+ */
+export interface FormSubmissionsSelect<T extends boolean = true> {
+  tenant?: T;
+  journey?: T;
+  name?: T;
+  postcode?: T;
+  companyName?: T;
+  numberOfProperties?: T;
+  phoneNumber?: T;
+  submittedAt?: T;
+  webhookStatus?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "herocare-website_select".
+ */
+export interface HerocareWebsiteSelect<T extends boolean = true> {
+  title?: T;
+  logo?: T;
+  logoDark?: T;
+  favicon?: T;
+  phoneNumber?: T;
+  navCtaText?: T;
+  navCtaLink?: T;
+  topBarHomeownersLabel?: T;
+  topBarHomeownersURL?: T;
+  topBarLandlordsLabel?: T;
+  topBarLandlordsURL?: T;
+  emergencyHeroLogo?: T;
+  emergencyHeroLink?: T;
+  trustpilotRating?: T;
+  trustpilotReviewCount?: T;
+  trustpilotLink?: T;
+  heroHeadlineLine1?: T;
+  heroHeadlineLine2?: T;
+  heroBulletPoints?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  heroFormSubheading?: T;
+  heroFormCtaText?: T;
+  heroImage?: T;
+  includedHeadlineLine1?: T;
+  includedHeadlineLine2?: T;
+  includedSubheading?: T;
+  includedCards?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        body?: T;
+        ctaText?: T;
+        ctaLink?: T;
+        id?: T;
+      };
+  howItWorksHeadline?: T;
+  howItWorksSteps?:
+    | T
+    | {
+        image?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  whyUsHeadlineLine1?: T;
+  whyUsHeadlineLine2?: T;
+  whyUsSubheading?: T;
+  whyUsCtaText?: T;
+  whyUsCtaLink?: T;
+  whyUsCards?:
+    | T
+    | {
+        image?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  faqsHeadlineLine1?: T;
+  faqsHeadlineLine2?: T;
+  faqsSubheading?: T;
+  faqItems?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  ctaHeadlineLine1?: T;
+  ctaHeadlineLine2?: T;
+  ctaSubheading?: T;
+  ctaButtonText?: T;
+  ctaButtonLink?: T;
+  ctaImage?: T;
+  popupHeadline?: T;
+  popupSubheading?: T;
+  popupImage?: T;
+  popupCtaText?: T;
+  popupThankYouMessage?: T;
+  thankYouHeadlineLine1?: T;
+  thankYouHeadlineLine2?: T;
+  thankYouPlanHeadlineLine1?: T;
+  thankYouPlanHeadlineLine2?: T;
+  thankYouPlanCards?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        body?: T;
+        ctaText?: T;
+        ctaLink?: T;
+        id?: T;
+      };
+  thankYouSeeEverythingText?: T;
+  landlordHeroHeadlineLine1?: T;
+  landlordHeroHeadlineLine2?: T;
+  landlordHeroBulletPoints?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  landlordHeroCtaText?: T;
+  landlordHeroImage?: T;
+  landlordIncludedHeadlineLine1?: T;
+  landlordIncludedHeadlineLine2?: T;
+  landlordIncludedSubheading?: T;
+  landlordIncludedCards?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        body?: T;
+        ctaText?: T;
+        ctaLink?: T;
+        id?: T;
+      };
+  landlordHowItWorksHeadline?: T;
+  landlordHowItWorksSteps?:
+    | T
+    | {
+        image?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  landlordWhyUsHeadlineLine1?: T;
+  landlordWhyUsHeadlineLine2?: T;
+  landlordWhyUsSubheading?: T;
+  landlordWhyUsCtaText?: T;
+  landlordWhyUsCtaLink?: T;
+  landlordWhyUsCards?:
+    | T
+    | {
+        image?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  landlordFaqsHeadlineLine1?: T;
+  landlordFaqsHeadlineLine2?: T;
+  landlordFaqsSubheading?: T;
+  landlordFaqItems?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  landlordCtaHeadlineLine1?: T;
+  landlordCtaHeadlineLine2?: T;
+  landlordCtaSubheading?: T;
+  landlordCtaButtonText?: T;
+  landlordCtaButtonLink?: T;
+  landlordCtaImage?: T;
+  landlordPopupHeadline?: T;
+  landlordPopupSubheading?: T;
+  landlordPopupImage?: T;
+  landlordPopupCtaText?: T;
+  landlordPopupThankYouMessage?: T;
+  pricingHeroHeadlineLine1?: T;
+  pricingHeroHeadlineLine2?: T;
+  pricingHeroSubheading?: T;
+  calloutFeeLabel?: T;
+  calloutFeeDescription?: T;
+  calloutFeeOptions?:
+    | T
+    | {
+        value?: T;
+        id?: T;
+      };
+  plans?:
+    | T
+    | {
+        name?: T;
+        priceHighCallout?: T;
+        priceLowCallout?: T;
+        pricePeriod?: T;
+        ctaText?: T;
+        stripeLink?: T;
+        highlightColour?: T;
+        id?: T;
+      };
+  featureRows?:
+    | T
+    | {
+        icon?: T;
+        featureName?: T;
+        includedInPlan1?: T;
+        includedInPlan2?: T;
+        includedInPlan3?: T;
+        id?: T;
+      };
+  aboutYourPlanAccordion?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  aboutYourPlanCtaHeadlineLine1?: T;
+  aboutYourPlanCtaHeadlineLine2?: T;
+  aboutYourPlanCtaPhone?: T;
+  policies?:
+    | T
+    | {
+        title?: T;
+        content?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
