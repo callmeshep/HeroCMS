@@ -1,20 +1,21 @@
 import type { CollectionConfig } from 'payload'
-import { handleEnquiryHooks } from '../hooks/handleEnquiryHooks'
 import { isSuperAdmin } from '../access/isSuperAdmin'
-import { isAdminOrSuperAdmin } from '../access/isAdminOrSuperAdmin'
-import { hasTenantAccess } from '../access/hasTenantAccess'
 
-export const FormSubmissions: CollectionConfig = {
-  slug: 'form-submissions',
+export const AllFormSubmissions: CollectionConfig = {
+  slug: 'all-form-submissions',
+  labels: {
+    singular: 'Form Submission',
+    plural: 'All Form Submissions',
+  },
   admin: {
+    group: 'Admin',
     useAsTitle: 'name',
-    group: 'HeroCare',
-    defaultColumns: ['name', 'journey', 'submittedAt', 'webhookStatus'],
+    defaultColumns: ['name', 'journey', 'tenant', 'submittedAt', 'webhookStatus'],
   },
   access: {
-    read: hasTenantAccess('tenant'),
-    create: isAdminOrSuperAdmin,
-    update: hasTenantAccess('tenant'),
+    read: isSuperAdmin,
+    create: () => false,
+    update: () => false,
     delete: isSuperAdmin,
   },
   fields: [
@@ -22,12 +23,10 @@ export const FormSubmissions: CollectionConfig = {
       name: 'tenant',
       type: 'relationship',
       relationTo: 'tenants',
-      required: true,
     },
     {
       name: 'journey',
       type: 'select',
-      required: true,
       options: [
         { label: 'Homeowner', value: 'homeowner' },
         { label: 'Landlord', value: 'landlord' },
@@ -36,50 +35,35 @@ export const FormSubmissions: CollectionConfig = {
     {
       name: 'name',
       type: 'text',
-      required: true,
     },
     {
       name: 'postcode',
       type: 'text',
-      admin: {
-        condition: (data) => data.journey === 'homeowner',
-      },
     },
     {
       name: 'companyName',
       label: 'Company Name',
       type: 'text',
-      admin: {
-        condition: (data) => data.journey === 'landlord',
-      },
     },
     {
       name: 'numberOfProperties',
       label: 'No. of Properties',
       type: 'number',
-      admin: {
-        condition: (data) => data.journey === 'landlord',
-      },
     },
     {
       name: 'phoneNumber',
       label: 'Phone Number',
       type: 'text',
-      required: true,
     },
     {
       name: 'submittedAt',
       label: 'Submitted At',
       type: 'date',
-      admin: {
-        readOnly: true,
-      },
     },
     {
       name: 'webhookStatus',
       label: 'Webhook Status',
       type: 'select',
-      defaultValue: 'pending',
       options: [
         { label: 'Pending', value: 'pending' },
         { label: 'Sent', value: 'sent' },
@@ -87,15 +71,4 @@ export const FormSubmissions: CollectionConfig = {
       ],
     },
   ],
-  hooks: {
-    afterChange: [handleEnquiryHooks],
-    beforeChange: [
-      ({ data, operation }) => {
-        if (operation === 'create') {
-          data.submittedAt = new Date().toISOString()
-        }
-        return data
-      },
-    ],
-  },
 }

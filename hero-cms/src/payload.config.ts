@@ -5,6 +5,7 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 import { s3Storage } from '@payloadcms/storage-s3'
+import { AllFormSubmissions } from './collections/AllFormSubmissions'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
