@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { handleEnquiryHooks } from '../hooks/handleEnquiryHooks'
 import { isSuperAdmin } from '../access/isSuperAdmin'
 import { isAdminOrSuperAdmin } from '../access/isAdminOrSuperAdmin'
 import { hasTenantAccess } from '../access/hasTenantAccess'
@@ -87,6 +88,7 @@ export const FormSubmissions: CollectionConfig = {
     },
   ],
   hooks: {
+    afterChange: [handleEnquiryHooks],
     beforeChange: [
       ({ data, operation }) => {
         if (operation === 'create') {

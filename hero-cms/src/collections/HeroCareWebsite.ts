@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { isSuperAdmin } from '../access/isSuperAdmin'
 import { isAdminOrSuperAdmin } from '../access/isAdminOrSuperAdmin'
 import { hasTenantAccess } from '../access/hasTenantAccess'
+import { triggerDeployHook } from '../hooks/triggerDeployHook'
 
 export const HeroCareWebsite: CollectionConfig = {
   slug: 'herocare-website',
@@ -657,4 +658,7 @@ export const HeroCareWebsite: CollectionConfig = {
       ],
     },
   ],
+  hooks: {
+    afterChange: [triggerDeployHook],
+  },
 }
