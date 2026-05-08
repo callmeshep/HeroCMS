@@ -28,6 +28,21 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
     theme: 'light',
+    meta: {
+      titleSuffix: '— Hero CMS',
+      favicon: '/api/emergency-hero-brand-assets/file/Asset%204.svg',
+      ogImage: '/api/emergency-hero-brand-assets/file/Asset%203.svg',
+    },
+    components: {
+      graphics: {
+        Logo: {
+          path: './graphics/Logo',
+        },
+        Icon: {
+          path: './graphics/Icon',
+        },
+      },
+    },
   },
   collections: [
     Users,
