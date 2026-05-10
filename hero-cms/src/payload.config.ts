@@ -17,6 +17,8 @@ import { HeroCareBrandAssets } from './collections/HeroCareBrandAssets'
 import { HeroCareEmailTemplates } from './collections/HeroCareEmailTemplates'
 import { EmergencyHeroBrandAssets } from './collections/EmergencyHeroBrandAssets'
 import { AllFormSubmissions } from './collections/AllFormSubmissions'
+import { HeroCareForms } from './collections/HeroCareForms'
+import { HeroCareSubmissions } from './collections/HeroCareSubmissions'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -56,6 +58,8 @@ export default buildConfig({
     HeroCareEmailTemplates,
     FormSubmissions,
     HeroCareImageGallery,
+    HeroCareForms,
+    HeroCareSubmissions,
     HeroCareWebsite,
     EmergencyHeroBrandAssets,
   ],
