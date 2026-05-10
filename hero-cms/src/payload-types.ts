@@ -67,34 +67,42 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    users: User;
     media: Media;
     tenants: Tenant;
+    users: User;
     'api-keys': ApiKey;
     'all-form-submissions': AllFormSubmission;
-    'form-submissions': FormSubmission;
-    'herocare-website': HerocareWebsite;
-    'herocare-image-gallery': HerocareImageGallery;
     'herocare-brand-assets': HerocareBrandAsset;
     'herocare-email-templates': HerocareEmailTemplate;
+    'form-submissions': FormSubmission;
+    'herocare-image-gallery': HerocareImageGallery;
+    'herocare-forms': HerocareForm;
+    'herocare-submissions': HerocareSubmission;
+    'herocare-website': HerocareWebsite;
     'emergency-hero-brand-assets': EmergencyHeroBrandAsset;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    'herocare-forms': {
+      submissions: 'herocare-submissions';
+    };
+  };
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     tenants: TenantsSelect<false> | TenantsSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     'api-keys': ApiKeysSelect<false> | ApiKeysSelect<true>;
     'all-form-submissions': AllFormSubmissionsSelect<false> | AllFormSubmissionsSelect<true>;
-    'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
-    'herocare-website': HerocareWebsiteSelect<false> | HerocareWebsiteSelect<true>;
-    'herocare-image-gallery': HerocareImageGallerySelect<false> | HerocareImageGallerySelect<true>;
     'herocare-brand-assets': HerocareBrandAssetsSelect<false> | HerocareBrandAssetsSelect<true>;
     'herocare-email-templates': HerocareEmailTemplatesSelect<false> | HerocareEmailTemplatesSelect<true>;
+    'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
+    'herocare-image-gallery': HerocareImageGallerySelect<false> | HerocareImageGallerySelect<true>;
+    'herocare-forms': HerocareFormsSelect<false> | HerocareFormsSelect<true>;
+    'herocare-submissions': HerocareSubmissionsSelect<false> | HerocareSubmissionsSelect<true>;
+    'herocare-website': HerocareWebsiteSelect<false> | HerocareWebsiteSelect<true>;
     'emergency-hero-brand-assets': EmergencyHeroBrandAssetsSelect<false> | EmergencyHeroBrandAssetsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -137,6 +145,39 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  alt: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenants".
+ */
+export interface Tenant {
+  id: number;
+  name: string;
+  /**
+   * URL-safe identifier e.g. herocare
+   */
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -164,39 +205,6 @@ export interface User {
     | null;
   password?: string | null;
   collection: 'users';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tenants".
- */
-export interface Tenant {
-  id: number;
-  name: string;
-  /**
-   * URL-safe identifier e.g. herocare
-   */
-  slug: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  alt: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -233,6 +241,44 @@ export interface AllFormSubmission {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "herocare-brand-assets".
+ */
+export interface HerocareBrandAsset {
+  id: number;
+  name: string;
+  description?: string | null;
+  tenant?: (number | null) | Tenant;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "herocare-email-templates".
+ */
+export interface HerocareEmailTemplate {
+  id: number;
+  tenant: number | Tenant;
+  name: 'admin-notification' | 'customer-notification';
+  subjectLine: string;
+  logo?: (number | null) | HerocareBrandAsset;
+  heading: string;
+  bodyText: string;
+  buttonText?: string | null;
+  buttonURL?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "form-submissions".
  */
 export interface FormSubmission {
@@ -244,6 +290,89 @@ export interface FormSubmission {
   companyName?: string | null;
   numberOfProperties?: number | null;
   phoneNumber: string;
+  submittedAt?: string | null;
+  webhookStatus?: ('pending' | 'sent' | 'failed') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "herocare-image-gallery".
+ */
+export interface HerocareImageGallery {
+  id: number;
+  alt: string;
+  tenant?: (number | null) | Tenant;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "herocare-forms".
+ */
+export interface HerocareForm {
+  id: number;
+  tenant: number | Tenant;
+  /**
+   * e.g. Homeowner Popup, Header Form
+   */
+  name: string;
+  /**
+   * e.g. Homepage, Pricing
+   */
+  page: string;
+  /**
+   * Number of times the form was seen
+   */
+  views?: number | null;
+  /**
+   * Number of times a user started interacting
+   */
+  attempts?: number | null;
+  /**
+   * Number of successful submissions
+   */
+  completions?: number | null;
+  /**
+   * Submissions for this form
+   */
+  submissions?: {
+    docs?: (number | HerocareSubmission)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "herocare-submissions".
+ */
+export interface HerocareSubmission {
+  id: number;
+  tenant: number | Tenant;
+  /**
+   * The form this submission belongs to
+   */
+  form: number | HerocareForm;
+  journey: 'homeowner' | 'landlord';
+  trigger: 'button-click' | 'header-form';
+  stage: 'step-1' | 'step-2';
+  device?: ('desktop' | 'mobile' | 'tablet') | null;
+  name?: string | null;
+  postcode?: string | null;
+  companyName?: string | null;
+  numberOfProperties?: number | null;
+  phoneNumber?: string | null;
   submittedAt?: string | null;
   webhookStatus?: ('pending' | 'sent' | 'failed') | null;
   updatedAt: string;
@@ -490,64 +619,6 @@ export interface HerocareWebsite {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "herocare-image-gallery".
- */
-export interface HerocareImageGallery {
-  id: number;
-  alt: string;
-  tenant?: (number | null) | Tenant;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "herocare-brand-assets".
- */
-export interface HerocareBrandAsset {
-  id: number;
-  name: string;
-  description?: string | null;
-  tenant?: (number | null) | Tenant;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "herocare-email-templates".
- */
-export interface HerocareEmailTemplate {
-  id: number;
-  tenant: number | Tenant;
-  name: 'admin-notification' | 'customer-notification';
-  subjectLine: string;
-  logo?: (number | null) | HerocareBrandAsset;
-  heading: string;
-  bodyText: string;
-  buttonText?: string | null;
-  buttonURL?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "emergency-hero-brand-assets".
  */
 export interface EmergencyHeroBrandAsset {
@@ -592,16 +663,16 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
-        relationTo: 'users';
-        value: number | User;
-      } | null)
-    | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
     | ({
         relationTo: 'tenants';
         value: number | Tenant;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: number | User;
       } | null)
     | ({
         relationTo: 'api-keys';
@@ -612,24 +683,32 @@ export interface PayloadLockedDocument {
         value: number | AllFormSubmission;
       } | null)
     | ({
-        relationTo: 'form-submissions';
-        value: number | FormSubmission;
-      } | null)
-    | ({
-        relationTo: 'herocare-website';
-        value: number | HerocareWebsite;
-      } | null)
-    | ({
-        relationTo: 'herocare-image-gallery';
-        value: number | HerocareImageGallery;
-      } | null)
-    | ({
         relationTo: 'herocare-brand-assets';
         value: number | HerocareBrandAsset;
       } | null)
     | ({
         relationTo: 'herocare-email-templates';
         value: number | HerocareEmailTemplate;
+      } | null)
+    | ({
+        relationTo: 'form-submissions';
+        value: number | FormSubmission;
+      } | null)
+    | ({
+        relationTo: 'herocare-image-gallery';
+        value: number | HerocareImageGallery;
+      } | null)
+    | ({
+        relationTo: 'herocare-forms';
+        value: number | HerocareForm;
+      } | null)
+    | ({
+        relationTo: 'herocare-submissions';
+        value: number | HerocareSubmission;
+      } | null)
+    | ({
+        relationTo: 'herocare-website';
+        value: number | HerocareWebsite;
       } | null)
     | ({
         relationTo: 'emergency-hero-brand-assets';
@@ -679,30 +758,6 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
- */
-export interface UsersSelect<T extends boolean = true> {
-  role?: T;
-  tenants?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
-  sessions?:
-    | T
-    | {
-        id?: T;
-        createdAt?: T;
-        expiresAt?: T;
-      };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
@@ -728,6 +783,30 @@ export interface TenantsSelect<T extends boolean = true> {
   slug?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  role?: T;
+  tenants?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -762,11 +841,102 @@ export interface AllFormSubmissionsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "herocare-brand-assets_select".
+ */
+export interface HerocareBrandAssetsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  tenant?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "herocare-email-templates_select".
+ */
+export interface HerocareEmailTemplatesSelect<T extends boolean = true> {
+  tenant?: T;
+  name?: T;
+  subjectLine?: T;
+  logo?: T;
+  heading?: T;
+  bodyText?: T;
+  buttonText?: T;
+  buttonURL?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "form-submissions_select".
  */
 export interface FormSubmissionsSelect<T extends boolean = true> {
   tenant?: T;
   journey?: T;
+  name?: T;
+  postcode?: T;
+  companyName?: T;
+  numberOfProperties?: T;
+  phoneNumber?: T;
+  submittedAt?: T;
+  webhookStatus?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "herocare-image-gallery_select".
+ */
+export interface HerocareImageGallerySelect<T extends boolean = true> {
+  alt?: T;
+  tenant?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "herocare-forms_select".
+ */
+export interface HerocareFormsSelect<T extends boolean = true> {
+  tenant?: T;
+  name?: T;
+  page?: T;
+  views?: T;
+  attempts?: T;
+  completions?: T;
+  submissions?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "herocare-submissions_select".
+ */
+export interface HerocareSubmissionsSelect<T extends boolean = true> {
+  tenant?: T;
+  form?: T;
+  journey?: T;
+  trigger?: T;
+  stage?: T;
+  device?: T;
   name?: T;
   postcode?: T;
   companyName?: T;
@@ -998,61 +1168,6 @@ export interface HerocareWebsiteSelect<T extends boolean = true> {
         content?: T;
         id?: T;
       };
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "herocare-image-gallery_select".
- */
-export interface HerocareImageGallerySelect<T extends boolean = true> {
-  alt?: T;
-  tenant?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "herocare-brand-assets_select".
- */
-export interface HerocareBrandAssetsSelect<T extends boolean = true> {
-  name?: T;
-  description?: T;
-  tenant?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "herocare-email-templates_select".
- */
-export interface HerocareEmailTemplatesSelect<T extends boolean = true> {
-  tenant?: T;
-  name?: T;
-  subjectLine?: T;
-  logo?: T;
-  heading?: T;
-  bodyText?: T;
-  buttonText?: T;
-  buttonURL?: T;
   updatedAt?: T;
   createdAt?: T;
 }
