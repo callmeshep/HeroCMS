@@ -8,7 +8,7 @@ export const Tenants: CollectionConfig = {
     useAsTitle: 'name',
   },
   access: {
-    read: isAdminOrSuperAdmin,
+    read: () => true,
     create: isSuperAdmin,
     update: isSuperAdmin,
     delete: isSuperAdmin,
