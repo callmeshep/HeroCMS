@@ -1,4 +1,4 @@
-export default function Logo() {
+export function Logo() {
   return (
     <img
       src="/api/emergency-hero-brand-assets/file/Asset%203.svg"

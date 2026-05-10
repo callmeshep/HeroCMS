@@ -33,12 +33,8 @@ export default buildConfig({
     },
     components: {
       graphics: {
-        Logo: {
-          path: '@/graphics/Logo',
-        },
-        Icon: {
-          path: '@/graphics/Icon',
-        },
+        Logo: '/graphics/Logo/index.tsx#Logo',
+        Icon: '/graphics/Icon/index.tsx#Icon',
       },
     },
   },
