@@ -30,6 +30,13 @@ export default buildConfig({
     theme: 'light',
     meta: {
       titleSuffix: '— Hero CMS',
+      icons: [
+        {
+          type: 'image/svg+xml',
+          rel: 'icon',
+          url: '/api/emergency-hero-brand-assets/file/Asset%204.svg',
+        },
+      ],
     },
     components: {
       graphics: {
