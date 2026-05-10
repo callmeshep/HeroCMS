@@ -10,13 +10,11 @@ import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Tenants } from './collections/Tenants'
 import { APIKeys } from './collections/APIKeys'
-import { FormSubmissions } from './collections/FormSubmissions'
 import { HeroCareWebsite } from './collections/HeroCareWebsite'
 import { HeroCareImageGallery } from './collections/HeroCareImageGallery'
 import { HeroCareBrandAssets } from './collections/HeroCareBrandAssets'
 import { HeroCareEmailTemplates } from './collections/HeroCareEmailTemplates'
 import { EmergencyHeroBrandAssets } from './collections/EmergencyHeroBrandAssets'
-import { AllFormSubmissions } from './collections/AllFormSubmissions'
 import { HeroCareForms } from './collections/HeroCareForms'
 import { HeroCareSubmissions } from './collections/HeroCareSubmissions'
 
@@ -53,10 +51,8 @@ export default buildConfig({
     Tenants,
     Users,
     APIKeys,
-    AllFormSubmissions,
     HeroCareBrandAssets,
     HeroCareEmailTemplates,
-    FormSubmissions,
     HeroCareImageGallery,
     HeroCareForms,
     HeroCareSubmissions,
