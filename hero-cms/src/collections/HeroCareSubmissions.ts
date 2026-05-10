@@ -28,6 +28,23 @@ export const HeroCareSubmissions: CollectionConfig = {
     update: hasTenantAccess('tenant'),
     delete: isSuperAdmin,
   },
+  hooks: {
+    beforeChange: [
+      async ({ data, operation, req }) => {
+        if (operation === 'create') {
+          const tenant = await req.payload.find({
+            collection: 'tenants',
+            where: { slug: { equals: 'herocare' } },
+            limit: 1,
+          })
+          if (tenant.docs[0]) {
+            data.tenant = tenant.docs[0].id
+          }
+        }
+        return data
+      },
+    ],
+  },
   fields: [
     {
       name: 'tenant',
