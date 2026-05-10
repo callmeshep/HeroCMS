@@ -36,6 +36,7 @@ export default buildConfig({
         Logo: '/graphics/Logo/index.tsx#Logo',
         Icon: '/graphics/Icon/index.tsx#Icon',
       },
+      beforeNavLinks: ['/graphics/Logo/index.tsx#Logo'],
     },
   },
   collections: [

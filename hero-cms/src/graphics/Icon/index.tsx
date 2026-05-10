@@ -4,7 +4,7 @@ export const Icon: React.FC = () => {
   return (
     <svg
       viewBox="0 0 347.7 437.43"
-      style={{ width: '28px', height: 'auto' }}
+      style={{ width: '32px', height: '40px' }}
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
     >
