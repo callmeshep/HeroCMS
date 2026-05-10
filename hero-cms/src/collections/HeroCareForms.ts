@@ -27,7 +27,7 @@ export const HeroCareForms: CollectionConfig = {
       relationTo: 'tenants',
       required: true,
       admin: {
-        hidden: true,
+        hidden: false,
       },
     },
     {
