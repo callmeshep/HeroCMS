@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export const Logo: React.FC = () => {
   return (
-    <Link a href="/admin">
+    <Link href="/admin">
       <svg
         viewBox="0 0 812.23 268.07"
         style={{ width: '200px', height: 'auto', padding: '16px 0' }}
