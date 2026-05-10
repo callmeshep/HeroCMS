@@ -32,6 +32,7 @@ export const HeroCareSubmissions: CollectionConfig = {
     beforeChange: [
       async ({ data, operation, req }) => {
         if (operation === 'create') {
+          data.submittedAt = new Date().toISOString()
           const tenant = await req.payload.find({
             collection: 'tenants',
             where: { slug: { equals: 'herocare' } },
@@ -152,14 +153,4 @@ export const HeroCareSubmissions: CollectionConfig = {
       ],
     },
   ],
-  hooks: {
-    beforeChange: [
-      ({ data, operation }) => {
-        if (operation === 'create') {
-          data.submittedAt = new Date().toISOString()
-        }
-        return data
-      },
-    ],
-  },
 }
