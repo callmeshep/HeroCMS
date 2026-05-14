@@ -45,13 +45,13 @@ export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, opera
         const webhookStatus = crmRes.ok ? 'sent' : 'failed'
 
         await req.payload.update({
-          collection: 'form-submissions',
+          collection: 'herocare-submissions',
           id: doc.id,
           data: { webhookStatus },
         })
       } catch {
         await req.payload.update({
-          collection: 'form-submissions',
+          collection: 'herocare-submissions',
           id: doc.id,
           data: { webhookStatus: 'failed' },
         })
