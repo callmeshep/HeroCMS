@@ -71,10 +71,8 @@ export interface Config {
     tenants: Tenant;
     users: User;
     'api-keys': ApiKey;
-    'all-form-submissions': AllFormSubmission;
     'herocare-brand-assets': HerocareBrandAsset;
     'herocare-email-templates': HerocareEmailTemplate;
-    'form-submissions': FormSubmission;
     'herocare-image-gallery': HerocareImageGallery;
     'herocare-forms': HerocareForm;
     'herocare-submissions': HerocareSubmission;
@@ -95,10 +93,8 @@ export interface Config {
     tenants: TenantsSelect<false> | TenantsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'api-keys': ApiKeysSelect<false> | ApiKeysSelect<true>;
-    'all-form-submissions': AllFormSubmissionsSelect<false> | AllFormSubmissionsSelect<true>;
     'herocare-brand-assets': HerocareBrandAssetsSelect<false> | HerocareBrandAssetsSelect<true>;
     'herocare-email-templates': HerocareEmailTemplatesSelect<false> | HerocareEmailTemplatesSelect<true>;
-    'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'herocare-image-gallery': HerocareImageGallerySelect<false> | HerocareImageGallerySelect<true>;
     'herocare-forms': HerocareFormsSelect<false> | HerocareFormsSelect<true>;
     'herocare-submissions': HerocareSubmissionsSelect<false> | HerocareSubmissionsSelect<true>;
@@ -189,6 +185,9 @@ export interface User {
   tenants?: (number | Tenant)[] | null;
   updatedAt: string;
   createdAt: string;
+  enableAPIKey?: boolean | null;
+  apiKey?: string | null;
+  apiKeyIndex?: string | null;
   email: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
@@ -218,24 +217,6 @@ export interface ApiKey {
   resendFromEmail?: string | null;
   crmWebhookURL?: string | null;
   crmAPIKey?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "all-form-submissions".
- */
-export interface AllFormSubmission {
-  id: number;
-  tenant?: (number | null) | Tenant;
-  journey?: ('homeowner' | 'landlord') | null;
-  name?: string | null;
-  postcode?: string | null;
-  companyName?: string | null;
-  numberOfProperties?: number | null;
-  phoneNumber?: string | null;
-  submittedAt?: string | null;
-  webhookStatus?: ('pending' | 'sent' | 'failed') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -274,24 +255,6 @@ export interface HerocareEmailTemplate {
   bodyText: string;
   buttonText?: string | null;
   buttonURL?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "form-submissions".
- */
-export interface FormSubmission {
-  id: number;
-  tenant: number | Tenant;
-  journey: 'homeowner' | 'landlord';
-  name: string;
-  postcode?: string | null;
-  companyName?: string | null;
-  numberOfProperties?: number | null;
-  phoneNumber: string;
-  submittedAt?: string | null;
-  webhookStatus?: ('pending' | 'sent' | 'failed') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -679,20 +642,12 @@ export interface PayloadLockedDocument {
         value: number | ApiKey;
       } | null)
     | ({
-        relationTo: 'all-form-submissions';
-        value: number | AllFormSubmission;
-      } | null)
-    | ({
         relationTo: 'herocare-brand-assets';
         value: number | HerocareBrandAsset;
       } | null)
     | ({
         relationTo: 'herocare-email-templates';
         value: number | HerocareEmailTemplate;
-      } | null)
-    | ({
-        relationTo: 'form-submissions';
-        value: number | FormSubmission;
       } | null)
     | ({
         relationTo: 'herocare-image-gallery';
@@ -793,6 +748,9 @@ export interface UsersSelect<T extends boolean = true> {
   tenants?: T;
   updatedAt?: T;
   createdAt?: T;
+  enableAPIKey?: T;
+  apiKey?: T;
+  apiKeyIndex?: T;
   email?: T;
   resetPasswordToken?: T;
   resetPasswordExpiration?: T;
@@ -819,23 +777,6 @@ export interface ApiKeysSelect<T extends boolean = true> {
   resendFromEmail?: T;
   crmWebhookURL?: T;
   crmAPIKey?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "all-form-submissions_select".
- */
-export interface AllFormSubmissionsSelect<T extends boolean = true> {
-  tenant?: T;
-  journey?: T;
-  name?: T;
-  postcode?: T;
-  companyName?: T;
-  numberOfProperties?: T;
-  phoneNumber?: T;
-  submittedAt?: T;
-  webhookStatus?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -872,23 +813,6 @@ export interface HerocareEmailTemplatesSelect<T extends boolean = true> {
   bodyText?: T;
   buttonText?: T;
   buttonURL?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "form-submissions_select".
- */
-export interface FormSubmissionsSelect<T extends boolean = true> {
-  tenant?: T;
-  journey?: T;
-  name?: T;
-  postcode?: T;
-  companyName?: T;
-  numberOfProperties?: T;
-  phoneNumber?: T;
-  submittedAt?: T;
-  webhookStatus?: T;
   updatedAt?: T;
   createdAt?: T;
 }
