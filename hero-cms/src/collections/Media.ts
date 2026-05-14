@@ -13,4 +13,15 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: true,
+  hooks: {
+    beforeChange: [
+      ({ data, req }) => {
+        if (data.alt) return data
+        const filename = req.file?.name ?? ''
+        const nameWithoutExt = filename.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ')
+        data.alt = nameWithoutExt
+        return data
+      },
+    ],
+  },
 }
