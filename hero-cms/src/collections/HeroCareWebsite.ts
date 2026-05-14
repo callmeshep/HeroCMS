@@ -31,9 +31,7 @@ export const HeroCareWebsite: CollectionConfig = {
       name: 'title',
       type: 'text',
       defaultValue: 'HeroCare Website',
-      admin: {
-        hidden: true,
-      },
+      admin: { hidden: true },
     },
     {
       type: 'tabs',
@@ -42,84 +40,26 @@ export const HeroCareWebsite: CollectionConfig = {
         {
           label: 'Globals',
           fields: [
-            {
-              name: 'logo',
-              label: 'Logo',
-              type: 'upload',
-              relationTo: 'media',
-            },
-            {
-              name: 'logoDark',
-              label: 'Logo (Dark)',
-              type: 'upload',
-              relationTo: 'media',
-            },
-            {
-              name: 'favicon',
-              type: 'upload',
-              relationTo: 'media',
-            },
-            {
-              name: 'phoneNumber',
-              label: 'Phone Number',
-              type: 'text',
-            },
-            {
-              name: 'navCtaText',
-              label: 'Nav CTA Text',
-              type: 'text',
-            },
-            {
-              name: 'navCtaLink',
-              label: 'Nav CTA Link',
-              type: 'text',
-            },
-            {
-              name: 'topBarHomeownersLabel',
-              label: 'Top Bar — Homeowners Label',
-              type: 'text',
-            },
-            {
-              name: 'topBarHomeownersURL',
-              label: 'Top Bar — Homeowners URL',
-              type: 'text',
-            },
-            {
-              name: 'topBarLandlordsLabel',
-              label: 'Top Bar — Landlords Label',
-              type: 'text',
-            },
-            {
-              name: 'topBarLandlordsURL',
-              label: 'Top Bar — Landlords URL',
-              type: 'text',
-            },
+            { name: 'logo', label: 'Logo', type: 'upload', relationTo: 'media' },
+            { name: 'logoDark', label: 'Logo (Dark)', type: 'upload', relationTo: 'media' },
+            { name: 'favicon', type: 'upload', relationTo: 'media' },
+            { name: 'phoneNumber', label: 'Phone Number', type: 'text' },
+            { name: 'navCtaText', label: 'Nav CTA Text', type: 'text' },
+            { name: 'navCtaLink', label: 'Nav CTA Link', type: 'text' },
+            { name: 'topBarHomeownersLabel', label: 'Top Bar — Homeowners Label', type: 'text' },
+            { name: 'topBarHomeownersURL', label: 'Top Bar — Homeowners URL', type: 'text' },
+            { name: 'topBarLandlordsLabel', label: 'Top Bar — Landlords Label', type: 'text' },
+            { name: 'topBarLandlordsURL', label: 'Top Bar — Landlords URL', type: 'text' },
             {
               name: 'emergencyHeroLogo',
               label: 'Emergency Hero Logo',
               type: 'upload',
               relationTo: 'media',
             },
-            {
-              name: 'emergencyHeroLink',
-              label: 'Emergency Hero Link',
-              type: 'text',
-            },
-            {
-              name: 'trustpilotRating',
-              label: 'Trustpilot Rating',
-              type: 'number',
-            },
-            {
-              name: 'trustpilotReviewCount',
-              label: 'Trustpilot Review Count',
-              type: 'number',
-            },
-            {
-              name: 'trustpilotLink',
-              label: 'Trustpilot Link',
-              type: 'text',
-            },
+            { name: 'emergencyHeroLink', label: 'Emergency Hero Link', type: 'text' },
+            { name: 'trustpilotRating', label: 'Trustpilot Rating', type: 'number' },
+            { name: 'trustpilotReviewCount', label: 'Trustpilot Review Count', type: 'number' },
+            { name: 'trustpilotLink', label: 'Trustpilot Link', type: 'text' },
           ],
         },
 
@@ -127,38 +67,17 @@ export const HeroCareWebsite: CollectionConfig = {
         {
           label: 'Homeowners',
           fields: [
-            {
-              name: 'heroHeadlineLine1',
-              label: 'Hero — Headline Line 1',
-              type: 'text',
-            },
-            {
-              name: 'heroHeadlineLine2',
-              label: 'Hero — Headline Line 2',
-              type: 'text',
-            },
+            { name: 'heroHeadlineLine1', label: 'Hero — Headline Line 1', type: 'text' },
+            { name: 'heroHeadlineLine2', label: 'Hero — Headline Line 2', type: 'text' },
             {
               name: 'heroBulletPoints',
               label: 'Hero — Bullet Points',
               type: 'array',
               fields: [{ name: 'text', type: 'text', required: true }],
             },
-            {
-              name: 'heroFormSubheading',
-              label: 'Hero — Form Subheading',
-              type: 'text',
-            },
-            {
-              name: 'heroFormCtaText',
-              label: 'Hero — Form CTA Button Text',
-              type: 'text',
-            },
-            {
-              name: 'heroImage',
-              label: 'Hero — Image',
-              type: 'upload',
-              relationTo: 'media',
-            },
+            { name: 'heroFormSubheading', label: 'Hero — Form Subheading', type: 'text' },
+            { name: 'heroFormCtaText', label: 'Hero — Form CTA Button Text', type: 'text' },
+            { name: 'heroImage', label: 'Hero — Image', type: 'upload', relationTo: 'media' },
             {
               name: 'includedHeadlineLine1',
               label: "What's Included — Headline Line 1",
@@ -169,11 +88,7 @@ export const HeroCareWebsite: CollectionConfig = {
               label: "What's Included — Headline Line 2",
               type: 'text',
             },
-            {
-              name: 'includedSubheading',
-              label: "What's Included — Subheading",
-              type: 'text',
-            },
+            { name: 'includedSubheading', label: "What's Included — Subheading", type: 'text' },
             {
               name: 'includedCards',
               label: "What's Included — Cards",
@@ -183,14 +98,9 @@ export const HeroCareWebsite: CollectionConfig = {
                 { name: 'title', type: 'text', required: true },
                 { name: 'body', type: 'textarea' },
                 { name: 'ctaText', label: 'CTA Button Text', type: 'text' },
-                { name: 'ctaLink', label: 'CTA Button Link', type: 'text' },
               ],
             },
-            {
-              name: 'howItWorksHeadline',
-              label: 'How It Works — Headline',
-              type: 'text',
-            },
+            { name: 'howItWorksHeadline', label: 'How It Works — Headline', type: 'text' },
             {
               name: 'howItWorksSteps',
               label: 'How It Works — Steps',
@@ -201,31 +111,10 @@ export const HeroCareWebsite: CollectionConfig = {
                 { name: 'body', type: 'textarea' },
               ],
             },
-            {
-              name: 'whyUsHeadlineLine1',
-              label: 'Why Us — Headline Line 1',
-              type: 'text',
-            },
-            {
-              name: 'whyUsHeadlineLine2',
-              label: 'Why Us — Headline Line 2',
-              type: 'text',
-            },
-            {
-              name: 'whyUsSubheading',
-              label: 'Why Us — Subheading',
-              type: 'text',
-            },
-            {
-              name: 'whyUsCtaText',
-              label: 'Why Us — CTA Button Text',
-              type: 'text',
-            },
-            {
-              name: 'whyUsCtaLink',
-              label: 'Why Us — CTA Button Link',
-              type: 'text',
-            },
+            { name: 'whyUsHeadlineLine1', label: 'Why Us — Headline Line 1', type: 'text' },
+            { name: 'whyUsHeadlineLine2', label: 'Why Us — Headline Line 2', type: 'text' },
+            { name: 'whyUsSubheading', label: 'Why Us — Subheading', type: 'text' },
+            { name: 'whyUsCtaText', label: 'Why Us — CTA Button Text', type: 'text' },
             {
               name: 'whyUsCards',
               label: 'Why Us — Cards',
@@ -236,21 +125,9 @@ export const HeroCareWebsite: CollectionConfig = {
                 { name: 'body', type: 'textarea' },
               ],
             },
-            {
-              name: 'faqsHeadlineLine1',
-              label: 'FAQs — Headline Line 1',
-              type: 'text',
-            },
-            {
-              name: 'faqsHeadlineLine2',
-              label: 'FAQs — Headline Line 2',
-              type: 'text',
-            },
-            {
-              name: 'faqsSubheading',
-              label: 'FAQs — Subheading',
-              type: 'text',
-            },
+            { name: 'faqsHeadlineLine1', label: 'FAQs — Headline Line 1', type: 'text' },
+            { name: 'faqsHeadlineLine2', label: 'FAQs — Headline Line 2', type: 'text' },
+            { name: 'faqsSubheading', label: 'FAQs — Subheading', type: 'text' },
             {
               name: 'faqItems',
               label: 'FAQ Items',
@@ -260,100 +137,14 @@ export const HeroCareWebsite: CollectionConfig = {
                 { name: 'answer', type: 'textarea', required: true },
               ],
             },
-            {
-              name: 'ctaHeadlineLine1',
-              label: 'CTA — Headline Line 1',
-              type: 'text',
-            },
-            {
-              name: 'ctaHeadlineLine2',
-              label: 'CTA — Headline Line 2',
-              type: 'text',
-            },
-            {
-              name: 'ctaSubheading',
-              label: 'CTA — Subheading',
-              type: 'text',
-            },
-            {
-              name: 'ctaButtonText',
-              label: 'CTA — Button Text',
-              type: 'text',
-            },
-            {
-              name: 'ctaButtonLink',
-              label: 'CTA — Button Link',
-              type: 'text',
-            },
-            {
-              name: 'ctaImage',
-              label: 'CTA — Image',
-              type: 'upload',
-              relationTo: 'media',
-            },
-            {
-              name: 'popupHeadline',
-              label: 'Pop-up — Headline',
-              type: 'text',
-            },
-            {
-              name: 'popupSubheading',
-              label: 'Pop-up — Subheading',
-              type: 'text',
-            },
-            {
-              name: 'popupImage',
-              label: 'Pop-up — Image',
-              type: 'upload',
-              relationTo: 'media',
-            },
-            {
-              name: 'popupCtaText',
-              label: 'Pop-up — CTA Button Text',
-              type: 'text',
-            },
-            {
-              name: 'popupThankYouMessage',
-              label: 'Pop-up — Thank You Message',
-              type: 'text',
-            },
-            {
-              name: 'thankYouHeadlineLine1',
-              label: 'Thank You — Headline Line 1',
-              type: 'text',
-            },
-            {
-              name: 'thankYouHeadlineLine2',
-              label: 'Thank You — Headline Line 2',
-              type: 'text',
-            },
-            {
-              name: 'thankYouPlanHeadlineLine1',
-              label: "Thank You — What's In Your Plan Headline Line 1",
-              type: 'text',
-            },
-            {
-              name: 'thankYouPlanHeadlineLine2',
-              label: "Thank You — What's In Your Plan Headline Line 2",
-              type: 'text',
-            },
-            {
-              name: 'thankYouPlanCards',
-              label: 'Thank You — Plan Cards',
-              type: 'array',
-              fields: [
-                { name: 'icon', type: 'upload', relationTo: 'media' },
-                { name: 'title', type: 'text', required: true },
-                { name: 'body', type: 'textarea' },
-                { name: 'ctaText', label: 'CTA Button Text', type: 'text' },
-                { name: 'ctaLink', label: 'CTA Button Link', type: 'text' },
-              ],
-            },
-            {
-              name: 'thankYouSeeEverythingText',
-              label: 'Thank You — See Everything Link Text',
-              type: 'text',
-            },
+            { name: 'ctaHeadlineLine1', label: 'CTA — Headline Line 1', type: 'text' },
+            { name: 'ctaHeadlineLine2', label: 'CTA — Headline Line 2 (Pink)', type: 'text' },
+            { name: 'ctaSubheading', label: 'CTA — Subheading', type: 'text' },
+            { name: 'ctaButtonText', label: 'CTA — Button Text', type: 'text' },
+            { name: 'ctaImage', label: 'CTA — Image', type: 'upload', relationTo: 'media' },
+            { name: 'popupHeadline', label: 'Pop-up — Headline', type: 'text' },
+            { name: 'popupImage', label: 'Pop-up — Image', type: 'upload', relationTo: 'media' },
+            { name: 'popupCtaText', label: 'Pop-up — CTA Button Text', type: 'text' },
           ],
         },
 
@@ -361,27 +152,15 @@ export const HeroCareWebsite: CollectionConfig = {
         {
           label: 'Landlords',
           fields: [
-            {
-              name: 'landlordHeroHeadlineLine1',
-              label: 'Hero — Headline Line 1',
-              type: 'text',
-            },
-            {
-              name: 'landlordHeroHeadlineLine2',
-              label: 'Hero — Headline Line 2',
-              type: 'text',
-            },
+            { name: 'landlordHeroHeadlineLine1', label: 'Hero — Headline Line 1', type: 'text' },
+            { name: 'landlordHeroHeadlineLine2', label: 'Hero — Headline Line 2', type: 'text' },
             {
               name: 'landlordHeroBulletPoints',
               label: 'Hero — Bullet Points',
               type: 'array',
               fields: [{ name: 'text', type: 'text', required: true }],
             },
-            {
-              name: 'landlordHeroCtaText',
-              label: 'Hero — CTA Button Text',
-              type: 'text',
-            },
+            { name: 'landlordHeroCtaText', label: 'Hero — CTA Button Text', type: 'text' },
             {
               name: 'landlordHeroImage',
               label: 'Hero — Image',
@@ -412,14 +191,9 @@ export const HeroCareWebsite: CollectionConfig = {
                 { name: 'title', type: 'text', required: true },
                 { name: 'body', type: 'textarea' },
                 { name: 'ctaText', label: 'CTA Button Text', type: 'text' },
-                { name: 'ctaLink', label: 'CTA Button Link', type: 'text' },
               ],
             },
-            {
-              name: 'landlordHowItWorksHeadline',
-              label: 'How It Works — Headline',
-              type: 'text',
-            },
+            { name: 'landlordHowItWorksHeadline', label: 'How It Works — Headline', type: 'text' },
             {
               name: 'landlordHowItWorksSteps',
               label: 'How It Works — Steps',
@@ -430,31 +204,10 @@ export const HeroCareWebsite: CollectionConfig = {
                 { name: 'body', type: 'textarea' },
               ],
             },
-            {
-              name: 'landlordWhyUsHeadlineLine1',
-              label: 'Why Us — Headline Line 1',
-              type: 'text',
-            },
-            {
-              name: 'landlordWhyUsHeadlineLine2',
-              label: 'Why Us — Headline Line 2',
-              type: 'text',
-            },
-            {
-              name: 'landlordWhyUsSubheading',
-              label: 'Why Us — Subheading',
-              type: 'text',
-            },
-            {
-              name: 'landlordWhyUsCtaText',
-              label: 'Why Us — CTA Button Text',
-              type: 'text',
-            },
-            {
-              name: 'landlordWhyUsCtaLink',
-              label: 'Why Us — CTA Button Link',
-              type: 'text',
-            },
+            { name: 'landlordWhyUsHeadlineLine1', label: 'Why Us — Headline Line 1', type: 'text' },
+            { name: 'landlordWhyUsHeadlineLine2', label: 'Why Us — Headline Line 2', type: 'text' },
+            { name: 'landlordWhyUsSubheading', label: 'Why Us — Subheading', type: 'text' },
+            { name: 'landlordWhyUsCtaText', label: 'Why Us — CTA Button Text', type: 'text' },
             {
               name: 'landlordWhyUsCards',
               label: 'Why Us — Cards',
@@ -465,21 +218,9 @@ export const HeroCareWebsite: CollectionConfig = {
                 { name: 'body', type: 'textarea' },
               ],
             },
-            {
-              name: 'landlordFaqsHeadlineLine1',
-              label: 'FAQs — Headline Line 1',
-              type: 'text',
-            },
-            {
-              name: 'landlordFaqsHeadlineLine2',
-              label: 'FAQs — Headline Line 2',
-              type: 'text',
-            },
-            {
-              name: 'landlordFaqsSubheading',
-              label: 'FAQs — Subheading',
-              type: 'text',
-            },
+            { name: 'landlordFaqsHeadlineLine1', label: 'FAQs — Headline Line 1', type: 'text' },
+            { name: 'landlordFaqsHeadlineLine2', label: 'FAQs — Headline Line 2', type: 'text' },
+            { name: 'landlordFaqsSubheading', label: 'FAQs — Subheading', type: 'text' },
             {
               name: 'landlordFaqItems',
               label: 'FAQ Items',
@@ -489,63 +230,23 @@ export const HeroCareWebsite: CollectionConfig = {
                 { name: 'answer', type: 'textarea', required: true },
               ],
             },
-            {
-              name: 'landlordCtaHeadlineLine1',
-              label: 'CTA — Headline Line 1',
-              type: 'text',
-            },
+            { name: 'landlordCtaHeadlineLine1', label: 'CTA — Headline Line 1', type: 'text' },
             {
               name: 'landlordCtaHeadlineLine2',
-              label: 'CTA — Headline Line 2',
+              label: 'CTA — Headline Line 2 (Pink)',
               type: 'text',
             },
-            {
-              name: 'landlordCtaSubheading',
-              label: 'CTA — Subheading',
-              type: 'text',
-            },
-            {
-              name: 'landlordCtaButtonText',
-              label: 'CTA — Button Text',
-              type: 'text',
-            },
-            {
-              name: 'landlordCtaButtonLink',
-              label: 'CTA — Button Link',
-              type: 'text',
-            },
-            {
-              name: 'landlordCtaImage',
-              label: 'CTA — Image',
-              type: 'upload',
-              relationTo: 'media',
-            },
-            {
-              name: 'landlordPopupHeadline',
-              label: 'Pop-up — Headline',
-              type: 'text',
-            },
-            {
-              name: 'landlordPopupSubheading',
-              label: 'Pop-up — Subheading',
-              type: 'text',
-            },
+            { name: 'landlordCtaSubheading', label: 'CTA — Subheading', type: 'text' },
+            { name: 'landlordCtaButtonText', label: 'CTA — Button Text', type: 'text' },
+            { name: 'landlordCtaImage', label: 'CTA — Image', type: 'upload', relationTo: 'media' },
+            { name: 'landlordPopupHeadline', label: 'Pop-up — Headline', type: 'text' },
             {
               name: 'landlordPopupImage',
               label: 'Pop-up — Image',
               type: 'upload',
               relationTo: 'media',
             },
-            {
-              name: 'landlordPopupCtaText',
-              label: 'Pop-up — CTA Button Text',
-              type: 'text',
-            },
-            {
-              name: 'landlordPopupThankYouMessage',
-              label: 'Pop-up — Thank You Message',
-              type: 'text',
-            },
+            { name: 'landlordPopupCtaText', label: 'Pop-up — CTA Button Text', type: 'text' },
           ],
         },
 
@@ -553,26 +254,7 @@ export const HeroCareWebsite: CollectionConfig = {
         {
           label: 'Pricing',
           fields: [
-            {
-              name: 'pricingHeroHeadlineLine1',
-              label: 'Hero — Headline Line 1',
-              type: 'text',
-            },
-            {
-              name: 'pricingHeroHeadlineLine2',
-              label: 'Hero — Headline Line 2',
-              type: 'text',
-            },
-            {
-              name: 'pricingHeroSubheading',
-              label: 'Hero — Subheading',
-              type: 'text',
-            },
-            {
-              name: 'calloutFeeLabel',
-              label: 'Call-out Fee Selector — Label',
-              type: 'text',
-            },
+            { name: 'calloutFeeLabel', label: 'Call-out Fee Selector — Label', type: 'text' },
             {
               name: 'calloutFeeDescription',
               label: 'Call-out Fee Selector — Description',
@@ -594,10 +276,10 @@ export const HeroCareWebsite: CollectionConfig = {
                 { name: 'name', type: 'text', required: true },
                 { name: 'priceHighCallout', label: 'Price at £75 Call-out Fee', type: 'text' },
                 { name: 'priceLowCallout', label: 'Price at £0 Call-out Fee', type: 'text' },
-                { name: 'pricePeriod', label: 'Price Period (e.g. /month)', type: 'text' },
+                { name: 'pricePeriod', label: 'Price Period (e.g. Per Month)', type: 'text' },
                 { name: 'ctaText', label: 'CTA Button Text', type: 'text' },
                 { name: 'stripeLink', label: 'Stripe Link', type: 'text' },
-                { name: 'highlightColour', label: 'Highlight Colour', type: 'text' },
+                { name: 'highlightColour', label: 'Highlight Colour (blue or pink)', type: 'text' },
               ],
             },
             {
@@ -609,7 +291,6 @@ export const HeroCareWebsite: CollectionConfig = {
                 { name: 'featureName', label: 'Feature Name', type: 'text', required: true },
                 { name: 'includedInPlan1', label: 'Included in Plan 1', type: 'checkbox' },
                 { name: 'includedInPlan2', label: 'Included in Plan 2', type: 'checkbox' },
-                { name: 'includedInPlan3', label: 'Included in Plan 3', type: 'checkbox' },
               ],
             },
             {
@@ -629,7 +310,7 @@ export const HeroCareWebsite: CollectionConfig = {
             },
             {
               name: 'aboutYourPlanCtaHeadlineLine2',
-              label: 'About Your Plan — CTA Headline Line 2',
+              label: 'About Your Plan — CTA Headline Line 2 (Pink)',
               type: 'text',
             },
             {
