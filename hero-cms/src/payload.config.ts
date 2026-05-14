@@ -89,6 +89,7 @@ export default buildConfig({
         region: 'auto',
         forcePathStyle: true,
       },
+      baseURL: 'https://pub-defbc79b6f1c472f9b6480d90f974810.r2.dev',
     }),
   ],
 })
