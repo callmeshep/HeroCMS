@@ -74,10 +74,22 @@ export default buildConfig({
   plugins: [
     s3Storage({
       collections: {
-        media: true,
-        'herocare-image-gallery': true,
-        'herocare-brand-assets': true,
-        'emergency-hero-brand-assets': true,
+        media: {
+          generateFileURL: ({ filename }) =>
+            `https://pub-defbc79b6f1c472f9b6480d90f974810.r2.dev/${filename}`,
+        },
+        'herocare-image-gallery': {
+          generateFileURL: ({ filename }) =>
+            `https://pub-defbc79b6f1c472f9b6480d90f974810.r2.dev/${filename}`,
+        },
+        'herocare-brand-assets': {
+          generateFileURL: ({ filename }) =>
+            `https://pub-defbc79b6f1c472f9b6480d90f974810.r2.dev/${filename}`,
+        },
+        'emergency-hero-brand-assets': {
+          generateFileURL: ({ filename }) =>
+            `https://pub-defbc79b6f1c472f9b6480d90f974810.r2.dev/${filename}`,
+        },
       },
       bucket: process.env.S3_BUCKET || '',
       config: {
