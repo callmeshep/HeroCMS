@@ -22,6 +22,7 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  cors: ['https://herocare-astro.pages.dev', 'http://localhost:4321'],
   admin: {
     user: Users.slug,
     importMap: {
