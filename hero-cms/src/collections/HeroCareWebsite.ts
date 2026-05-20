@@ -291,6 +291,7 @@ export const HeroCareWebsite: CollectionConfig = {
                 { name: 'featureName', label: 'Feature Name', type: 'text', required: true },
                 { name: 'includedInPlan1', label: 'Included in Plan 1', type: 'checkbox' },
                 { name: 'includedInPlan2', label: 'Included in Plan 2', type: 'checkbox' },
+                { name: 'worthNoting', label: 'Worth Noting (e.g. Worth Over £200)', type: 'text' },
               ],
             },
             {
