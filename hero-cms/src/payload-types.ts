@@ -185,9 +185,6 @@ export interface User {
   tenants?: (number | Tenant)[] | null;
   updatedAt: string;
   createdAt: string;
-  enableAPIKey?: boolean | null;
-  apiKey?: string | null;
-  apiKeyIndex?: string | null;
   email: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
@@ -384,7 +381,6 @@ export interface HerocareWebsite {
         title: string;
         body?: string | null;
         ctaText?: string | null;
-        ctaLink?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -401,7 +397,6 @@ export interface HerocareWebsite {
   whyUsHeadlineLine2?: string | null;
   whyUsSubheading?: string | null;
   whyUsCtaText?: string | null;
-  whyUsCtaLink?: string | null;
   whyUsCards?:
     | {
         image?: (number | null) | Media;
@@ -424,28 +419,10 @@ export interface HerocareWebsite {
   ctaHeadlineLine2?: string | null;
   ctaSubheading?: string | null;
   ctaButtonText?: string | null;
-  ctaButtonLink?: string | null;
   ctaImage?: (number | null) | Media;
   popupHeadline?: string | null;
-  popupSubheading?: string | null;
   popupImage?: (number | null) | Media;
   popupCtaText?: string | null;
-  popupThankYouMessage?: string | null;
-  thankYouHeadlineLine1?: string | null;
-  thankYouHeadlineLine2?: string | null;
-  thankYouPlanHeadlineLine1?: string | null;
-  thankYouPlanHeadlineLine2?: string | null;
-  thankYouPlanCards?:
-    | {
-        icon?: (number | null) | Media;
-        title: string;
-        body?: string | null;
-        ctaText?: string | null;
-        ctaLink?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  thankYouSeeEverythingText?: string | null;
   landlordHeroHeadlineLine1?: string | null;
   landlordHeroHeadlineLine2?: string | null;
   landlordHeroBulletPoints?:
@@ -465,7 +442,6 @@ export interface HerocareWebsite {
         title: string;
         body?: string | null;
         ctaText?: string | null;
-        ctaLink?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -482,7 +458,6 @@ export interface HerocareWebsite {
   landlordWhyUsHeadlineLine2?: string | null;
   landlordWhyUsSubheading?: string | null;
   landlordWhyUsCtaText?: string | null;
-  landlordWhyUsCtaLink?: string | null;
   landlordWhyUsCards?:
     | {
         image?: (number | null) | Media;
@@ -505,16 +480,10 @@ export interface HerocareWebsite {
   landlordCtaHeadlineLine2?: string | null;
   landlordCtaSubheading?: string | null;
   landlordCtaButtonText?: string | null;
-  landlordCtaButtonLink?: string | null;
   landlordCtaImage?: (number | null) | Media;
   landlordPopupHeadline?: string | null;
-  landlordPopupSubheading?: string | null;
   landlordPopupImage?: (number | null) | Media;
   landlordPopupCtaText?: string | null;
-  landlordPopupThankYouMessage?: string | null;
-  pricingHeroHeadlineLine1?: string | null;
-  pricingHeroHeadlineLine2?: string | null;
-  pricingHeroSubheading?: string | null;
   calloutFeeLabel?: string | null;
   calloutFeeDescription?: string | null;
   calloutFeeOptions?:
@@ -541,7 +510,7 @@ export interface HerocareWebsite {
         featureName: string;
         includedInPlan1?: boolean | null;
         includedInPlan2?: boolean | null;
-        includedInPlan3?: boolean | null;
+        worthNoting?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -748,9 +717,6 @@ export interface UsersSelect<T extends boolean = true> {
   tenants?: T;
   updatedAt?: T;
   createdAt?: T;
-  enableAPIKey?: T;
-  apiKey?: T;
-  apiKeyIndex?: T;
   email?: T;
   resetPasswordToken?: T;
   resetPasswordExpiration?: T;
@@ -914,7 +880,6 @@ export interface HerocareWebsiteSelect<T extends boolean = true> {
         title?: T;
         body?: T;
         ctaText?: T;
-        ctaLink?: T;
         id?: T;
       };
   howItWorksHeadline?: T;
@@ -930,7 +895,6 @@ export interface HerocareWebsiteSelect<T extends boolean = true> {
   whyUsHeadlineLine2?: T;
   whyUsSubheading?: T;
   whyUsCtaText?: T;
-  whyUsCtaLink?: T;
   whyUsCards?:
     | T
     | {
@@ -953,28 +917,10 @@ export interface HerocareWebsiteSelect<T extends boolean = true> {
   ctaHeadlineLine2?: T;
   ctaSubheading?: T;
   ctaButtonText?: T;
-  ctaButtonLink?: T;
   ctaImage?: T;
   popupHeadline?: T;
-  popupSubheading?: T;
   popupImage?: T;
   popupCtaText?: T;
-  popupThankYouMessage?: T;
-  thankYouHeadlineLine1?: T;
-  thankYouHeadlineLine2?: T;
-  thankYouPlanHeadlineLine1?: T;
-  thankYouPlanHeadlineLine2?: T;
-  thankYouPlanCards?:
-    | T
-    | {
-        icon?: T;
-        title?: T;
-        body?: T;
-        ctaText?: T;
-        ctaLink?: T;
-        id?: T;
-      };
-  thankYouSeeEverythingText?: T;
   landlordHeroHeadlineLine1?: T;
   landlordHeroHeadlineLine2?: T;
   landlordHeroBulletPoints?:
@@ -995,7 +941,6 @@ export interface HerocareWebsiteSelect<T extends boolean = true> {
         title?: T;
         body?: T;
         ctaText?: T;
-        ctaLink?: T;
         id?: T;
       };
   landlordHowItWorksHeadline?: T;
@@ -1011,7 +956,6 @@ export interface HerocareWebsiteSelect<T extends boolean = true> {
   landlordWhyUsHeadlineLine2?: T;
   landlordWhyUsSubheading?: T;
   landlordWhyUsCtaText?: T;
-  landlordWhyUsCtaLink?: T;
   landlordWhyUsCards?:
     | T
     | {
@@ -1034,16 +978,10 @@ export interface HerocareWebsiteSelect<T extends boolean = true> {
   landlordCtaHeadlineLine2?: T;
   landlordCtaSubheading?: T;
   landlordCtaButtonText?: T;
-  landlordCtaButtonLink?: T;
   landlordCtaImage?: T;
   landlordPopupHeadline?: T;
-  landlordPopupSubheading?: T;
   landlordPopupImage?: T;
   landlordPopupCtaText?: T;
-  landlordPopupThankYouMessage?: T;
-  pricingHeroHeadlineLine1?: T;
-  pricingHeroHeadlineLine2?: T;
-  pricingHeroSubheading?: T;
   calloutFeeLabel?: T;
   calloutFeeDescription?: T;
   calloutFeeOptions?:
@@ -1071,7 +1009,7 @@ export interface HerocareWebsiteSelect<T extends boolean = true> {
         featureName?: T;
         includedInPlan1?: T;
         includedInPlan2?: T;
-        includedInPlan3?: T;
+        worthNoting?: T;
         id?: T;
       };
   aboutYourPlanAccordion?:
