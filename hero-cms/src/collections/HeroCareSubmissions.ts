@@ -136,6 +136,11 @@ export const HeroCareSubmissions: CollectionConfig = {
       type: 'text',
     },
     {
+      name: 'email',
+      label: 'Email Address',
+      type: 'text',
+    },
+    {
       name: 'submittedAt',
       label: 'Submitted At',
       type: 'date',

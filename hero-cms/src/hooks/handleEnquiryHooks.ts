@@ -44,6 +44,7 @@ export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, opera
       name: doc.name ?? '',
       postcode: doc.postcode ?? '',
       phone: doc.phoneNumber ?? '',
+      email: doc.email ?? '',
       companyName: doc.companyName ?? '',
       noOfProperties: doc.numberOfProperties != null ? String(doc.numberOfProperties) : '',
       formName: form?.name ?? '',

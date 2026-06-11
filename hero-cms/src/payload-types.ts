@@ -346,6 +346,7 @@ export interface HerocareSubmission {
   companyName?: string | null;
   numberOfProperties?: number | null;
   phoneNumber?: string | null;
+  email?: string | null;
   submittedAt?: string | null;
   webhookStatus?: ('pending' | 'sent' | 'failed') | null;
   updatedAt: string;
@@ -860,6 +861,7 @@ export interface HerocareSubmissionsSelect<T extends boolean = true> {
   companyName?: T;
   numberOfProperties?: T;
   phoneNumber?: T;
+  email?: T;
   submittedAt?: T;
   webhookStatus?: T;
   updatedAt?: T;
