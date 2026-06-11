@@ -116,7 +116,10 @@ export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, opera
       if (adminTemplate) {
         const subject = replaceMergeTags(adminTemplate.subjectLine ?? '', mergeData)
         const heading = replaceMergeTags(adminTemplate.heading ?? '', mergeData)
-        const bodyText = replaceMergeTags(adminTemplate.bodyText ?? '', mergeData)
+        const bodyText = replaceMergeTags(adminTemplate.bodyText ?? '', mergeData).replace(
+          /\n/g,
+          '<br>',
+        )
 
         try {
           await fetch('https://api.resend.com/emails', {
