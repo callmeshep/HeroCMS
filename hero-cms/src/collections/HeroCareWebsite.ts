@@ -145,6 +145,22 @@ export const HeroCareWebsite: CollectionConfig = {
             { name: 'popupHeadline', label: 'Pop-up — Headline', type: 'text' },
             { name: 'popupImage', label: 'Pop-up — Image', type: 'upload', relationTo: 'media' },
             { name: 'popupCtaText', label: 'Pop-up — CTA Button Text', type: 'text' },
+            { name: 'popupThankYouMessage', label: 'Pop-up — Thank You Message', type: 'text' },
+            { name: 'tyHeadlineLine1', label: 'Thank You — Headline Line 1', type: 'text' },
+            { name: 'tyHeadlineLine2', label: 'Thank You — Headline Line 2 (Pink)', type: 'text' },
+            { name: 'tySubheading', label: 'Thank You — Subheading', type: 'text' },
+            { name: 'tyAppStoreLink', label: 'Thank You — App Store Link', type: 'text' },
+            { name: 'tyGooglePlayLink', label: 'Thank You — Google Play Link', type: 'text' },
+            {
+              name: 'tyPlanHeadlineLine1',
+              label: 'Thank You — Plan Section Headline Line 1',
+              type: 'text',
+            },
+            {
+              name: 'tyPlanHeadlineLine2',
+              label: 'Thank You — Plan Section Headline Line 2 (Pink)',
+              type: 'text',
+            },
           ],
         },
 
