@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { isSuperAdmin } from '../access/isSuperAdmin'
 import { isAdminOrSuperAdmin } from '../access/isAdminOrSuperAdmin'
 import { hasTenantAccess } from '../access/hasTenantAccess'
+import { handleEnquiryHooks } from '../hooks/handleEnquiryHooks'
 
 export const HeroCareSubmissions: CollectionConfig = {
   slug: 'herocare-submissions',
@@ -45,6 +46,7 @@ export const HeroCareSubmissions: CollectionConfig = {
         return data
       },
     ],
+    afterChange: [handleEnquiryHooks],
   },
   fields: [
     {

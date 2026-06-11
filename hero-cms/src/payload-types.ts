@@ -291,6 +291,19 @@ export interface HerocareForm {
    */
   page: string;
   /**
+   * Send notification emails when this form receives a submission
+   */
+  notificationsEnabled?: boolean | null;
+  /**
+   * Email addresses that receive a notification for each submission — include the GHL ingestion address here
+   */
+  notificationRecipients?:
+    | {
+        email: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
    * Number of times the form was seen
    */
   views?: number | null;
@@ -423,6 +436,14 @@ export interface HerocareWebsite {
   popupHeadline?: string | null;
   popupImage?: (number | null) | Media;
   popupCtaText?: string | null;
+  popupThankYouMessage?: string | null;
+  tyHeadlineLine1?: string | null;
+  tyHeadlineLine2?: string | null;
+  tySubheading?: string | null;
+  tyAppStoreLink?: string | null;
+  tyGooglePlayLink?: string | null;
+  tyPlanHeadlineLine1?: string | null;
+  tyPlanHeadlineLine2?: string | null;
   landlordHeroHeadlineLine1?: string | null;
   landlordHeroHeadlineLine2?: string | null;
   landlordHeroBulletPoints?:
@@ -809,6 +830,13 @@ export interface HerocareFormsSelect<T extends boolean = true> {
   tenant?: T;
   name?: T;
   page?: T;
+  notificationsEnabled?: T;
+  notificationRecipients?:
+    | T
+    | {
+        email?: T;
+        id?: T;
+      };
   views?: T;
   attempts?: T;
   completions?: T;
@@ -921,6 +949,14 @@ export interface HerocareWebsiteSelect<T extends boolean = true> {
   popupHeadline?: T;
   popupImage?: T;
   popupCtaText?: T;
+  popupThankYouMessage?: T;
+  tyHeadlineLine1?: T;
+  tyHeadlineLine2?: T;
+  tySubheading?: T;
+  tyAppStoreLink?: T;
+  tyGooglePlayLink?: T;
+  tyPlanHeadlineLine1?: T;
+  tyPlanHeadlineLine2?: T;
   landlordHeroHeadlineLine1?: T;
   landlordHeroHeadlineLine2?: T;
   landlordHeroBulletPoints?:

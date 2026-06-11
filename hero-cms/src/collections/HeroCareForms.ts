@@ -64,6 +64,35 @@ export const HeroCareForms: CollectionConfig = {
       },
     },
     {
+      name: 'notificationsEnabled',
+      label: 'Send Notifications',
+      type: 'checkbox',
+      defaultValue: true,
+      admin: {
+        description: 'Send notification emails when this form receives a submission',
+      },
+    },
+    {
+      name: 'notificationRecipients',
+      label: 'Notification Recipients',
+      type: 'array',
+      labels: {
+        singular: 'Recipient',
+        plural: 'Recipients',
+      },
+      admin: {
+        description:
+          'Email addresses that receive a notification for each submission — include the GHL ingestion address here',
+      },
+      fields: [
+        {
+          name: 'email',
+          type: 'email',
+          required: true,
+        },
+      ],
+    },
+    {
       name: 'views',
       type: 'number',
       defaultValue: 0,
