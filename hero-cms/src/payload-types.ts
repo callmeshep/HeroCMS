@@ -214,6 +214,32 @@ export interface ApiKey {
   resendFromEmail?: string | null;
   crmWebhookURL?: string | null;
   crmAPIKey?: string | null;
+  /**
+   * e.g. G-XXXXXXXXXX — leave blank to disable GA4
+   */
+  ga4MeasurementId?: string | null;
+  /**
+   * e.g. GTM-XXXXXXX — leave blank to disable GTM
+   */
+  gtmContainerId?: string | null;
+  /**
+   * Third-party snippets injected into the site at build time — e.g. pixels, chat widgets, ClickFunnels
+   */
+  scripts?:
+    | {
+        /**
+         * e.g. Meta Pixel, ClickFunnels
+         */
+        name: string;
+        placement: 'head' | 'body-start' | 'body-end';
+        /**
+         * Paste the full snippet exactly as the tool provides it, including script tags
+         */
+        code: string;
+        enabled?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -765,6 +791,17 @@ export interface ApiKeysSelect<T extends boolean = true> {
   resendFromEmail?: T;
   crmWebhookURL?: T;
   crmAPIKey?: T;
+  ga4MeasurementId?: T;
+  gtmContainerId?: T;
+  scripts?:
+    | T
+    | {
+        name?: T;
+        placement?: T;
+        code?: T;
+        enabled?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
