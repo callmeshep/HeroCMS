@@ -294,7 +294,16 @@ export const HeroCareWebsite: CollectionConfig = {
                 { name: 'priceLowCallout', label: 'Price at £0 Call-out Fee', type: 'text' },
                 { name: 'pricePeriod', label: 'Price Period (e.g. Per Month)', type: 'text' },
                 { name: 'ctaText', label: 'CTA Button Text', type: 'text' },
-                { name: 'stripeLink', label: 'Stripe Link', type: 'text' },
+                {
+                  name: 'stripeLinkHighCallout',
+                  label: 'Stripe Link (£75 Call-out Fee)',
+                  type: 'text',
+                },
+                {
+                  name: 'stripeLinkLowCallout',
+                  label: 'Stripe Link (£0 Call-out Fee)',
+                  type: 'text',
+                },
                 { name: 'highlightColour', label: 'Highlight Colour (blue or pink)', type: 'text' },
               ],
             },

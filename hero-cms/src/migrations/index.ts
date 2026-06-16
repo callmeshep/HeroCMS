@@ -4,6 +4,7 @@ import * as migration_20260520_154420_add_worth_noting_to_feature_rows from './2
 import * as migration_20260611_231951_add_form_notification_fields from './20260611_231951_add_form_notification_fields';
 import * as migration_20260611_233343_add_submission_email_field from './20260611_233343_add_submission_email_field';
 import * as migration_20260611_234546_add_integrations_fields from './20260611_234546_add_integrations_fields';
+import * as migration_20260616_191501 from './20260616_191501';
 
 export const migrations = [
   {
@@ -34,6 +35,11 @@ export const migrations = [
   {
     up: migration_20260611_234546_add_integrations_fields.up,
     down: migration_20260611_234546_add_integrations_fields.down,
-    name: '20260611_234546_add_integrations_fields'
+    name: '20260611_234546_add_integrations_fields',
+  },
+  {
+    up: migration_20260616_191501.up,
+    down: migration_20260616_191501.down,
+    name: '20260616_191501'
   },
 ];

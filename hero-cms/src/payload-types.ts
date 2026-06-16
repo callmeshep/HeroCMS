@@ -547,7 +547,8 @@ export interface HerocareWebsite {
         priceLowCallout?: string | null;
         pricePeriod?: string | null;
         ctaText?: string | null;
-        stripeLink?: string | null;
+        stripeLinkHighCallout?: string | null;
+        stripeLinkLowCallout?: string | null;
         highlightColour?: string | null;
         id?: string | null;
       }[]
@@ -1073,7 +1074,8 @@ export interface HerocareWebsiteSelect<T extends boolean = true> {
         priceLowCallout?: T;
         pricePeriod?: T;
         ctaText?: T;
-        stripeLink?: T;
+        stripeLinkHighCallout?: T;
+        stripeLinkLowCallout?: T;
         highlightColour?: T;
         id?: T;
       };
