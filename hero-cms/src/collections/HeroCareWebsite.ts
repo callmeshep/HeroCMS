@@ -357,6 +357,7 @@ export const HeroCareWebsite: CollectionConfig = {
               type: 'array',
               fields: [
                 { name: 'title', type: 'text', required: true },
+                { name: 'footerLinkLabel', label: 'Footer Link Label', type: 'text' },
                 { name: 'content', type: 'richText' },
               ],
             },
