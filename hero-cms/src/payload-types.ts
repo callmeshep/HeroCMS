@@ -577,6 +577,7 @@ export interface HerocareWebsite {
   policies?:
     | {
         title: string;
+        footerLinkLabel?: string | null;
         content?: {
           root: {
             type: string;
@@ -1104,6 +1105,7 @@ export interface HerocareWebsiteSelect<T extends boolean = true> {
     | T
     | {
         title?: T;
+        footerLinkLabel?: T;
         content?: T;
         id?: T;
       };
