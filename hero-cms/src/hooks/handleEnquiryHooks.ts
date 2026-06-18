@@ -23,13 +23,21 @@ async function ghlRequest(path: string, method: string, apiKey: string, body?: o
   return res.json()
 }
 
+function normalisePhone(phone: string): string {
+  const digits = phone.replace(/\D/g, '')
+  if (digits.startsWith('44')) return `+${digits}`
+  if (digits.startsWith('0')) return `+44${digits.slice(1)}`
+  return `+${digits}`
+}
+
 async function findGHLContactByPhone(
   locationId: string,
   apiKey: string,
   phone: string,
 ): Promise<string | null> {
+  const normalised = normalisePhone(phone)
   const data = await ghlRequest(
-    `/contacts/?locationId=${locationId}&query=${encodeURIComponent(phone)}`,
+    `/contacts/?locationId=${locationId}&query=${encodeURIComponent(normalised)}`,
     'GET',
     apiKey,
   )
@@ -100,7 +108,7 @@ export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, opera
           const contactPayload: Record<string, any> = {
             locationId,
             name: doc.name,
-            phone: doc.phoneNumber,
+            phone: normalisePhone(doc.phoneNumber),
             tags: [doc.journey === 'homeowner' ? 'HeroCare Homeowner' : 'HeroCare Landlord'],
           }
 
