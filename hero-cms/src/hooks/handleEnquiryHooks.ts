@@ -93,7 +93,7 @@ export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, opera
       const apiKey = config.crmAPIKey
 
       try {
-        const isStage2 = doc.stage === 'step-2-popup'
+        const isStage2 = doc.stage === 'step-2'
 
         if (!isStage2) {
           // Stage 1 — create contact and opportunity
