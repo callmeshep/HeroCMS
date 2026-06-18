@@ -6,68 +6,47 @@ const replaceMergeTags = (template: string, data: Record<string, string>): strin
 const GHL_PIPELINE_ID = '4yIDNr79Pd1K52wi5k9t'
 const GHL_STAGE_ID = 'a7d5ba56-4b90-46e5-a219-b6de14fd90d0'
 
-async function createGHLContact(
-  locationId: string,
-  apiKey: string,
-  doc: any,
-): Promise<string | null> {
-  const payload: Record<string, any> = {
-    locationId,
-    phone: doc.phoneNumber,
-    name: doc.name,
-    tags: [doc.journey === 'homeowner' ? 'HeroCare Homeowner' : 'HeroCare Landlord'],
-  }
-
-  if (doc.journey === 'landlord') {
-    payload.companyName = doc.companyName
-  }
-
-  const res = await fetch('https://services.leadconnectorhq.com/contacts/', {
-    method: 'POST',
+async function ghlRequest(path: string, method: string, apiKey: string, body?: object) {
+  const res = await fetch(`https://services.leadconnectorhq.com${path}`, {
+    method,
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${apiKey}`,
       Version: '2021-07-28',
     },
-    body: JSON.stringify(payload),
+    ...(body ? { body: JSON.stringify(body) } : {}),
   })
-
   if (!res.ok) {
     const err = await res.text()
-    throw new Error(`GHL contact creation failed: ${err}`)
+    throw new Error(`GHL ${method} ${path} failed: ${err}`)
   }
-
-  const data = await res.json()
-  return data.contact?.id ?? null
+  return res.json()
 }
 
-async function createGHLOpportunity(
+async function findGHLContactByPhone(
+  locationId: string,
+  apiKey: string,
+  phone: string,
+): Promise<string | null> {
+  const data = await ghlRequest(
+    `/contacts/?locationId=${locationId}&query=${encodeURIComponent(phone)}`,
+    'GET',
+    apiKey,
+  )
+  return data.contacts?.[0]?.id ?? null
+}
+
+async function findGHLOpportunityByContactId(
   locationId: string,
   apiKey: string,
   contactId: string,
-  cardTitle: string,
-): Promise<void> {
-  const res = await fetch('https://services.leadconnectorhq.com/opportunities/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-      Version: '2021-07-28',
-    },
-    body: JSON.stringify({
-      locationId,
-      name: cardTitle,
-      pipelineId: GHL_PIPELINE_ID,
-      pipelineStageId: GHL_STAGE_ID,
-      contactId,
-      status: 'open',
-    }),
-  })
-
-  if (!res.ok) {
-    const err = await res.text()
-    throw new Error(`GHL opportunity creation failed: ${err}`)
-  }
+): Promise<string | null> {
+  const data = await ghlRequest(
+    `/opportunities/search?locationId=${locationId}&contactId=${contactId}&pipelineId=${GHL_PIPELINE_ID}`,
+    'GET',
+    apiKey,
+  )
+  return data.opportunities?.[0]?.id ?? null
 }
 
 export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, operation, req }) => {
@@ -75,38 +54,27 @@ export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, opera
 
   try {
     const tenantId = typeof doc.tenant === 'object' ? doc.tenant.id : doc.tenant
-
     if (!tenantId) return doc
 
     const apiKeyRecord = await req.payload.find({
       collection: 'api-keys',
-      where: {
-        tenant: {
-          equals: tenantId,
-        },
-      },
+      where: { tenant: { equals: tenantId } },
       limit: 1,
     })
 
     const config = apiKeyRecord.docs[0]
     if (!config) return doc
 
-    // Resolve the parent form for recipients and merge data
     const formId = typeof doc.form === 'object' ? doc.form.id : doc.form
     let form: any = null
-
     if (formId) {
       try {
-        form = await req.payload.findByID({
-          collection: 'herocare-forms',
-          id: formId,
-        })
+        form = await req.payload.findByID({ collection: 'herocare-forms', id: formId })
       } catch {
         form = null
       }
     }
 
-    // Merge tag data
     const mergeData: Record<string, string> = {
       name: doc.name ?? '',
       postcode: doc.postcode ?? '',
@@ -119,20 +87,59 @@ export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, opera
       journey: doc.journey === 'homeowner' ? 'Homeowner' : 'Landlord',
     }
 
-    // Build CRM card title
-    const cardTitle =
-      doc.journey === 'homeowner'
-        ? `Homeowner Enquiry — ${doc.postcode}`
-        : `Landlord Enquiry — ${doc.companyName} — ${doc.numberOfProperties} properties`
-
-    // GHL — create contact then opportunity
-    // crmWebhookURL field repurposed to store GHL Location ID
+    // GHL integration
     if (config.crmWebhookURL && config.crmAPIKey) {
-      try {
-        const contactId = await createGHLContact(config.crmWebhookURL, config.crmAPIKey, doc)
+      const locationId = config.crmWebhookURL
+      const apiKey = config.crmAPIKey
 
-        if (contactId) {
-          await createGHLOpportunity(config.crmWebhookURL, config.crmAPIKey, contactId, cardTitle)
+      try {
+        const isStage2 = doc.stage === 'step-2-popup'
+
+        if (!isStage2) {
+          // Stage 1 — create contact and opportunity
+          const contactPayload: Record<string, any> = {
+            locationId,
+            name: doc.name,
+            phone: doc.phoneNumber,
+            tags: [doc.journey === 'homeowner' ? 'HeroCare Homeowner' : 'HeroCare Landlord'],
+          }
+
+          const contactData = await ghlRequest('/contacts/', 'POST', apiKey, contactPayload)
+          const contactId = contactData.contact?.id
+
+          if (contactId) {
+            const opportunityTitle =
+              doc.journey === 'homeowner'
+                ? `Homeowner Enquiry — ${doc.name}`
+                : `Landlord Enquiry — ${doc.companyName} — ${doc.numberOfProperties} properties`
+
+            await ghlRequest('/opportunities/', 'POST', apiKey, {
+              locationId,
+              name: opportunityTitle,
+              pipelineId: GHL_PIPELINE_ID,
+              pipelineStageId: GHL_STAGE_ID,
+              contactId,
+              status: 'open',
+            })
+          }
+        } else {
+          // Stage 2 — find existing contact by phone, update contact and opportunity
+          const contactId = await findGHLContactByPhone(locationId, apiKey, doc.phoneNumber)
+
+          if (contactId) {
+            await ghlRequest(`/contacts/${contactId}`, 'PUT', apiKey, {
+              email: doc.email,
+              postalCode: doc.postcode,
+            })
+
+            const opportunityId = await findGHLOpportunityByContactId(locationId, apiKey, contactId)
+
+            if (opportunityId) {
+              await ghlRequest(`/opportunities/${opportunityId}`, 'PUT', apiKey, {
+                name: `Homeowner Enquiry — ${doc.name} — ${doc.postcode}`,
+              })
+            }
+          }
         }
 
         await req.payload.update({
@@ -165,11 +172,7 @@ export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, opera
     ) {
       const templates = await req.payload.find({
         collection: 'herocare-email-templates',
-        where: {
-          tenant: {
-            equals: tenantId,
-          },
-        },
+        where: { tenant: { equals: tenantId } },
       })
 
       const adminTemplate = templates.docs.find((t: any) => t.name === 'admin-notification')
