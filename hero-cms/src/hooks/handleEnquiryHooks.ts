@@ -3,6 +3,73 @@ import type { CollectionAfterChangeHook } from 'payload'
 const replaceMergeTags = (template: string, data: Record<string, string>): string =>
   template.replace(/\{(\w+)\}/g, (_match, key) => data[key] ?? '')
 
+const GHL_PIPELINE_ID = '4yIDNr79Pd1K52wi5k9t'
+const GHL_STAGE_ID = 'a7d5ba56-4b90-46e5-a219-b6de14fd90d0'
+
+async function createGHLContact(
+  locationId: string,
+  apiKey: string,
+  doc: any,
+): Promise<string | null> {
+  const payload: Record<string, any> = {
+    locationId,
+    phone: doc.phoneNumber,
+    name: doc.name,
+    tags: [doc.journey === 'homeowner' ? 'HeroCare Homeowner' : 'HeroCare Landlord'],
+  }
+
+  if (doc.journey === 'landlord') {
+    payload.companyName = doc.companyName
+  }
+
+  const res = await fetch('https://services.leadconnectorhq.com/contacts/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+      Version: '2021-07-28',
+    },
+    body: JSON.stringify(payload),
+  })
+
+  if (!res.ok) {
+    const err = await res.text()
+    throw new Error(`GHL contact creation failed: ${err}`)
+  }
+
+  const data = await res.json()
+  return data.contact?.id ?? null
+}
+
+async function createGHLOpportunity(
+  locationId: string,
+  apiKey: string,
+  contactId: string,
+  cardTitle: string,
+): Promise<void> {
+  const res = await fetch('https://services.leadconnectorhq.com/opportunities/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+      Version: '2021-07-28',
+    },
+    body: JSON.stringify({
+      locationId,
+      name: cardTitle,
+      pipelineId: GHL_PIPELINE_ID,
+      pipelineStageId: GHL_STAGE_ID,
+      contactId,
+      status: 'open',
+    }),
+  })
+
+  if (!res.ok) {
+    const err = await res.text()
+    throw new Error(`GHL opportunity creation failed: ${err}`)
+  }
+}
+
 export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, operation, req }) => {
   if (operation !== 'create') return doc
 
@@ -39,7 +106,7 @@ export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, opera
       }
     }
 
-    // Merge tag data available to subject, heading, and body
+    // Merge tag data
     const mergeData: Record<string, string> = {
       name: doc.name ?? '',
       postcode: doc.postcode ?? '',
@@ -58,29 +125,23 @@ export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, opera
         ? `Homeowner Enquiry — ${doc.postcode}`
         : `Landlord Enquiry — ${doc.companyName} — ${doc.numberOfProperties} properties`
 
-    // Fire CRM webhook
-    if (config.crmWebhookURL) {
+    // GHL — create contact then opportunity
+    // crmWebhookURL field repurposed to store GHL Location ID
+    if (config.crmWebhookURL && config.crmAPIKey) {
       try {
-        const crmRes = await fetch(config.crmWebhookURL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            ...(config.crmAPIKey ? { Authorization: `Bearer ${config.crmAPIKey}` } : {}),
-          },
-          body: JSON.stringify({
-            cardTitle,
-            ...doc,
-          }),
-        })
+        const contactId = await createGHLContact(config.crmWebhookURL, config.crmAPIKey, doc)
 
-        const webhookStatus = crmRes.ok ? 'sent' : 'failed'
+        if (contactId) {
+          await createGHLOpportunity(config.crmWebhookURL, config.crmAPIKey, contactId, cardTitle)
+        }
 
         await req.payload.update({
           collection: 'herocare-submissions',
           id: doc.id,
-          data: { webhookStatus },
+          data: { webhookStatus: 'sent' },
         })
-      } catch {
+      } catch (ghlErr) {
+        console.error('GHL integration error:', ghlErr)
         await req.payload.update({
           collection: 'herocare-submissions',
           id: doc.id,
@@ -89,7 +150,7 @@ export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, opera
       }
     }
 
-    // Fire Resend notification emails to the form's recipients
+    // Resend notification emails
     const recipients: string[] = (form?.notificationRecipients ?? [])
       .map((r: { email?: string }) => r.email)
       .filter(Boolean)
