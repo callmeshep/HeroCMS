@@ -137,7 +137,7 @@ export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, opera
           if (contactId) {
             await ghlRequest(`/contacts/${contactId}`, 'PUT', apiKey, {
               email: doc.email,
-              postalCode: doc.postcode,
+              postal_code: doc.postcode,
             })
 
             const opportunityId = await findGHLOpportunityByContactId(locationId, apiKey, contactId)
