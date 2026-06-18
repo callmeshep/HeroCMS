@@ -100,6 +100,12 @@ export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, opera
       const locationId = config.crmWebhookURL
       const apiKey = config.crmAPIKey
 
+      const phoneDigits = (doc.phoneNumber ?? '').replace(/\D/g, '')
+      if (phoneDigits.length < 10) {
+        console.error('GHL integration skipped: phone number too short', doc.phoneNumber)
+        return doc
+      }
+
       try {
         const isStage2 = doc.stage === 'step-2' && doc.journey === 'homeowner'
 
