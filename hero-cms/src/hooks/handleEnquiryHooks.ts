@@ -101,13 +101,13 @@ export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, opera
       const apiKey = config.crmAPIKey
 
       try {
-        const isStage2 = doc.stage === 'step-2'
+        const isStage2 = doc.stage === 'step-2' && doc.journey === 'homeowner'
 
         if (!isStage2) {
           // Stage 1 — create contact and opportunity
           const contactPayload: Record<string, any> = {
             locationId,
-            name: doc.name,
+            name: doc.journey === 'landlord' ? doc.companyName : doc.name,
             phone: normalisePhone(doc.phoneNumber),
             tags: [doc.journey === 'homeowner' ? 'HeroCare Homeowner' : 'HeroCare Landlord'],
           }
