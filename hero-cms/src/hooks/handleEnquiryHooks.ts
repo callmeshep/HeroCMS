@@ -150,18 +150,26 @@ export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, opera
           }
         }
 
-        await req.payload.update({
-          collection: 'herocare-submissions',
-          id: doc.id,
-          data: { webhookStatus: 'sent' },
-        })
+        try {
+          await req.payload.update({
+            collection: 'herocare-submissions',
+            id: doc.id,
+            data: { webhookStatus: 'sent' },
+          })
+        } catch {
+          console.error('webhookStatus update error (sent)')
+        }
       } catch (ghlErr) {
         console.error('GHL integration error:', ghlErr)
-        await req.payload.update({
-          collection: 'herocare-submissions',
-          id: doc.id,
-          data: { webhookStatus: 'failed' },
-        })
+        try {
+          await req.payload.update({
+            collection: 'herocare-submissions',
+            id: doc.id,
+            data: { webhookStatus: 'failed' },
+          })
+        } catch {
+          console.error('webhookStatus update error (failed)')
+        }
       }
     }
 
