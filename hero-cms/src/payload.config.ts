@@ -17,6 +17,7 @@ import { HeroCareEmailTemplates } from './collections/HeroCareEmailTemplates'
 import { EmergencyHeroBrandAssets } from './collections/EmergencyHeroBrandAssets'
 import { HeroCareForms } from './collections/HeroCareForms'
 import { HeroCareSubmissions } from './collections/HeroCareSubmissions'
+import { Reviews } from './collections/Reviews'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -64,6 +65,7 @@ export default buildConfig({
     HeroCareSubmissions,
     HeroCareWebsite,
     EmergencyHeroBrandAssets,
+    Reviews,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
