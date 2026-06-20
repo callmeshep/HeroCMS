@@ -56,6 +56,12 @@ export const ReviewWebsiteWebsite: CollectionConfig = {
               relationTo: 'media',
             },
             {
+              name: 'favicon',
+              label: 'Favicon',
+              type: 'upload',
+              relationTo: 'media',
+            },
+            {
               name: 'navLinkVisitWebsiteLabel',
               label: 'Visit Website — Label',
               type: 'text',
