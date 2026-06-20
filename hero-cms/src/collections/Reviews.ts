@@ -59,13 +59,6 @@ export const Reviews: CollectionConfig = {
       type: 'textarea',
     },
     {
-      name: 'tenant',
-      label: 'Tenant',
-      type: 'relationship',
-      relationTo: 'tenants',
-      required: true,
-    },
-    {
       name: 'date',
       label: 'Date',
       type: 'date',
