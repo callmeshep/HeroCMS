@@ -15,7 +15,7 @@ export const Reviews: CollectionConfig = {
   },
   access: {
     read: isAdminOrSuperAdmin,
-    create: isAdminOrSuperAdmin,
+    create: () => true,
     update: isAdminOrSuperAdmin,
     delete: isSuperAdmin,
   },
