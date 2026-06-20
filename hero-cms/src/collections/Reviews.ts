@@ -45,7 +45,6 @@ export const Reviews: CollectionConfig = {
       type: 'select',
       required: true,
       options: [
-        { label: 'Home Care', value: 'home-care' },
         { label: 'Plumbing', value: 'plumbing' },
         { label: 'Heating', value: 'heating' },
         { label: 'Electrics', value: 'electrics' },
