@@ -160,6 +160,32 @@ export const ReviewWebsiteWebsite: CollectionConfig = {
               type: 'text',
               defaultValue: 'Filter Reviews by Service',
             },
+            {
+              name: 'filterImages',
+              label: 'Filter Category Images',
+              type: 'array',
+              fields: [
+                {
+                  name: 'serviceType',
+                  label: 'Service Type',
+                  type: 'select',
+                  required: true,
+                  options: [
+                    { label: 'General', value: 'general' },
+                    { label: 'Heating', value: 'heating' },
+                    { label: 'Plumbing', value: 'plumbing' },
+                    { label: 'Drainage', value: 'drainage' },
+                    { label: 'Electrics', value: 'electrics' },
+                  ],
+                },
+                {
+                  name: 'image',
+                  label: 'Image',
+                  type: 'upload',
+                  relationTo: 'media',
+                },
+              ],
+            },
           ],
         },
 
