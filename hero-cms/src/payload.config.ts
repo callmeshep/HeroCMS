@@ -28,6 +28,9 @@ export default buildConfig({
     'https://herocare-astro.pages.dev',
     'https://www.herocare.co.uk',
     'https://herocare.co.uk',
+    'https://emergencyheroreviews.com',
+    'https://www.emergencyheroreviews.com',
+    'https://emergency-hero-reviews.pages.dev',
     'http://localhost:4321',
   ],
   admin: {
