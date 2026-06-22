@@ -60,6 +60,12 @@ export const HeroCareWebsite: CollectionConfig = {
             { name: 'trustpilotRating', label: 'Trustpilot Rating', type: 'number' },
             { name: 'trustpilotReviewCount', label: 'Trustpilot Review Count', type: 'number' },
             { name: 'trustpilotLink', label: 'Trustpilot Link', type: 'text' },
+            {
+              name: 'heroBackgroundImage',
+              label: 'Hero — Background Image',
+              type: 'upload',
+              relationTo: 'media',
+            },
           ],
         },
 
