@@ -20,6 +20,7 @@ export const triggerDeployHook: CollectionAfterChangeHook = async ({ doc, req })
         },
       },
       limit: 1,
+      overrideAccess: true,
     })
 
     const config = apiKeyRecord.docs[0]

@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { isSuperAdmin } from '../access/isSuperAdmin'
 import { isAdminOrSuperAdmin } from '../access/isAdminOrSuperAdmin'
 import { hasTenantAccess } from '../access/hasTenantAccess'
+import { triggerDeployHook } from '../hooks/triggerDeployHook'
 
 export const EmergencyHeroServices: CollectionConfig = {
   slug: 'emergency-hero-services',
@@ -49,4 +50,7 @@ export const EmergencyHeroServices: CollectionConfig = {
     { name: 'rngMin', label: 'RNG Min (engineer count)', type: 'number' },
     { name: 'rngMax', label: 'RNG Max (engineer count)', type: 'number' },
   ],
+  hooks: {
+    afterChange: [triggerDeployHook],
+  },
 }
