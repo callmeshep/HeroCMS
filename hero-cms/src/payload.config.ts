@@ -38,6 +38,7 @@ export default buildConfig({
     'https://emergencyheroreviews.com',
     'https://www.emergencyheroreviews.com',
     'https://emergency-hero-reviews.pages.dev',
+    'https://herowebsite.pages.dev',
     'https://emergencyhero.co.uk',
     'https://www.emergencyhero.co.uk',
     'http://localhost:4321',
