@@ -32,6 +32,7 @@ export const EmergencyHeroServices: CollectionConfig = {
     { name: 'enabled', label: 'Enabled', type: 'checkbox', defaultValue: true },
     { name: 'accentColour', label: 'Accent Colour (hex)', type: 'text' },
     { name: 'navLabel', label: 'Nav Label', type: 'text' },
+    { name: 'categoryLabel', label: 'Category Label (e.g. Plumber)', type: 'text' },
     {
       name: 'heroCharacterImage',
       label: 'Hero Character Image',
