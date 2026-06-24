@@ -719,6 +719,8 @@ export interface EmergencyHeroWebsite {
   homeHeroFormCtaText?: string | null;
   homeHeroImageLeft?: (number | null) | Media;
   homeHeroImageRight?: (number | null) | Media;
+  homeModalHeadline?: string | null;
+  homeModalCharacterImage?: (number | null) | EmergencyHeroImageGallery;
   logoBarLogos?:
     | {
         image: number | Media;
@@ -1329,6 +1331,26 @@ export interface EmergencyHeroWebsite {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-hero-image-gallery".
+ */
+export interface EmergencyHeroImageGallery {
+  id: number;
+  tenant: number | Tenant;
+  altText?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "emergency-hero-services".
  */
 export interface EmergencyHeroService {
@@ -1430,26 +1452,6 @@ export interface EmergencyHeroSubmission {
   ghlWebhookStatus?: ('pending' | 'sent' | 'failed') | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "emergency-hero-image-gallery".
- */
-export interface EmergencyHeroImageGallery {
-  id: number;
-  tenant: number | Tenant;
-  altText?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2157,6 +2159,8 @@ export interface EmergencyHeroWebsiteSelect<T extends boolean = true> {
   homeHeroFormCtaText?: T;
   homeHeroImageLeft?: T;
   homeHeroImageRight?: T;
+  homeModalHeadline?: T;
+  homeModalCharacterImage?: T;
   logoBarLogos?:
     | T
     | {

@@ -36,7 +36,6 @@ export const EmergencyHeroWebsite: CollectionConfig = {
     {
       type: 'tabs',
       tabs: [
-
         // GLOBALS TAB
         {
           label: 'Globals',
@@ -51,7 +50,12 @@ export const EmergencyHeroWebsite: CollectionConfig = {
             { name: 'trustpilotPlatformsLabel', label: 'Trustpilot Platforms Label', type: 'text' },
             { name: 'appStoreUrl', label: 'App Store URL', type: 'text' },
             { name: 'googlePlayUrl', label: 'Google Play URL', type: 'text' },
-            { name: 'appScreenshotImage', label: 'App Screenshot Image', type: 'upload', relationTo: 'media' },
+            {
+              name: 'appScreenshotImage',
+              label: 'App Screenshot Image',
+              type: 'upload',
+              relationTo: 'media',
+            },
             { name: 'appBlockHeadline', label: 'App Block — Headline', type: 'text' },
             { name: 'appBlockBody', label: 'App Block — Body Text', type: 'richText' },
             {
@@ -62,13 +66,28 @@ export const EmergencyHeroWebsite: CollectionConfig = {
             },
             { name: 'bottomCtaHeadline', label: 'Bottom CTA — Headline', type: 'text' },
             { name: 'bottomCtaButtonText', label: 'Bottom CTA — Button Text', type: 'text' },
-            { name: 'bottomCtaImageLeft', label: 'Bottom CTA — Character Image Left', type: 'upload', relationTo: 'media' },
-            { name: 'bottomCtaImageRight', label: 'Bottom CTA — Character Image Right', type: 'upload', relationTo: 'media' },
+            {
+              name: 'bottomCtaImageLeft',
+              label: 'Bottom CTA — Character Image Left',
+              type: 'upload',
+              relationTo: 'media',
+            },
+            {
+              name: 'bottomCtaImageRight',
+              label: 'Bottom CTA — Character Image Right',
+              type: 'upload',
+              relationTo: 'media',
+            },
             { name: 'footerStrapline', label: 'Footer — Strapline', type: 'text' },
             { name: 'footerFacebookUrl', label: 'Footer — Facebook URL', type: 'text' },
             { name: 'footerInstagramUrl', label: 'Footer — Instagram URL', type: 'text' },
             { name: 'footerTwitterUrl', label: 'Footer — Twitter URL', type: 'text' },
-            { name: 'footerAppBannerImage', label: 'Footer — App Banner Image', type: 'upload', relationTo: 'media' },
+            {
+              name: 'footerAppBannerImage',
+              label: 'Footer — App Banner Image',
+              type: 'upload',
+              relationTo: 'media',
+            },
             { name: 'footerCopyrightText', label: 'Footer — Copyright Text', type: 'text' },
             {
               name: 'footerServicesLinks',
@@ -97,8 +116,18 @@ export const EmergencyHeroWebsite: CollectionConfig = {
                 { name: 'url', type: 'text', required: true },
               ],
             },
-            { name: 'mobileMenuImageLeft', label: 'Mobile Menu — Character Image Left', type: 'upload', relationTo: 'media' },
-            { name: 'mobileMenuImageRight', label: 'Mobile Menu — Character Image Right', type: 'upload', relationTo: 'media' },
+            {
+              name: 'mobileMenuImageLeft',
+              label: 'Mobile Menu — Character Image Left',
+              type: 'upload',
+              relationTo: 'media',
+            },
+            {
+              name: 'mobileMenuImageRight',
+              label: 'Mobile Menu — Character Image Right',
+              type: 'upload',
+              relationTo: 'media',
+            },
           ],
         },
 
@@ -106,12 +135,34 @@ export const EmergencyHeroWebsite: CollectionConfig = {
         {
           label: 'Home',
           fields: [
-            { name: 'homeHeroBackgroundImage', label: 'Hero — Background Image', type: 'upload', relationTo: 'media' },
+            {
+              name: 'homeHeroBackgroundImage',
+              label: 'Hero — Background Image',
+              type: 'upload',
+              relationTo: 'media',
+            },
             { name: 'homeHeroHeadline', label: 'Hero — Headline', type: 'text' },
             { name: 'homeHeroSubheading', label: 'Hero — Subheading', type: 'text' },
             { name: 'homeHeroFormCtaText', label: 'Hero — Form CTA Button Text', type: 'text' },
-            { name: 'homeHeroImageLeft', label: 'Hero — Character Image Left', type: 'upload', relationTo: 'media' },
-            { name: 'homeHeroImageRight', label: 'Hero — Character Image Right', type: 'upload', relationTo: 'media' },
+            {
+              name: 'homeHeroImageLeft',
+              label: 'Hero — Character Image Left',
+              type: 'upload',
+              relationTo: 'media',
+            },
+            {
+              name: 'homeHeroImageRight',
+              label: 'Hero — Character Image Right',
+              type: 'upload',
+              relationTo: 'media',
+            },
+            { name: 'homeModalHeadline', label: 'Modal — Headline', type: 'text' },
+            {
+              name: 'homeModalCharacterImage',
+              label: 'Modal — Character Image',
+              type: 'upload',
+              relationTo: 'emergency-hero-image-gallery',
+            },
             {
               name: 'logoBarLogos',
               label: 'Logo Bar — Logos',
@@ -126,15 +177,33 @@ export const EmergencyHeroWebsite: CollectionConfig = {
             { name: 'homecareCardHeadline', label: 'Homecare Card — Headline', type: 'text' },
             { name: 'homecareCardBody', label: 'Homecare Card — Body Text', type: 'text' },
             { name: 'homecareCardCtaText', label: 'Homecare Card — CTA Text', type: 'text' },
-            { name: 'homecareCardCtaUrl', label: 'Homecare Card — CTA URL', type: 'text', defaultValue: 'https://herocare.co.uk' },
-            { name: 'homecareCardImage', label: 'Homecare Card — Image', type: 'upload', relationTo: 'media' },
-            { name: 'homecareCardAccentColour', label: 'Homecare Card — Accent Colour (hex)', type: 'text' },
+            {
+              name: 'homecareCardCtaUrl',
+              label: 'Homecare Card — CTA URL',
+              type: 'text',
+              defaultValue: 'https://herocare.co.uk',
+            },
+            {
+              name: 'homecareCardImage',
+              label: 'Homecare Card — Image',
+              type: 'upload',
+              relationTo: 'media',
+            },
+            {
+              name: 'homecareCardAccentColour',
+              label: 'Homecare Card — Accent Colour (hex)',
+              type: 'text',
+            },
             { name: 'whoWeAreHeadline', label: 'Who We Are — Headline', type: 'text' },
             { name: 'whoWeAreSubheading', label: 'Who We Are — Subheading', type: 'text' },
             { name: 'whoWeAreVideoUrl', label: 'Who We Are — Video Embed URL', type: 'text' },
             { name: 'homeFaqsHeadline', label: 'FAQs — Headline', type: 'text' },
             { name: 'homeFaqsBody', label: 'FAQs — Body Text', type: 'richText' },
-            { name: 'homeFaqsHaveAnotherQuestion', label: 'FAQs — Have Another Question Label', type: 'text' },
+            {
+              name: 'homeFaqsHaveAnotherQuestion',
+              label: 'FAQs — Have Another Question Label',
+              type: 'text',
+            },
             {
               name: 'homeFaqItems',
               label: 'FAQ Items',
@@ -144,7 +213,11 @@ export const EmergencyHeroWebsite: CollectionConfig = {
                 { name: 'answer', type: 'richText', required: true },
               ],
             },
-            { name: 'knowledgeBaseHeadline', label: 'Latest from the Knowledge Base — Headline', type: 'text' },
+            {
+              name: 'knowledgeBaseHeadline',
+              label: 'Latest from the Knowledge Base — Headline',
+              type: 'text',
+            },
           ],
         },
 
@@ -153,12 +226,29 @@ export const EmergencyHeroWebsite: CollectionConfig = {
           label: 'Services',
           fields: [
             // Plumbing
-            { name: 'plumbingHeroBgImage', label: 'Plumbing — Hero Background Image', type: 'upload', relationTo: 'media' },
+            {
+              name: 'plumbingHeroBgImage',
+              label: 'Plumbing — Hero Background Image',
+              type: 'upload',
+              relationTo: 'media',
+            },
             { name: 'plumbingHeroHeadline', label: 'Plumbing — Hero Headline', type: 'text' },
             { name: 'plumbingHeroSubheading', label: 'Plumbing — Hero Subheading', type: 'text' },
-            { name: 'plumbingHeroFormCtaText', label: 'Plumbing — Hero Form CTA Text', type: 'text' },
-            { name: 'plumbingIssuesHeadline', label: 'Plumbing — Issues Grid Headline', type: 'text' },
-            { name: 'plumbingIssuesSubheading', label: 'Plumbing — Issues Grid Subheading', type: 'text' },
+            {
+              name: 'plumbingHeroFormCtaText',
+              label: 'Plumbing — Hero Form CTA Text',
+              type: 'text',
+            },
+            {
+              name: 'plumbingIssuesHeadline',
+              label: 'Plumbing — Issues Grid Headline',
+              type: 'text',
+            },
+            {
+              name: 'plumbingIssuesSubheading',
+              label: 'Plumbing — Issues Grid Subheading',
+              type: 'text',
+            },
             {
               name: 'plumbingIssueCards',
               label: 'Plumbing — Issue Cards',
@@ -170,8 +260,16 @@ export const EmergencyHeroWebsite: CollectionConfig = {
                 { name: 'ctaText', type: 'text' },
               ],
             },
-            { name: 'plumbingWhyUsHeadline', label: 'Plumbing — Why Choose Us Headline', type: 'text' },
-            { name: 'plumbingWhyUsSubheading', label: 'Plumbing — Why Choose Us Subheading', type: 'text' },
+            {
+              name: 'plumbingWhyUsHeadline',
+              label: 'Plumbing — Why Choose Us Headline',
+              type: 'text',
+            },
+            {
+              name: 'plumbingWhyUsSubheading',
+              label: 'Plumbing — Why Choose Us Subheading',
+              type: 'text',
+            },
             {
               name: 'plumbingWhyUsCards',
               label: 'Plumbing — Why Choose Us Cards',
@@ -182,7 +280,11 @@ export const EmergencyHeroWebsite: CollectionConfig = {
                 { name: 'body', type: 'textarea' },
               ],
             },
-            { name: 'plumbingHowItWorksHeadline', label: 'Plumbing — How It Works Headline', type: 'text' },
+            {
+              name: 'plumbingHowItWorksHeadline',
+              label: 'Plumbing — How It Works Headline',
+              type: 'text',
+            },
             {
               name: 'plumbingHowItWorksSteps',
               label: 'Plumbing — How It Works Steps',
@@ -204,16 +306,37 @@ export const EmergencyHeroWebsite: CollectionConfig = {
                 { name: 'answer', type: 'richText', required: true },
               ],
             },
-            { name: 'plumbingTySubheading', label: 'Plumbing — Thank You Subheading', type: 'text' },
-            { name: 'plumbingTyCallCtaText', label: 'Plumbing — Thank You Call CTA Text', type: 'text' },
+            {
+              name: 'plumbingTySubheading',
+              label: 'Plumbing — Thank You Subheading',
+              type: 'text',
+            },
+            {
+              name: 'plumbingTyCallCtaText',
+              label: 'Plumbing — Thank You Call CTA Text',
+              type: 'text',
+            },
 
             // Heating
-            { name: 'heatingHeroBgImage', label: 'Heating — Hero Background Image', type: 'upload', relationTo: 'media' },
+            {
+              name: 'heatingHeroBgImage',
+              label: 'Heating — Hero Background Image',
+              type: 'upload',
+              relationTo: 'media',
+            },
             { name: 'heatingHeroHeadline', label: 'Heating — Hero Headline', type: 'text' },
             { name: 'heatingHeroSubheading', label: 'Heating — Hero Subheading', type: 'text' },
             { name: 'heatingHeroFormCtaText', label: 'Heating — Hero Form CTA Text', type: 'text' },
-            { name: 'heatingIssuesHeadline', label: 'Heating — Issues Grid Headline', type: 'text' },
-            { name: 'heatingIssuesSubheading', label: 'Heating — Issues Grid Subheading', type: 'text' },
+            {
+              name: 'heatingIssuesHeadline',
+              label: 'Heating — Issues Grid Headline',
+              type: 'text',
+            },
+            {
+              name: 'heatingIssuesSubheading',
+              label: 'Heating — Issues Grid Subheading',
+              type: 'text',
+            },
             {
               name: 'heatingIssueCards',
               label: 'Heating — Issue Cards',
@@ -225,8 +348,16 @@ export const EmergencyHeroWebsite: CollectionConfig = {
                 { name: 'ctaText', type: 'text' },
               ],
             },
-            { name: 'heatingWhyUsHeadline', label: 'Heating — Why Choose Us Headline', type: 'text' },
-            { name: 'heatingWhyUsSubheading', label: 'Heating — Why Choose Us Subheading', type: 'text' },
+            {
+              name: 'heatingWhyUsHeadline',
+              label: 'Heating — Why Choose Us Headline',
+              type: 'text',
+            },
+            {
+              name: 'heatingWhyUsSubheading',
+              label: 'Heating — Why Choose Us Subheading',
+              type: 'text',
+            },
             {
               name: 'heatingWhyUsCards',
               label: 'Heating — Why Choose Us Cards',
@@ -237,7 +368,11 @@ export const EmergencyHeroWebsite: CollectionConfig = {
                 { name: 'body', type: 'textarea' },
               ],
             },
-            { name: 'heatingHowItWorksHeadline', label: 'Heating — How It Works Headline', type: 'text' },
+            {
+              name: 'heatingHowItWorksHeadline',
+              label: 'Heating — How It Works Headline',
+              type: 'text',
+            },
             {
               name: 'heatingHowItWorksSteps',
               label: 'Heating — How It Works Steps',
@@ -260,15 +395,36 @@ export const EmergencyHeroWebsite: CollectionConfig = {
               ],
             },
             { name: 'heatingTySubheading', label: 'Heating — Thank You Subheading', type: 'text' },
-            { name: 'heatingTyCallCtaText', label: 'Heating — Thank You Call CTA Text', type: 'text' },
+            {
+              name: 'heatingTyCallCtaText',
+              label: 'Heating — Thank You Call CTA Text',
+              type: 'text',
+            },
 
             // Electrics
-            { name: 'electricsHeroBgImage', label: 'Electrics — Hero Background Image', type: 'upload', relationTo: 'media' },
+            {
+              name: 'electricsHeroBgImage',
+              label: 'Electrics — Hero Background Image',
+              type: 'upload',
+              relationTo: 'media',
+            },
             { name: 'electricsHeroHeadline', label: 'Electrics — Hero Headline', type: 'text' },
             { name: 'electricsHeroSubheading', label: 'Electrics — Hero Subheading', type: 'text' },
-            { name: 'electricsHeroFormCtaText', label: 'Electrics — Hero Form CTA Text', type: 'text' },
-            { name: 'electricsIssuesHeadline', label: 'Electrics — Issues Grid Headline', type: 'text' },
-            { name: 'electricsIssuesSubheading', label: 'Electrics — Issues Grid Subheading', type: 'text' },
+            {
+              name: 'electricsHeroFormCtaText',
+              label: 'Electrics — Hero Form CTA Text',
+              type: 'text',
+            },
+            {
+              name: 'electricsIssuesHeadline',
+              label: 'Electrics — Issues Grid Headline',
+              type: 'text',
+            },
+            {
+              name: 'electricsIssuesSubheading',
+              label: 'Electrics — Issues Grid Subheading',
+              type: 'text',
+            },
             {
               name: 'electricsIssueCards',
               label: 'Electrics — Issue Cards',
@@ -280,8 +436,16 @@ export const EmergencyHeroWebsite: CollectionConfig = {
                 { name: 'ctaText', type: 'text' },
               ],
             },
-            { name: 'electricsWhyUsHeadline', label: 'Electrics — Why Choose Us Headline', type: 'text' },
-            { name: 'electricsWhyUsSubheading', label: 'Electrics — Why Choose Us Subheading', type: 'text' },
+            {
+              name: 'electricsWhyUsHeadline',
+              label: 'Electrics — Why Choose Us Headline',
+              type: 'text',
+            },
+            {
+              name: 'electricsWhyUsSubheading',
+              label: 'Electrics — Why Choose Us Subheading',
+              type: 'text',
+            },
             {
               name: 'electricsWhyUsCards',
               label: 'Electrics — Why Choose Us Cards',
@@ -292,7 +456,11 @@ export const EmergencyHeroWebsite: CollectionConfig = {
                 { name: 'body', type: 'textarea' },
               ],
             },
-            { name: 'electricsHowItWorksHeadline', label: 'Electrics — How It Works Headline', type: 'text' },
+            {
+              name: 'electricsHowItWorksHeadline',
+              label: 'Electrics — How It Works Headline',
+              type: 'text',
+            },
             {
               name: 'electricsHowItWorksSteps',
               label: 'Electrics — How It Works Steps',
@@ -314,16 +482,41 @@ export const EmergencyHeroWebsite: CollectionConfig = {
                 { name: 'answer', type: 'richText', required: true },
               ],
             },
-            { name: 'electricsTySubheading', label: 'Electrics — Thank You Subheading', type: 'text' },
-            { name: 'electricsTyCallCtaText', label: 'Electrics — Thank You Call CTA Text', type: 'text' },
+            {
+              name: 'electricsTySubheading',
+              label: 'Electrics — Thank You Subheading',
+              type: 'text',
+            },
+            {
+              name: 'electricsTyCallCtaText',
+              label: 'Electrics — Thank You Call CTA Text',
+              type: 'text',
+            },
 
             // Drainage
-            { name: 'drainageHeroBgImage', label: 'Drainage — Hero Background Image', type: 'upload', relationTo: 'media' },
+            {
+              name: 'drainageHeroBgImage',
+              label: 'Drainage — Hero Background Image',
+              type: 'upload',
+              relationTo: 'media',
+            },
             { name: 'drainageHeroHeadline', label: 'Drainage — Hero Headline', type: 'text' },
             { name: 'drainageHeroSubheading', label: 'Drainage — Hero Subheading', type: 'text' },
-            { name: 'drainageHeroFormCtaText', label: 'Drainage — Hero Form CTA Text', type: 'text' },
-            { name: 'drainageIssuesHeadline', label: 'Drainage — Issues Grid Headline', type: 'text' },
-            { name: 'drainageIssuesSubheading', label: 'Drainage — Issues Grid Subheading', type: 'text' },
+            {
+              name: 'drainageHeroFormCtaText',
+              label: 'Drainage — Hero Form CTA Text',
+              type: 'text',
+            },
+            {
+              name: 'drainageIssuesHeadline',
+              label: 'Drainage — Issues Grid Headline',
+              type: 'text',
+            },
+            {
+              name: 'drainageIssuesSubheading',
+              label: 'Drainage — Issues Grid Subheading',
+              type: 'text',
+            },
             {
               name: 'drainageIssueCards',
               label: 'Drainage — Issue Cards',
@@ -335,8 +528,16 @@ export const EmergencyHeroWebsite: CollectionConfig = {
                 { name: 'ctaText', type: 'text' },
               ],
             },
-            { name: 'drainageWhyUsHeadline', label: 'Drainage — Why Choose Us Headline', type: 'text' },
-            { name: 'drainageWhyUsSubheading', label: 'Drainage — Why Choose Us Subheading', type: 'text' },
+            {
+              name: 'drainageWhyUsHeadline',
+              label: 'Drainage — Why Choose Us Headline',
+              type: 'text',
+            },
+            {
+              name: 'drainageWhyUsSubheading',
+              label: 'Drainage — Why Choose Us Subheading',
+              type: 'text',
+            },
             {
               name: 'drainageWhyUsCards',
               label: 'Drainage — Why Choose Us Cards',
@@ -347,7 +548,11 @@ export const EmergencyHeroWebsite: CollectionConfig = {
                 { name: 'body', type: 'textarea' },
               ],
             },
-            { name: 'drainageHowItWorksHeadline', label: 'Drainage — How It Works Headline', type: 'text' },
+            {
+              name: 'drainageHowItWorksHeadline',
+              label: 'Drainage — How It Works Headline',
+              type: 'text',
+            },
             {
               name: 'drainageHowItWorksSteps',
               label: 'Drainage — How It Works Steps',
@@ -369,16 +574,45 @@ export const EmergencyHeroWebsite: CollectionConfig = {
                 { name: 'answer', type: 'richText', required: true },
               ],
             },
-            { name: 'drainageTySubheading', label: 'Drainage — Thank You Subheading', type: 'text' },
-            { name: 'drainageTyCallCtaText', label: 'Drainage — Thank You Call CTA Text', type: 'text' },
+            {
+              name: 'drainageTySubheading',
+              label: 'Drainage — Thank You Subheading',
+              type: 'text',
+            },
+            {
+              name: 'drainageTyCallCtaText',
+              label: 'Drainage — Thank You Call CTA Text',
+              type: 'text',
+            },
 
             // Locksmiths
-            { name: 'locksmithsHeroBgImage', label: 'Locksmiths — Hero Background Image', type: 'upload', relationTo: 'media' },
+            {
+              name: 'locksmithsHeroBgImage',
+              label: 'Locksmiths — Hero Background Image',
+              type: 'upload',
+              relationTo: 'media',
+            },
             { name: 'locksmithsHeroHeadline', label: 'Locksmiths — Hero Headline', type: 'text' },
-            { name: 'locksmithsHeroSubheading', label: 'Locksmiths — Hero Subheading', type: 'text' },
-            { name: 'locksmithsHeroFormCtaText', label: 'Locksmiths — Hero Form CTA Text', type: 'text' },
-            { name: 'locksmithsIssuesHeadline', label: 'Locksmiths — Issues Grid Headline', type: 'text' },
-            { name: 'locksmithsIssuesSubheading', label: 'Locksmiths — Issues Grid Subheading', type: 'text' },
+            {
+              name: 'locksmithsHeroSubheading',
+              label: 'Locksmiths — Hero Subheading',
+              type: 'text',
+            },
+            {
+              name: 'locksmithsHeroFormCtaText',
+              label: 'Locksmiths — Hero Form CTA Text',
+              type: 'text',
+            },
+            {
+              name: 'locksmithsIssuesHeadline',
+              label: 'Locksmiths — Issues Grid Headline',
+              type: 'text',
+            },
+            {
+              name: 'locksmithsIssuesSubheading',
+              label: 'Locksmiths — Issues Grid Subheading',
+              type: 'text',
+            },
             {
               name: 'locksmithsIssueCards',
               label: 'Locksmiths — Issue Cards',
@@ -390,8 +624,16 @@ export const EmergencyHeroWebsite: CollectionConfig = {
                 { name: 'ctaText', type: 'text' },
               ],
             },
-            { name: 'locksmithsWhyUsHeadline', label: 'Locksmiths — Why Choose Us Headline', type: 'text' },
-            { name: 'locksmithsWhyUsSubheading', label: 'Locksmiths — Why Choose Us Subheading', type: 'text' },
+            {
+              name: 'locksmithsWhyUsHeadline',
+              label: 'Locksmiths — Why Choose Us Headline',
+              type: 'text',
+            },
+            {
+              name: 'locksmithsWhyUsSubheading',
+              label: 'Locksmiths — Why Choose Us Subheading',
+              type: 'text',
+            },
             {
               name: 'locksmithsWhyUsCards',
               label: 'Locksmiths — Why Choose Us Cards',
@@ -402,7 +644,11 @@ export const EmergencyHeroWebsite: CollectionConfig = {
                 { name: 'body', type: 'textarea' },
               ],
             },
-            { name: 'locksmithsHowItWorksHeadline', label: 'Locksmiths — How It Works Headline', type: 'text' },
+            {
+              name: 'locksmithsHowItWorksHeadline',
+              label: 'Locksmiths — How It Works Headline',
+              type: 'text',
+            },
             {
               name: 'locksmithsHowItWorksSteps',
               label: 'Locksmiths — How It Works Steps',
@@ -424,8 +670,16 @@ export const EmergencyHeroWebsite: CollectionConfig = {
                 { name: 'answer', type: 'richText', required: true },
               ],
             },
-            { name: 'locksmithsTySubheading', label: 'Locksmiths — Thank You Subheading', type: 'text' },
-            { name: 'locksmithsTyCallCtaText', label: 'Locksmiths — Thank You Call CTA Text', type: 'text' },
+            {
+              name: 'locksmithsTySubheading',
+              label: 'Locksmiths — Thank You Subheading',
+              type: 'text',
+            },
+            {
+              name: 'locksmithsTyCallCtaText',
+              label: 'Locksmiths — Thank You Call CTA Text',
+              type: 'text',
+            },
           ],
         },
 
@@ -433,7 +687,12 @@ export const EmergencyHeroWebsite: CollectionConfig = {
         {
           label: 'Knowledge Base',
           fields: [
-            { name: 'kbHeroBgImage', label: 'Hero — Background Image', type: 'upload', relationTo: 'media' },
+            {
+              name: 'kbHeroBgImage',
+              label: 'Hero — Background Image',
+              type: 'upload',
+              relationTo: 'media',
+            },
             { name: 'kbHeroHeadline', label: 'Hero — Headline', type: 'text' },
             { name: 'kbHeroSubheading', label: 'Hero — Subheading', type: 'text' },
             { name: 'kbGridHeadline', label: 'Article Grid — Headline', type: 'text' },
@@ -444,7 +703,12 @@ export const EmergencyHeroWebsite: CollectionConfig = {
         {
           label: 'About',
           fields: [
-            { name: 'aboutHeroBgImage', label: 'Hero — Background / Video', type: 'upload', relationTo: 'media' },
+            {
+              name: 'aboutHeroBgImage',
+              label: 'Hero — Background / Video',
+              type: 'upload',
+              relationTo: 'media',
+            },
             { name: 'aboutHeroHeadline', label: 'Hero — Headline', type: 'text' },
             { name: 'aboutHeroSubheading', label: 'Hero — Subheading', type: 'text' },
             { name: 'asSeenOnLabel', label: 'As Seen On — Label', type: 'text' },
@@ -488,7 +752,12 @@ export const EmergencyHeroWebsite: CollectionConfig = {
         {
           label: 'Become a Hero',
           fields: [
-            { name: 'bahHeroBgImage', label: 'Hero — Background Image', type: 'upload', relationTo: 'media' },
+            {
+              name: 'bahHeroBgImage',
+              label: 'Hero — Background Image',
+              type: 'upload',
+              relationTo: 'media',
+            },
             { name: 'bahHeroHeadline', label: 'Hero — Headline', type: 'text' },
             { name: 'bahHeroSubheading', label: 'Hero — Subheading', type: 'text' },
             { name: 'bahHeroCtaText', label: 'Hero — CTA Button Text', type: 'text' },
@@ -525,14 +794,17 @@ export const EmergencyHeroWebsite: CollectionConfig = {
                   name: 'planValues',
                   label: 'Value Per Plan',
                   type: 'array',
-                  fields: [
-                    { name: 'value', type: 'text', required: true },
-                  ],
+                  fields: [{ name: 'value', type: 'text', required: true }],
                 },
               ],
             },
             { name: 'bahPlansFootnote', label: 'Plans — Footnote', type: 'richText' },
-            { name: 'bahStoryImage', label: 'Story Block — Image', type: 'upload', relationTo: 'media' },
+            {
+              name: 'bahStoryImage',
+              label: 'Story Block — Image',
+              type: 'upload',
+              relationTo: 'media',
+            },
             { name: 'bahStoryHeadline', label: 'Story Block — Headline', type: 'text' },
             { name: 'bahStoryBody', label: 'Story Block — Body Text', type: 'richText' },
             { name: 'bahStoryCtaText', label: 'Story Block — CTA Button Text', type: 'text' },
@@ -543,7 +815,12 @@ export const EmergencyHeroWebsite: CollectionConfig = {
               type: 'array',
               fields: [
                 { name: 'tradeName', label: 'Trade Name', type: 'text', required: true },
-                { name: 'tradePluralLabel', label: 'Trade Plural Label', type: 'text', required: true },
+                {
+                  name: 'tradePluralLabel',
+                  label: 'Trade Plural Label',
+                  type: 'text',
+                  required: true,
+                },
                 { name: 'microcopy', label: 'Microcopy Template', type: 'richText' },
                 {
                   name: 'requiredDocuments',
