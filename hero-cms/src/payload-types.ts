@@ -1362,7 +1362,8 @@ export interface EmergencyHeroService {
   accentColour?: string | null;
   navLabel?: string | null;
   categoryLabel?: string | null;
-  heroCharacterImage?: (number | null) | Media;
+  heroCharacterImageDesktop?: (number | null) | Media;
+  heroCharacterImageMobile?: (number | null) | Media;
   heroBackgroundImage?: (number | null) | Media;
   reviewCategory?: string | null;
   rngMin?: number | null;
@@ -2530,7 +2531,8 @@ export interface EmergencyHeroServicesSelect<T extends boolean = true> {
   accentColour?: T;
   navLabel?: T;
   categoryLabel?: T;
-  heroCharacterImage?: T;
+  heroCharacterImageDesktop?: T;
+  heroCharacterImageMobile?: T;
   heroBackgroundImage?: T;
   reviewCategory?: T;
   rngMin?: T;

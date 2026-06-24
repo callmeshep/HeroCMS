@@ -35,8 +35,14 @@ export const EmergencyHeroServices: CollectionConfig = {
     { name: 'navLabel', label: 'Nav Label', type: 'text' },
     { name: 'categoryLabel', label: 'Category Label (e.g. Plumber)', type: 'text' },
     {
-      name: 'heroCharacterImage',
-      label: 'Hero Character Image',
+      name: 'heroCharacterImageDesktop',
+      label: 'Hero Character Image (Desktop — landscape)',
+      type: 'upload',
+      relationTo: 'media',
+    },
+    {
+      name: 'heroCharacterImageMobile',
+      label: 'Hero Character Image (Mobile — portrait)',
       type: 'upload',
       relationTo: 'media',
     },
