@@ -25,7 +25,6 @@ export const EmergencyHeroEmailTemplates: CollectionConfig = {
       type: 'relationship',
       relationTo: 'tenants',
       required: true,
-      admin: { hidden: true },
     },
     {
       name: 'templateName',

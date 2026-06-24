@@ -26,7 +26,6 @@ export const EmergencyHeroSubmissions: CollectionConfig = {
       type: 'relationship',
       relationTo: 'tenants',
       required: true,
-      admin: { hidden: true },
     },
     { name: 'name', type: 'text' },
     { name: 'companyName', label: 'Company Name', type: 'text' },

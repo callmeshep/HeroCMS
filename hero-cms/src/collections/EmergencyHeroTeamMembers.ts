@@ -26,7 +26,6 @@ export const EmergencyHeroTeamMembers: CollectionConfig = {
       type: 'relationship',
       relationTo: 'tenants',
       required: true,
-      admin: { hidden: true },
     },
     { name: 'name', type: 'text', required: true },
     { name: 'jobTitle', label: 'Job Title', type: 'text' },

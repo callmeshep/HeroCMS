@@ -31,7 +31,6 @@ export const EmergencyHeroWebsite: CollectionConfig = {
       name: 'title',
       type: 'text',
       defaultValue: 'Emergency Hero Website',
-      admin: { hidden: true },
     },
     {
       type: 'tabs',

@@ -28,7 +28,6 @@ export const EmergencyHeroImageGallery: CollectionConfig = {
       type: 'relationship',
       relationTo: 'tenants',
       required: true,
-      admin: { hidden: true },
     },
     {
       name: 'altText',

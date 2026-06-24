@@ -26,7 +26,6 @@ export const EmergencyHeroKnowledgeBase: CollectionConfig = {
       type: 'relationship',
       relationTo: 'tenants',
       required: true,
-      admin: { hidden: true },
     },
     { name: 'title', type: 'text', required: true },
     { name: 'slug', type: 'text', required: true },
