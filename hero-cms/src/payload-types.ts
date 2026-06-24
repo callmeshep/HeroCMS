@@ -78,6 +78,15 @@ export interface Config {
     'herocare-submissions': HerocareSubmission;
     'herocare-website': HerocareWebsite;
     'emergency-hero-brand-assets': EmergencyHeroBrandAsset;
+    'emergency-hero-website': EmergencyHeroWebsite;
+    'emergency-hero-services': EmergencyHeroService;
+    'emergency-hero-knowledge-base': EmergencyHeroKnowledgeBase;
+    'emergency-hero-team-members': EmergencyHeroTeamMember;
+    'emergency-hero-submissions': EmergencyHeroSubmission;
+    'emergency-hero-image-gallery': EmergencyHeroImageGallery;
+    'emergency-hero-email-templates': EmergencyHeroEmailTemplate;
+    reviews: Review;
+    'review-website-website': ReviewWebsiteWebsite;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -100,6 +109,15 @@ export interface Config {
     'herocare-submissions': HerocareSubmissionsSelect<false> | HerocareSubmissionsSelect<true>;
     'herocare-website': HerocareWebsiteSelect<false> | HerocareWebsiteSelect<true>;
     'emergency-hero-brand-assets': EmergencyHeroBrandAssetsSelect<false> | EmergencyHeroBrandAssetsSelect<true>;
+    'emergency-hero-website': EmergencyHeroWebsiteSelect<false> | EmergencyHeroWebsiteSelect<true>;
+    'emergency-hero-services': EmergencyHeroServicesSelect<false> | EmergencyHeroServicesSelect<true>;
+    'emergency-hero-knowledge-base': EmergencyHeroKnowledgeBaseSelect<false> | EmergencyHeroKnowledgeBaseSelect<true>;
+    'emergency-hero-team-members': EmergencyHeroTeamMembersSelect<false> | EmergencyHeroTeamMembersSelect<true>;
+    'emergency-hero-submissions': EmergencyHeroSubmissionsSelect<false> | EmergencyHeroSubmissionsSelect<true>;
+    'emergency-hero-image-gallery': EmergencyHeroImageGallerySelect<false> | EmergencyHeroImageGallerySelect<true>;
+    'emergency-hero-email-templates': EmergencyHeroEmailTemplatesSelect<false> | EmergencyHeroEmailTemplatesSelect<true>;
+    reviews: ReviewsSelect<false> | ReviewsSelect<true>;
+    'review-website-website': ReviewWebsiteWebsiteSelect<false> | ReviewWebsiteWebsiteSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -401,6 +419,7 @@ export interface HerocareWebsite {
   trustpilotRating?: number | null;
   trustpilotReviewCount?: number | null;
   trustpilotLink?: string | null;
+  heroBackgroundImage?: (number | null) | Media;
   heroHeadlineLine1?: string | null;
   heroHeadlineLine2?: string | null;
   heroBulletPoints?:
@@ -622,6 +641,910 @@ export interface EmergencyHeroBrandAsset {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-hero-website".
+ */
+export interface EmergencyHeroWebsite {
+  id: number;
+  tenant: number | Tenant;
+  title?: string | null;
+  logoLight?: (number | null) | Media;
+  logoDark?: (number | null) | Media;
+  favicon?: (number | null) | Media;
+  phoneNumber?: string | null;
+  navCtaText?: string | null;
+  trustpilotRating?: number | null;
+  trustpilotReviewCount?: string | null;
+  trustpilotPlatformsLabel?: string | null;
+  appStoreUrl?: string | null;
+  googlePlayUrl?: string | null;
+  appScreenshotImage?: (number | null) | Media;
+  appBlockHeadline?: string | null;
+  appBlockBody?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  appBlockBullets?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  bottomCtaHeadline?: string | null;
+  bottomCtaButtonText?: string | null;
+  bottomCtaImageLeft?: (number | null) | Media;
+  bottomCtaImageRight?: (number | null) | Media;
+  footerStrapline?: string | null;
+  footerFacebookUrl?: string | null;
+  footerInstagramUrl?: string | null;
+  footerTwitterUrl?: string | null;
+  footerAppBannerImage?: (number | null) | Media;
+  footerCopyrightText?: string | null;
+  footerServicesLinks?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  footerCompanyLinks?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  footerPoliciesLinks?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  mobileMenuImageLeft?: (number | null) | Media;
+  mobileMenuImageRight?: (number | null) | Media;
+  homeHeroBackgroundImage?: (number | null) | Media;
+  homeHeroHeadline?: string | null;
+  homeHeroSubheading?: string | null;
+  homeHeroFormCtaText?: string | null;
+  homeHeroImageLeft?: (number | null) | Media;
+  homeHeroImageRight?: (number | null) | Media;
+  logoBarLogos?:
+    | {
+        image: number | Media;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  servicesGridHeadline?: string | null;
+  servicesGridSubheading?: string | null;
+  homecareCardHeadline?: string | null;
+  homecareCardBody?: string | null;
+  homecareCardCtaText?: string | null;
+  homecareCardCtaUrl?: string | null;
+  homecareCardImage?: (number | null) | Media;
+  homecareCardAccentColour?: string | null;
+  whoWeAreHeadline?: string | null;
+  whoWeAreSubheading?: string | null;
+  whoWeAreVideoUrl?: string | null;
+  homeFaqsHeadline?: string | null;
+  homeFaqsBody?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  homeFaqsHaveAnotherQuestion?: string | null;
+  homeFaqItems?:
+    | {
+        question: string;
+        answer: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  knowledgeBaseHeadline?: string | null;
+  plumbingHeroBgImage?: (number | null) | Media;
+  plumbingHeroHeadline?: string | null;
+  plumbingHeroSubheading?: string | null;
+  plumbingHeroFormCtaText?: string | null;
+  plumbingIssuesHeadline?: string | null;
+  plumbingIssuesSubheading?: string | null;
+  plumbingIssueCards?:
+    | {
+        icon?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        ctaText?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  plumbingWhyUsHeadline?: string | null;
+  plumbingWhyUsSubheading?: string | null;
+  plumbingWhyUsCards?:
+    | {
+        icon?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  plumbingHowItWorksHeadline?: string | null;
+  plumbingHowItWorksSteps?:
+    | {
+        image?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  plumbingFaqsHeadline?: string | null;
+  plumbingFaqsBody?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  plumbingFaqItems?:
+    | {
+        question: string;
+        answer: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  plumbingTySubheading?: string | null;
+  plumbingTyCallCtaText?: string | null;
+  heatingHeroBgImage?: (number | null) | Media;
+  heatingHeroHeadline?: string | null;
+  heatingHeroSubheading?: string | null;
+  heatingHeroFormCtaText?: string | null;
+  heatingIssuesHeadline?: string | null;
+  heatingIssuesSubheading?: string | null;
+  heatingIssueCards?:
+    | {
+        icon?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        ctaText?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  heatingWhyUsHeadline?: string | null;
+  heatingWhyUsSubheading?: string | null;
+  heatingWhyUsCards?:
+    | {
+        icon?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  heatingHowItWorksHeadline?: string | null;
+  heatingHowItWorksSteps?:
+    | {
+        image?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  heatingFaqsHeadline?: string | null;
+  heatingFaqsBody?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  heatingFaqItems?:
+    | {
+        question: string;
+        answer: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  heatingTySubheading?: string | null;
+  heatingTyCallCtaText?: string | null;
+  electricsHeroBgImage?: (number | null) | Media;
+  electricsHeroHeadline?: string | null;
+  electricsHeroSubheading?: string | null;
+  electricsHeroFormCtaText?: string | null;
+  electricsIssuesHeadline?: string | null;
+  electricsIssuesSubheading?: string | null;
+  electricsIssueCards?:
+    | {
+        icon?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        ctaText?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  electricsWhyUsHeadline?: string | null;
+  electricsWhyUsSubheading?: string | null;
+  electricsWhyUsCards?:
+    | {
+        icon?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  electricsHowItWorksHeadline?: string | null;
+  electricsHowItWorksSteps?:
+    | {
+        image?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  electricsFaqsHeadline?: string | null;
+  electricsFaqsBody?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  electricsFaqItems?:
+    | {
+        question: string;
+        answer: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  electricsTySubheading?: string | null;
+  electricsTyCallCtaText?: string | null;
+  drainageHeroBgImage?: (number | null) | Media;
+  drainageHeroHeadline?: string | null;
+  drainageHeroSubheading?: string | null;
+  drainageHeroFormCtaText?: string | null;
+  drainageIssuesHeadline?: string | null;
+  drainageIssuesSubheading?: string | null;
+  drainageIssueCards?:
+    | {
+        icon?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        ctaText?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  drainageWhyUsHeadline?: string | null;
+  drainageWhyUsSubheading?: string | null;
+  drainageWhyUsCards?:
+    | {
+        icon?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  drainageHowItWorksHeadline?: string | null;
+  drainageHowItWorksSteps?:
+    | {
+        image?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  drainageFaqsHeadline?: string | null;
+  drainageFaqsBody?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  drainageFaqItems?:
+    | {
+        question: string;
+        answer: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  drainageTySubheading?: string | null;
+  drainageTyCallCtaText?: string | null;
+  locksmithsHeroBgImage?: (number | null) | Media;
+  locksmithsHeroHeadline?: string | null;
+  locksmithsHeroSubheading?: string | null;
+  locksmithsHeroFormCtaText?: string | null;
+  locksmithsIssuesHeadline?: string | null;
+  locksmithsIssuesSubheading?: string | null;
+  locksmithsIssueCards?:
+    | {
+        icon?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        ctaText?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  locksmithsWhyUsHeadline?: string | null;
+  locksmithsWhyUsSubheading?: string | null;
+  locksmithsWhyUsCards?:
+    | {
+        icon?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  locksmithsHowItWorksHeadline?: string | null;
+  locksmithsHowItWorksSteps?:
+    | {
+        image?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  locksmithsFaqsHeadline?: string | null;
+  locksmithsFaqsBody?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  locksmithsFaqItems?:
+    | {
+        question: string;
+        answer: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  locksmithsTySubheading?: string | null;
+  locksmithsTyCallCtaText?: string | null;
+  kbHeroBgImage?: (number | null) | Media;
+  kbHeroHeadline?: string | null;
+  kbHeroSubheading?: string | null;
+  kbGridHeadline?: string | null;
+  aboutHeroBgImage?: (number | null) | Media;
+  aboutHeroHeadline?: string | null;
+  aboutHeroSubheading?: string | null;
+  asSeenOnLabel?: string | null;
+  asSeenOnLogos?:
+    | {
+        image: number | Media;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  storyBlocks?:
+    | {
+        image?: (number | null) | Media;
+        headline: string;
+        body?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  brandValuesHeadline?: string | null;
+  brandValuesSubheading?: string | null;
+  brandValueCards?:
+    | {
+        icon?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  teamHeadline?: string | null;
+  teamBody?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  bahHeroBgImage?: (number | null) | Media;
+  bahHeroHeadline?: string | null;
+  bahHeroSubheading?: string | null;
+  bahHeroCtaText?: string | null;
+  bahHowItWorksHeadline?: string | null;
+  bahHowItWorksSteps?:
+    | {
+        image?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  bahPlansHeadline?: string | null;
+  bahPlansSubheading?: string | null;
+  bahPlans?:
+    | {
+        name: string;
+        ctaText?: string | null;
+        stripeLink?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  bahFeatureRows?:
+    | {
+        featureName: string;
+        planValues?:
+          | {
+              value: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  bahPlansFootnote?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  bahStoryImage?: (number | null) | Media;
+  bahStoryHeadline?: string | null;
+  bahStoryBody?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  bahStoryCtaText?: string | null;
+  bahStoryCtaLink?: string | null;
+  bahTradeDocuments?:
+    | {
+        tradeName: string;
+        tradePluralLabel: string;
+        microcopy?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        requiredDocuments?:
+          | {
+              label: string;
+              required?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  ehPolicies?:
+    | {
+        title: string;
+        slug: string;
+        content?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-hero-services".
+ */
+export interface EmergencyHeroService {
+  id: number;
+  tenant: number | Tenant;
+  serviceName: string;
+  slug: string;
+  enabled?: boolean | null;
+  accentColour?: string | null;
+  navLabel?: string | null;
+  heroCharacterImage?: (number | null) | Media;
+  heroBackgroundImage?: (number | null) | Media;
+  reviewCategory?: string | null;
+  rngMin?: number | null;
+  rngMax?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-hero-knowledge-base".
+ */
+export interface EmergencyHeroKnowledgeBase {
+  id: number;
+  tenant: number | Tenant;
+  title: string;
+  slug: string;
+  category: 'plumbing' | 'heating' | 'electrics' | 'drainage' | 'locksmiths' | 'homecare' | 'company';
+  excerpt?: string | null;
+  heroImage?: (number | null) | Media;
+  bodyContent?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  featured?: boolean | null;
+  publishedAt?: string | null;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-hero-team-members".
+ */
+export interface EmergencyHeroTeamMember {
+  id: number;
+  tenant: number | Tenant;
+  name: string;
+  jobTitle?: string | null;
+  photo?: (number | null) | Media;
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-hero-submissions".
+ */
+export interface EmergencyHeroSubmission {
+  id: number;
+  tenant: number | Tenant;
+  name?: string | null;
+  companyName?: string | null;
+  companyType?: string | null;
+  email?: string | null;
+  mobile?: string | null;
+  website?: string | null;
+  skills?:
+    | {
+        trade?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  uploadedDocuments?:
+    | {
+        tradeName?: string | null;
+        documentLabel?: string | null;
+        fileUrl?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  workingDaysHours?: string | null;
+  postcode?: string | null;
+  coverageRadius?: number | null;
+  comments?: string | null;
+  submittedAt?: string | null;
+  ghlWebhookStatus?: ('pending' | 'sent' | 'failed') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-hero-image-gallery".
+ */
+export interface EmergencyHeroImageGallery {
+  id: number;
+  tenant: number | Tenant;
+  altText?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-hero-email-templates".
+ */
+export interface EmergencyHeroEmailTemplate {
+  id: number;
+  tenant: number | Tenant;
+  templateName: 'admin-notification' | 'customer-notification';
+  subjectLine?: string | null;
+  heading?: string | null;
+  body?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  buttonText?: string | null;
+  buttonUrl?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews".
+ */
+export interface Review {
+  id: number;
+  customerName: string;
+  rating: '1' | '2' | '3' | '4' | '5';
+  serviceType: 'plumbing' | 'heating' | 'electrics' | 'drainage' | 'general';
+  reviewBody?: string | null;
+  date?: string | null;
+  visible?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "review-website-website".
+ */
+export interface ReviewWebsiteWebsite {
+  id: number;
+  internalTitle?: string | null;
+  logo?: (number | null) | Media;
+  favicon?: (number | null) | Media;
+  navLinkVisitWebsiteLabel?: string | null;
+  navLinkVisitWebsiteUrl?: string | null;
+  navLinkGetHomeCoverLabel?: string | null;
+  navLinkGetHomeCoverUrl?: string | null;
+  navCtaLabel?: string | null;
+  heroHeadline?: string | null;
+  heroSubheading?: string | null;
+  heroImage?: (number | null) | Media;
+  heroRatingText?: string | null;
+  heroReviewCount?: string | null;
+  platformLogos?:
+    | {
+        logo?: (number | null) | Media;
+        url?: string | null;
+        altText?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  reviewsSectionHeadline?: string | null;
+  filterLabel?: string | null;
+  filterImages?:
+    | {
+        serviceType: 'general' | 'heating' | 'plumbing' | 'drainage' | 'electrics';
+        image?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  popupHeadline?: string | null;
+  popupImage?: (number | null) | Media;
+  popupCtaLabel?: string | null;
+  popupThankYouMessage?: string | null;
+  footerLogo?: (number | null) | Media;
+  footerPrivacyPolicyUrl?: string | null;
+  footerCookiesPolicyUrl?: string | null;
+  footerVisitMainWebsiteUrl?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -687,6 +1610,42 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'emergency-hero-brand-assets';
         value: number | EmergencyHeroBrandAsset;
+      } | null)
+    | ({
+        relationTo: 'emergency-hero-website';
+        value: number | EmergencyHeroWebsite;
+      } | null)
+    | ({
+        relationTo: 'emergency-hero-services';
+        value: number | EmergencyHeroService;
+      } | null)
+    | ({
+        relationTo: 'emergency-hero-knowledge-base';
+        value: number | EmergencyHeroKnowledgeBase;
+      } | null)
+    | ({
+        relationTo: 'emergency-hero-team-members';
+        value: number | EmergencyHeroTeamMember;
+      } | null)
+    | ({
+        relationTo: 'emergency-hero-submissions';
+        value: number | EmergencyHeroSubmission;
+      } | null)
+    | ({
+        relationTo: 'emergency-hero-image-gallery';
+        value: number | EmergencyHeroImageGallery;
+      } | null)
+    | ({
+        relationTo: 'emergency-hero-email-templates';
+        value: number | EmergencyHeroEmailTemplate;
+      } | null)
+    | ({
+        relationTo: 'reviews';
+        value: number | Review;
+      } | null)
+    | ({
+        relationTo: 'review-website-website';
+        value: number | ReviewWebsiteWebsite;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -928,6 +1887,7 @@ export interface HerocareWebsiteSelect<T extends boolean = true> {
   trustpilotRating?: T;
   trustpilotReviewCount?: T;
   trustpilotLink?: T;
+  heroBackgroundImage?: T;
   heroHeadlineLine1?: T;
   heroHeadlineLine2?: T;
   heroBulletPoints?:
@@ -1131,6 +2091,607 @@ export interface EmergencyHeroBrandAssetsSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-hero-website_select".
+ */
+export interface EmergencyHeroWebsiteSelect<T extends boolean = true> {
+  tenant?: T;
+  title?: T;
+  logoLight?: T;
+  logoDark?: T;
+  favicon?: T;
+  phoneNumber?: T;
+  navCtaText?: T;
+  trustpilotRating?: T;
+  trustpilotReviewCount?: T;
+  trustpilotPlatformsLabel?: T;
+  appStoreUrl?: T;
+  googlePlayUrl?: T;
+  appScreenshotImage?: T;
+  appBlockHeadline?: T;
+  appBlockBody?: T;
+  appBlockBullets?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  bottomCtaHeadline?: T;
+  bottomCtaButtonText?: T;
+  bottomCtaImageLeft?: T;
+  bottomCtaImageRight?: T;
+  footerStrapline?: T;
+  footerFacebookUrl?: T;
+  footerInstagramUrl?: T;
+  footerTwitterUrl?: T;
+  footerAppBannerImage?: T;
+  footerCopyrightText?: T;
+  footerServicesLinks?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  footerCompanyLinks?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  footerPoliciesLinks?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  mobileMenuImageLeft?: T;
+  mobileMenuImageRight?: T;
+  homeHeroBackgroundImage?: T;
+  homeHeroHeadline?: T;
+  homeHeroSubheading?: T;
+  homeHeroFormCtaText?: T;
+  homeHeroImageLeft?: T;
+  homeHeroImageRight?: T;
+  logoBarLogos?:
+    | T
+    | {
+        image?: T;
+        url?: T;
+        id?: T;
+      };
+  servicesGridHeadline?: T;
+  servicesGridSubheading?: T;
+  homecareCardHeadline?: T;
+  homecareCardBody?: T;
+  homecareCardCtaText?: T;
+  homecareCardCtaUrl?: T;
+  homecareCardImage?: T;
+  homecareCardAccentColour?: T;
+  whoWeAreHeadline?: T;
+  whoWeAreSubheading?: T;
+  whoWeAreVideoUrl?: T;
+  homeFaqsHeadline?: T;
+  homeFaqsBody?: T;
+  homeFaqsHaveAnotherQuestion?: T;
+  homeFaqItems?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  knowledgeBaseHeadline?: T;
+  plumbingHeroBgImage?: T;
+  plumbingHeroHeadline?: T;
+  plumbingHeroSubheading?: T;
+  plumbingHeroFormCtaText?: T;
+  plumbingIssuesHeadline?: T;
+  plumbingIssuesSubheading?: T;
+  plumbingIssueCards?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        body?: T;
+        ctaText?: T;
+        id?: T;
+      };
+  plumbingWhyUsHeadline?: T;
+  plumbingWhyUsSubheading?: T;
+  plumbingWhyUsCards?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  plumbingHowItWorksHeadline?: T;
+  plumbingHowItWorksSteps?:
+    | T
+    | {
+        image?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  plumbingFaqsHeadline?: T;
+  plumbingFaqsBody?: T;
+  plumbingFaqItems?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  plumbingTySubheading?: T;
+  plumbingTyCallCtaText?: T;
+  heatingHeroBgImage?: T;
+  heatingHeroHeadline?: T;
+  heatingHeroSubheading?: T;
+  heatingHeroFormCtaText?: T;
+  heatingIssuesHeadline?: T;
+  heatingIssuesSubheading?: T;
+  heatingIssueCards?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        body?: T;
+        ctaText?: T;
+        id?: T;
+      };
+  heatingWhyUsHeadline?: T;
+  heatingWhyUsSubheading?: T;
+  heatingWhyUsCards?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  heatingHowItWorksHeadline?: T;
+  heatingHowItWorksSteps?:
+    | T
+    | {
+        image?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  heatingFaqsHeadline?: T;
+  heatingFaqsBody?: T;
+  heatingFaqItems?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  heatingTySubheading?: T;
+  heatingTyCallCtaText?: T;
+  electricsHeroBgImage?: T;
+  electricsHeroHeadline?: T;
+  electricsHeroSubheading?: T;
+  electricsHeroFormCtaText?: T;
+  electricsIssuesHeadline?: T;
+  electricsIssuesSubheading?: T;
+  electricsIssueCards?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        body?: T;
+        ctaText?: T;
+        id?: T;
+      };
+  electricsWhyUsHeadline?: T;
+  electricsWhyUsSubheading?: T;
+  electricsWhyUsCards?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  electricsHowItWorksHeadline?: T;
+  electricsHowItWorksSteps?:
+    | T
+    | {
+        image?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  electricsFaqsHeadline?: T;
+  electricsFaqsBody?: T;
+  electricsFaqItems?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  electricsTySubheading?: T;
+  electricsTyCallCtaText?: T;
+  drainageHeroBgImage?: T;
+  drainageHeroHeadline?: T;
+  drainageHeroSubheading?: T;
+  drainageHeroFormCtaText?: T;
+  drainageIssuesHeadline?: T;
+  drainageIssuesSubheading?: T;
+  drainageIssueCards?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        body?: T;
+        ctaText?: T;
+        id?: T;
+      };
+  drainageWhyUsHeadline?: T;
+  drainageWhyUsSubheading?: T;
+  drainageWhyUsCards?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  drainageHowItWorksHeadline?: T;
+  drainageHowItWorksSteps?:
+    | T
+    | {
+        image?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  drainageFaqsHeadline?: T;
+  drainageFaqsBody?: T;
+  drainageFaqItems?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  drainageTySubheading?: T;
+  drainageTyCallCtaText?: T;
+  locksmithsHeroBgImage?: T;
+  locksmithsHeroHeadline?: T;
+  locksmithsHeroSubheading?: T;
+  locksmithsHeroFormCtaText?: T;
+  locksmithsIssuesHeadline?: T;
+  locksmithsIssuesSubheading?: T;
+  locksmithsIssueCards?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        body?: T;
+        ctaText?: T;
+        id?: T;
+      };
+  locksmithsWhyUsHeadline?: T;
+  locksmithsWhyUsSubheading?: T;
+  locksmithsWhyUsCards?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  locksmithsHowItWorksHeadline?: T;
+  locksmithsHowItWorksSteps?:
+    | T
+    | {
+        image?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  locksmithsFaqsHeadline?: T;
+  locksmithsFaqsBody?: T;
+  locksmithsFaqItems?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  locksmithsTySubheading?: T;
+  locksmithsTyCallCtaText?: T;
+  kbHeroBgImage?: T;
+  kbHeroHeadline?: T;
+  kbHeroSubheading?: T;
+  kbGridHeadline?: T;
+  aboutHeroBgImage?: T;
+  aboutHeroHeadline?: T;
+  aboutHeroSubheading?: T;
+  asSeenOnLabel?: T;
+  asSeenOnLogos?:
+    | T
+    | {
+        image?: T;
+        url?: T;
+        id?: T;
+      };
+  storyBlocks?:
+    | T
+    | {
+        image?: T;
+        headline?: T;
+        body?: T;
+        id?: T;
+      };
+  brandValuesHeadline?: T;
+  brandValuesSubheading?: T;
+  brandValueCards?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  teamHeadline?: T;
+  teamBody?: T;
+  bahHeroBgImage?: T;
+  bahHeroHeadline?: T;
+  bahHeroSubheading?: T;
+  bahHeroCtaText?: T;
+  bahHowItWorksHeadline?: T;
+  bahHowItWorksSteps?:
+    | T
+    | {
+        image?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  bahPlansHeadline?: T;
+  bahPlansSubheading?: T;
+  bahPlans?:
+    | T
+    | {
+        name?: T;
+        ctaText?: T;
+        stripeLink?: T;
+        id?: T;
+      };
+  bahFeatureRows?:
+    | T
+    | {
+        featureName?: T;
+        planValues?:
+          | T
+          | {
+              value?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  bahPlansFootnote?: T;
+  bahStoryImage?: T;
+  bahStoryHeadline?: T;
+  bahStoryBody?: T;
+  bahStoryCtaText?: T;
+  bahStoryCtaLink?: T;
+  bahTradeDocuments?:
+    | T
+    | {
+        tradeName?: T;
+        tradePluralLabel?: T;
+        microcopy?: T;
+        requiredDocuments?:
+          | T
+          | {
+              label?: T;
+              required?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  ehPolicies?:
+    | T
+    | {
+        title?: T;
+        slug?: T;
+        content?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-hero-services_select".
+ */
+export interface EmergencyHeroServicesSelect<T extends boolean = true> {
+  tenant?: T;
+  serviceName?: T;
+  slug?: T;
+  enabled?: T;
+  accentColour?: T;
+  navLabel?: T;
+  heroCharacterImage?: T;
+  heroBackgroundImage?: T;
+  reviewCategory?: T;
+  rngMin?: T;
+  rngMax?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-hero-knowledge-base_select".
+ */
+export interface EmergencyHeroKnowledgeBaseSelect<T extends boolean = true> {
+  tenant?: T;
+  title?: T;
+  slug?: T;
+  category?: T;
+  excerpt?: T;
+  heroImage?: T;
+  bodyContent?: T;
+  featured?: T;
+  publishedAt?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-hero-team-members_select".
+ */
+export interface EmergencyHeroTeamMembersSelect<T extends boolean = true> {
+  tenant?: T;
+  name?: T;
+  jobTitle?: T;
+  photo?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-hero-submissions_select".
+ */
+export interface EmergencyHeroSubmissionsSelect<T extends boolean = true> {
+  tenant?: T;
+  name?: T;
+  companyName?: T;
+  companyType?: T;
+  email?: T;
+  mobile?: T;
+  website?: T;
+  skills?:
+    | T
+    | {
+        trade?: T;
+        id?: T;
+      };
+  uploadedDocuments?:
+    | T
+    | {
+        tradeName?: T;
+        documentLabel?: T;
+        fileUrl?: T;
+        id?: T;
+      };
+  workingDaysHours?: T;
+  postcode?: T;
+  coverageRadius?: T;
+  comments?: T;
+  submittedAt?: T;
+  ghlWebhookStatus?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-hero-image-gallery_select".
+ */
+export interface EmergencyHeroImageGallerySelect<T extends boolean = true> {
+  tenant?: T;
+  altText?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "emergency-hero-email-templates_select".
+ */
+export interface EmergencyHeroEmailTemplatesSelect<T extends boolean = true> {
+  tenant?: T;
+  templateName?: T;
+  subjectLine?: T;
+  heading?: T;
+  body?: T;
+  buttonText?: T;
+  buttonUrl?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews_select".
+ */
+export interface ReviewsSelect<T extends boolean = true> {
+  customerName?: T;
+  rating?: T;
+  serviceType?: T;
+  reviewBody?: T;
+  date?: T;
+  visible?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "review-website-website_select".
+ */
+export interface ReviewWebsiteWebsiteSelect<T extends boolean = true> {
+  internalTitle?: T;
+  logo?: T;
+  favicon?: T;
+  navLinkVisitWebsiteLabel?: T;
+  navLinkVisitWebsiteUrl?: T;
+  navLinkGetHomeCoverLabel?: T;
+  navLinkGetHomeCoverUrl?: T;
+  navCtaLabel?: T;
+  heroHeadline?: T;
+  heroSubheading?: T;
+  heroImage?: T;
+  heroRatingText?: T;
+  heroReviewCount?: T;
+  platformLogos?:
+    | T
+    | {
+        logo?: T;
+        url?: T;
+        altText?: T;
+        id?: T;
+      };
+  reviewsSectionHeadline?: T;
+  filterLabel?: T;
+  filterImages?:
+    | T
+    | {
+        serviceType?: T;
+        image?: T;
+        id?: T;
+      };
+  popupHeadline?: T;
+  popupImage?: T;
+  popupCtaLabel?: T;
+  popupThankYouMessage?: T;
+  footerLogo?: T;
+  footerPrivacyPolicyUrl?: T;
+  footerCookiesPolicyUrl?: T;
+  footerVisitMainWebsiteUrl?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -15,6 +15,13 @@ import { HeroCareImageGallery } from './collections/HeroCareImageGallery'
 import { HeroCareBrandAssets } from './collections/HeroCareBrandAssets'
 import { HeroCareEmailTemplates } from './collections/HeroCareEmailTemplates'
 import { EmergencyHeroBrandAssets } from './collections/EmergencyHeroBrandAssets'
+import { EmergencyHeroWebsite } from './collections/EmergencyHeroWebsite'
+import { EmergencyHeroServices } from './collections/EmergencyHeroServices'
+import { EmergencyHeroKnowledgeBase } from './collections/EmergencyHeroKnowledgeBase'
+import { EmergencyHeroTeamMembers } from './collections/EmergencyHeroTeamMembers'
+import { EmergencyHeroSubmissions } from './collections/EmergencyHeroSubmissions'
+import { EmergencyHeroImageGallery } from './collections/EmergencyHeroImageGallery'
+import { EmergencyHeroEmailTemplates } from './collections/EmergencyHeroEmailTemplates'
 import { HeroCareForms } from './collections/HeroCareForms'
 import { HeroCareSubmissions } from './collections/HeroCareSubmissions'
 import { Reviews } from './collections/Reviews'
@@ -31,6 +38,8 @@ export default buildConfig({
     'https://emergencyheroreviews.com',
     'https://www.emergencyheroreviews.com',
     'https://emergency-hero-reviews.pages.dev',
+    'https://emergencyhero.co.uk',
+    'https://www.emergencyhero.co.uk',
     'http://localhost:4321',
   ],
   admin: {
@@ -69,6 +78,13 @@ export default buildConfig({
     HeroCareSubmissions,
     HeroCareWebsite,
     EmergencyHeroBrandAssets,
+    EmergencyHeroWebsite,
+    EmergencyHeroServices,
+    EmergencyHeroKnowledgeBase,
+    EmergencyHeroTeamMembers,
+    EmergencyHeroSubmissions,
+    EmergencyHeroImageGallery,
+    EmergencyHeroEmailTemplates,
     Reviews,
     ReviewWebsiteWebsite,
   ],
@@ -100,6 +116,10 @@ export default buildConfig({
             `https://pub-defbc79b6f1c472f9b6480d90f974810.r2.dev/${filename}`,
         },
         'emergency-hero-brand-assets': {
+          generateFileURL: ({ filename }) =>
+            `https://pub-defbc79b6f1c472f9b6480d90f974810.r2.dev/${filename}`,
+        },
+        'emergency-hero-image-gallery': {
           generateFileURL: ({ filename }) =>
             `https://pub-defbc79b6f1c472f9b6480d90f974810.r2.dev/${filename}`,
         },
