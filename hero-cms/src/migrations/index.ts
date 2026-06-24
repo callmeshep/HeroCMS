@@ -6,6 +6,7 @@ import * as migration_20260611_233343_add_submission_email_field from './2026061
 import * as migration_20260611_234546_add_integrations_fields from './20260611_234546_add_integrations_fields';
 import * as migration_20260616_191501 from './20260616_191501';
 import * as migration_20260617_204251 from './20260617_204251';
+import * as migration_20260624_135244 from './20260624_135244';
 
 export const migrations = [
   {
@@ -46,6 +47,11 @@ export const migrations = [
   {
     up: migration_20260617_204251.up,
     down: migration_20260617_204251.down,
-    name: '20260617_204251'
+    name: '20260617_204251',
+  },
+  {
+    up: migration_20260624_135244.up,
+    down: migration_20260624_135244.down,
+    name: '20260624_135244'
   },
 ];
