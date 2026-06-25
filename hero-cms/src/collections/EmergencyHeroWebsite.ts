@@ -44,9 +44,18 @@ export const EmergencyHeroWebsite: CollectionConfig = {
             { name: 'favicon', type: 'upload', relationTo: 'media' },
             { name: 'phoneNumber', label: 'Phone Number', type: 'text' },
             { name: 'navCtaText', label: 'Nav CTA Text', type: 'text' },
-            { name: 'trustpilotRating', label: 'Trustpilot Rating', type: 'number' },
-            { name: 'trustpilotReviewCount', label: 'Trustpilot Review Count', type: 'text' },
-            { name: 'trustpilotPlatformsLabel', label: 'Trustpilot Platforms Label', type: 'text' },
+            {
+              name: 'reviewsRating',
+              label: 'Reviews — Rating Label (e.g. Outstanding)',
+              type: 'text',
+            },
+            { name: 'reviewsStars', label: 'Reviews — Stars (e.g. 5)', type: 'number' },
+            {
+              name: 'reviewsPlatformsLabel',
+              label:
+                'Reviews — Platforms Label (e.g. based on over 1700 reviews across multiple platforms)',
+              type: 'text',
+            },
             { name: 'appStoreUrl', label: 'App Store URL', type: 'text' },
             { name: 'googlePlayUrl', label: 'Google Play URL', type: 'text' },
             {

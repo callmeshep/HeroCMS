@@ -652,9 +652,9 @@ export interface EmergencyHeroWebsite {
   favicon?: (number | null) | Media;
   phoneNumber?: string | null;
   navCtaText?: string | null;
-  trustpilotRating?: number | null;
-  trustpilotReviewCount?: string | null;
-  trustpilotPlatformsLabel?: string | null;
+  reviewsRating?: string | null;
+  reviewsStars?: number | null;
+  reviewsPlatformsLabel?: string | null;
   appStoreUrl?: string | null;
   googlePlayUrl?: string | null;
   appScreenshotImage?: (number | null) | Media;
@@ -2109,9 +2109,9 @@ export interface EmergencyHeroWebsiteSelect<T extends boolean = true> {
   favicon?: T;
   phoneNumber?: T;
   navCtaText?: T;
-  trustpilotRating?: T;
-  trustpilotReviewCount?: T;
-  trustpilotPlatformsLabel?: T;
+  reviewsRating?: T;
+  reviewsStars?: T;
+  reviewsPlatformsLabel?: T;
   appStoreUrl?: T;
   googlePlayUrl?: T;
   appScreenshotImage?: T;
