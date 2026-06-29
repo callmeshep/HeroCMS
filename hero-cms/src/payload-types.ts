@@ -87,6 +87,12 @@ export interface Config {
     'emergency-hero-email-templates': EmergencyHeroEmailTemplate;
     reviews: Review;
     'review-website-website': ReviewWebsiteWebsite;
+    'yef-brand-assets': YefBrandAsset;
+    'yef-email-templates': YefEmailTemplate;
+    'yef-image-gallery': YefImageGallery;
+    'yef-forms': YefForm;
+    'yef-submissions': YefSubmission;
+    'yef-website': YefWebsite;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -118,6 +124,12 @@ export interface Config {
     'emergency-hero-email-templates': EmergencyHeroEmailTemplatesSelect<false> | EmergencyHeroEmailTemplatesSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
     'review-website-website': ReviewWebsiteWebsiteSelect<false> | ReviewWebsiteWebsiteSelect<true>;
+    'yef-brand-assets': YefBrandAssetsSelect<false> | YefBrandAssetsSelect<true>;
+    'yef-email-templates': YefEmailTemplatesSelect<false> | YefEmailTemplatesSelect<true>;
+    'yef-image-gallery': YefImageGallerySelect<false> | YefImageGallerySelect<true>;
+    'yef-forms': YefFormsSelect<false> | YefFormsSelect<true>;
+    'yef-submissions': YefSubmissionsSelect<false> | YefSubmissionsSelect<true>;
+    'yef-website': YefWebsiteSelect<false> | YefWebsiteSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -1550,6 +1562,154 @@ export interface ReviewWebsiteWebsite {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "yef-brand-assets".
+ */
+export interface YefBrandAsset {
+  id: number;
+  name: string;
+  description?: string | null;
+  tenant?: (number | null) | Tenant;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "yef-email-templates".
+ */
+export interface YefEmailTemplate {
+  id: number;
+  tenant: number | Tenant;
+  name: 'admin-notification' | 'customer-notification';
+  subjectLine: string;
+  logo?: (number | null) | Media;
+  heading: string;
+  bodyText: string;
+  buttonText?: string | null;
+  buttonURL?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "yef-image-gallery".
+ */
+export interface YefImageGallery {
+  id: number;
+  alt: string;
+  tenant?: (number | null) | Tenant;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "yef-forms".
+ */
+export interface YefForm {
+  id: number;
+  tenant: number | Tenant;
+  /**
+   * e.g. Enquiry Form, Header Form
+   */
+  name: string;
+  /**
+   * e.g. Homepage
+   */
+  page: string;
+  notificationsEnabled?: boolean | null;
+  notificationRecipients?:
+    | {
+        email: string;
+        id?: string | null;
+      }[]
+    | null;
+  views?: number | null;
+  attempts?: number | null;
+  completions?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "yef-submissions".
+ */
+export interface YefSubmission {
+  id: number;
+  tenant: number | Tenant;
+  formId?: string | null;
+  name?: string | null;
+  phoneNumber?: string | null;
+  postcode?: string | null;
+  service?: string | null;
+  email?: string | null;
+  submittedAt?: string | null;
+  webhookStatus?: ('pending' | 'sent' | 'failed') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "yef-website".
+ */
+export interface YefWebsite {
+  id: number;
+  tenant: number | Tenant;
+  title?: string | null;
+  logo?: (number | null) | Media;
+  logoDark?: (number | null) | Media;
+  favicon?: (number | null) | Media;
+  phoneNumber?: string | null;
+  reviewsRating?: number | null;
+  reviewsCount?: number | null;
+  reviewsPlatformsLabel?: string | null;
+  heroBackgroundImage?: (number | null) | Media;
+  homeHeroHeadline?: string | null;
+  homeHeroSubheading?: string | null;
+  homeHeroCtaText?: string | null;
+  policies?:
+    | {
+        title: string;
+        slug: string;
+        content?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -1651,6 +1811,30 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'review-website-website';
         value: number | ReviewWebsiteWebsite;
+      } | null)
+    | ({
+        relationTo: 'yef-brand-assets';
+        value: number | YefBrandAsset;
+      } | null)
+    | ({
+        relationTo: 'yef-email-templates';
+        value: number | YefEmailTemplate;
+      } | null)
+    | ({
+        relationTo: 'yef-image-gallery';
+        value: number | YefImageGallery;
+      } | null)
+    | ({
+        relationTo: 'yef-forms';
+        value: number | YefForm;
+      } | null)
+    | ({
+        relationTo: 'yef-submissions';
+        value: number | YefSubmission;
+      } | null)
+    | ({
+        relationTo: 'yef-website';
+        value: number | YefWebsite;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -2700,6 +2884,128 @@ export interface ReviewWebsiteWebsiteSelect<T extends boolean = true> {
   footerPrivacyPolicyUrl?: T;
   footerCookiesPolicyUrl?: T;
   footerVisitMainWebsiteUrl?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "yef-brand-assets_select".
+ */
+export interface YefBrandAssetsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  tenant?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "yef-email-templates_select".
+ */
+export interface YefEmailTemplatesSelect<T extends boolean = true> {
+  tenant?: T;
+  name?: T;
+  subjectLine?: T;
+  logo?: T;
+  heading?: T;
+  bodyText?: T;
+  buttonText?: T;
+  buttonURL?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "yef-image-gallery_select".
+ */
+export interface YefImageGallerySelect<T extends boolean = true> {
+  alt?: T;
+  tenant?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "yef-forms_select".
+ */
+export interface YefFormsSelect<T extends boolean = true> {
+  tenant?: T;
+  name?: T;
+  page?: T;
+  notificationsEnabled?: T;
+  notificationRecipients?:
+    | T
+    | {
+        email?: T;
+        id?: T;
+      };
+  views?: T;
+  attempts?: T;
+  completions?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "yef-submissions_select".
+ */
+export interface YefSubmissionsSelect<T extends boolean = true> {
+  tenant?: T;
+  formId?: T;
+  name?: T;
+  phoneNumber?: T;
+  postcode?: T;
+  service?: T;
+  email?: T;
+  submittedAt?: T;
+  webhookStatus?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "yef-website_select".
+ */
+export interface YefWebsiteSelect<T extends boolean = true> {
+  tenant?: T;
+  title?: T;
+  logo?: T;
+  logoDark?: T;
+  favicon?: T;
+  phoneNumber?: T;
+  reviewsRating?: T;
+  reviewsCount?: T;
+  reviewsPlatformsLabel?: T;
+  heroBackgroundImage?: T;
+  homeHeroHeadline?: T;
+  homeHeroSubheading?: T;
+  homeHeroCtaText?: T;
+  policies?:
+    | T
+    | {
+        title?: T;
+        slug?: T;
+        content?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
