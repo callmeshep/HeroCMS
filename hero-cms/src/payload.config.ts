@@ -26,6 +26,12 @@ import { HeroCareForms } from './collections/HeroCareForms'
 import { HeroCareSubmissions } from './collections/HeroCareSubmissions'
 import { Reviews } from './collections/Reviews'
 import { ReviewWebsiteWebsite } from './collections/ReviewWebsiteWebsite'
+import { YEFBrandAssets } from './collections/YEFBrandAssets'
+import { YEFEmailTemplates } from './collections/YEFEmailTemplates'
+import { YEFImageGallery } from './collections/YEFImageGallery'
+import { YEFForms } from './collections/YEFForms'
+import { YEFSubmissions } from './collections/YEFSubmissions'
+import { YEFWebsite } from './collections/YEFWebsite'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -88,6 +94,12 @@ export default buildConfig({
     EmergencyHeroEmailTemplates,
     Reviews,
     ReviewWebsiteWebsite,
+    YEFBrandAssets,
+    YEFEmailTemplates,
+    YEFImageGallery,
+    YEFForms,
+    YEFSubmissions,
+    YEFWebsite,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
@@ -121,6 +133,14 @@ export default buildConfig({
             `https://pub-defbc79b6f1c472f9b6480d90f974810.r2.dev/${filename}`,
         },
         'emergency-hero-image-gallery': {
+          generateFileURL: ({ filename }) =>
+            `https://pub-defbc79b6f1c472f9b6480d90f974810.r2.dev/${filename}`,
+        },
+        'yef-image-gallery': {
+          generateFileURL: ({ filename }) =>
+            `https://pub-defbc79b6f1c472f9b6480d90f974810.r2.dev/${filename}`,
+        },
+        'yef-brand-assets': {
           generateFileURL: ({ filename }) =>
             `https://pub-defbc79b6f1c472f9b6480d90f974810.r2.dev/${filename}`,
         },
