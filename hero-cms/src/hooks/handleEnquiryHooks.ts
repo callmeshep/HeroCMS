@@ -74,9 +74,10 @@ async function findGHLOpportunityByContactId(
   locationId: string,
   apiKey: string,
   contactId: string,
+  pipelineId: string,
 ): Promise<string | null> {
   const data = await ghlRequest(
-    `/opportunities/search?locationId=${locationId}&contactId=${contactId}&pipelineId=${GHL_PIPELINE_ID}`,
+    `/opportunities/search?locationId=${locationId}&contactId=${contactId}&pipelineId=${pipelineId}`,
     'GET',
     apiKey,
   )
@@ -172,7 +173,12 @@ export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, opera
               postalCode: doc.postcode,
             })
 
-            const opportunityId = await findGHLOpportunityByContactId(locationId, apiKey, contactId)
+            const opportunityId = await findGHLOpportunityByContactId(
+              locationId,
+              apiKey,
+              contactId,
+              ghl.pipelineId,
+            )
 
             if (opportunityId) {
               await ghlRequest(`/opportunities/${opportunityId}`, 'PUT', apiKey, {
