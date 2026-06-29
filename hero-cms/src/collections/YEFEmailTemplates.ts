@@ -44,7 +44,7 @@ export const YEFEmailTemplates: CollectionConfig = {
     {
       name: 'logo',
       label: 'Logo',
-      type: 'relationship',
+      type: 'upload',
       relationTo: 'yef-brand-assets',
     },
     {
