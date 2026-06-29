@@ -136,14 +136,6 @@ export default buildConfig({
           generateFileURL: ({ filename }) =>
             `https://pub-defbc79b6f1c472f9b6480d90f974810.r2.dev/${filename}`,
         },
-        'yef-image-gallery': {
-          generateFileURL: ({ filename }) =>
-            `https://pub-defbc79b6f1c472f9b6480d90f974810.r2.dev/${filename}`,
-        },
-        'yef-brand-assets': {
-          generateFileURL: ({ filename }) =>
-            `https://pub-defbc79b6f1c472f9b6480d90f974810.r2.dev/${filename}`,
-        },
       },
       bucket: process.env.S3_BUCKET || '',
       config: {
