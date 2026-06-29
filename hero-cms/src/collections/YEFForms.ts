@@ -103,11 +103,5 @@ export const YEFForms: CollectionConfig = {
       defaultValue: 0,
       admin: { readOnly: true },
     },
-    {
-      name: 'submissions',
-      type: 'join',
-      collection: 'yef-submissions',
-      on: 'form',
-    },
   ],
 }

@@ -49,10 +49,9 @@ export const YEFSubmissions: CollectionConfig = {
       admin: { hidden: true },
     },
     {
-      name: 'form',
-      type: 'relationship',
-      relationTo: 'yef-forms',
-      required: true,
+      name: 'formId',
+      label: 'Form ID',
+      type: 'text',
     },
     {
       name: 'name',
