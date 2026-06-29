@@ -3,8 +3,34 @@ import type { CollectionAfterChangeHook } from 'payload'
 const replaceMergeTags = (template: string, data: Record<string, string>): string =>
   template.replace(/\{(\w+)\}/g, (_match, key) => data[key] ?? '')
 
-const GHL_PIPELINE_ID = '4yIDNr79Pd1K52wi5k9t'
-const GHL_STAGE_ID = 'a7d5ba56-4b90-46e5-a219-b6de14fd90d0'
+const GHL_CONFIG: Record<
+  string,
+  {
+    pipelineId: string
+    stageId: string
+    tag: string
+    formCollection: string
+    submissionCollection: string
+    emailCollection: string
+  }
+> = {
+  herocare: {
+    pipelineId: '4yIDNr79Pd1K52wi5k9t',
+    stageId: 'a7d5ba56-4b90-46e5-a219-b6de14fd90d0',
+    tag: 'HeroCare',
+    formCollection: 'herocare-forms',
+    submissionCollection: 'herocare-submissions',
+    emailCollection: 'herocare-email-templates',
+  },
+  'your-emergency-fixed': {
+    pipelineId: '9kgOOclKY2OQVIFajnPD',
+    stageId: '7b6606df-5acd-4647-a63f-4b53497b3e98',
+    tag: 'Your Emergency Fixed',
+    formCollection: 'yef-forms',
+    submissionCollection: 'yef-submissions',
+    emailCollection: 'yef-email-templates',
+  },
+}
 
 async function ghlRequest(path: string, method: string, apiKey: string, body?: object) {
   const res = await fetch(`https://services.leadconnectorhq.com${path}`, {
@@ -73,11 +99,15 @@ export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, opera
     const config = apiKeyRecord.docs[0]
     if (!config) return doc
 
+    const tenantRecord = await req.payload.findByID({ collection: 'tenants', id: tenantId })
+    const tenantSlug: string = tenantRecord?.slug ?? ''
+    const ghl = GHL_CONFIG[tenantSlug] ?? GHL_CONFIG['herocare']
+
     const formId = typeof doc.form === 'object' ? doc.form.id : doc.form
     let form: any = null
     if (formId) {
       try {
-        form = await req.payload.findByID({ collection: 'herocare-forms', id: formId })
+        form = await req.payload.findByID({ collection: ghl.formCollection as any, id: formId })
       } catch {
         form = null
       }
@@ -107,9 +137,9 @@ export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, opera
           // Stage 1 — create contact and opportunity
           const contactPayload: Record<string, any> = {
             locationId,
-            name: doc.journey === 'landlord' ? doc.companyName : doc.name,
+            name: doc.journey === 'landlord' ? doc.companyName : (doc.name ?? ''),
             phone: normalisePhone(doc.phoneNumber),
-            tags: [doc.journey === 'homeowner' ? 'HeroCare Homeowner' : 'HeroCare Landlord'],
+            tags: [ghl.tag],
           }
 
           const contactData = await ghlRequest('/contacts/', 'POST', apiKey, contactPayload)
@@ -119,13 +149,15 @@ export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, opera
             const opportunityTitle =
               doc.journey === 'homeowner'
                 ? `Homeowner Enquiry — ${doc.name}`
-                : `Landlord Enquiry — ${doc.companyName} — ${doc.numberOfProperties} properties`
+                : doc.service
+                  ? `${doc.service} Enquiry — ${doc.name}`
+                  : `Enquiry — ${doc.name}`
 
             await ghlRequest('/opportunities/', 'POST', apiKey, {
               locationId,
               name: opportunityTitle,
-              pipelineId: GHL_PIPELINE_ID,
-              pipelineStageId: GHL_STAGE_ID,
+              pipelineId: ghl.pipelineId,
+              pipelineStageId: ghl.stageId,
               contactId,
               status: 'open',
             })
@@ -152,7 +184,7 @@ export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, opera
 
         try {
           await req.payload.update({
-            collection: 'herocare-submissions',
+            collection: ghl.submissionCollection as any,
             id: doc.id,
             data: { webhookStatus: 'sent' },
           })
@@ -163,7 +195,7 @@ export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, opera
         console.error('GHL integration error:', ghlErr)
         try {
           await req.payload.update({
-            collection: 'herocare-submissions',
+            collection: ghl.submissionCollection as any,
             id: doc.id,
             data: { webhookStatus: 'failed' },
           })
@@ -187,7 +219,7 @@ export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, opera
       config.resendFromName
     ) {
       const templates = await req.payload.find({
-        collection: 'herocare-email-templates',
+        collection: ghl.emailCollection as any,
         where: { tenant: { equals: tenantId } },
       })
 
