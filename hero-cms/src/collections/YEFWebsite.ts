@@ -46,13 +46,27 @@ export const YEFWebsite: CollectionConfig = {
             { name: 'reviewsRating', label: 'Reviews Rating', type: 'number' },
             { name: 'reviewsCount', label: 'Reviews Count', type: 'number' },
             { name: 'reviewsPlatformsLabel', label: 'Reviews Platforms Label', type: 'text' },
-            { name: 'heroBackgroundImage', label: 'Hero — Background Image', type: 'upload', relationTo: 'media' },
+            {
+              name: 'heroBackgroundImage',
+              label: 'Hero — Background Image',
+              type: 'upload',
+              relationTo: 'media',
+            },
           ],
         },
         {
           label: 'Home',
           fields: [
-            { name: 'homeHeroHeadline', label: 'Hero — Headline', type: 'text' },
+            {
+              name: 'homeHeroHeadlineLine1',
+              label: 'Hero — Headline (Green, e.g. "Same day")',
+              type: 'text',
+            },
+            {
+              name: 'homeHeroHeadlineLine2',
+              label: 'Hero — Headline (Dark, e.g. "UK home emergency repairs")',
+              type: 'text',
+            },
             { name: 'homeHeroSubheading', label: 'Hero — Subheading', type: 'text' },
             { name: 'homeHeroCtaText', label: 'Hero — CTA Button Text', type: 'text' },
           ],
