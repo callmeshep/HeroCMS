@@ -52,6 +52,12 @@ export const YEFWebsite: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
             },
+            {
+              name: 'heroHeadlineUnderlineSVG',
+              label: 'Hero — Headline Underline SVG',
+              type: 'upload',
+              relationTo: 'media',
+            },
           ],
         },
         {

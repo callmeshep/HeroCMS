@@ -1680,6 +1680,7 @@ export interface YefWebsite {
   reviewsCount?: number | null;
   reviewsPlatformsLabel?: string | null;
   heroBackgroundImage?: (number | null) | Media;
+  heroHeadlineUnderlineSVG?: (number | null) | Media;
   homeHeroHeadlineLine1?: string | null;
   homeHeroHeadlineLine2?: string | null;
   homeHeroSubheading?: string | null;
@@ -2996,6 +2997,7 @@ export interface YefWebsiteSelect<T extends boolean = true> {
   reviewsCount?: T;
   reviewsPlatformsLabel?: T;
   heroBackgroundImage?: T;
+  heroHeadlineUnderlineSVG?: T;
   homeHeroHeadlineLine1?: T;
   homeHeroHeadlineLine2?: T;
   homeHeroSubheading?: T;
