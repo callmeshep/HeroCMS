@@ -141,6 +141,19 @@ export const YEFWebsite: CollectionConfig = {
                 { name: 'body', type: 'text', required: true },
               ],
             },
+            { name: 'homeFaqHeadlineLine1', label: 'FAQ — Headline Line 1 (Dark)', type: 'text' },
+            { name: 'homeFaqHeadlineLine2', label: 'FAQ — Headline Line 2 (Green)', type: 'text' },
+            { name: 'homeFaqBody', label: 'FAQ — Body Text', type: 'textarea' },
+            { name: 'homeFaqCtaText', label: 'FAQ — CTA Button Text', type: 'text' },
+            {
+              name: 'homeFaqItems',
+              label: 'FAQ — Items',
+              type: 'array',
+              fields: [
+                { name: 'question', type: 'text', required: true },
+                { name: 'answer', type: 'textarea', required: true },
+              ],
+            },
           ],
         },
         {
