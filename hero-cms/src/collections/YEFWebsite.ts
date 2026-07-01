@@ -121,6 +121,26 @@ export const YEFWebsite: CollectionConfig = {
                 { name: 'body', type: 'text', required: true },
               ],
             },
+            {
+              name: 'homeHowItWorksHeadlineLine1',
+              label: 'How It Works — Headline Line 1 (Green)',
+              type: 'text',
+            },
+            {
+              name: 'homeHowItWorksHeadlineLine2',
+              label: 'How It Works — Headline Line 2 (Dark)',
+              type: 'text',
+            },
+            {
+              name: 'homeHowItWorksSteps',
+              label: 'How It Works — Steps',
+              type: 'array',
+              fields: [
+                { name: 'image', type: 'upload', relationTo: 'media' },
+                { name: 'title', type: 'text', required: true },
+                { name: 'body', type: 'text', required: true },
+              ],
+            },
           ],
         },
         {
