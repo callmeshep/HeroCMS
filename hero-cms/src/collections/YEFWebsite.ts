@@ -101,6 +101,26 @@ export const YEFWebsite: CollectionConfig = {
                 { name: 'label', type: 'text', required: true },
               ],
             },
+            {
+              name: 'homePromiseHeadlineLine1',
+              label: 'Promise — Headline Line 1 (Green)',
+              type: 'text',
+            },
+            {
+              name: 'homePromiseHeadlineLine2',
+              label: 'Promise — Headline Line 2 (Dark)',
+              type: 'text',
+            },
+            {
+              name: 'homePromiseCards',
+              label: 'Promise — USP Cards',
+              type: 'array',
+              fields: [
+                { name: 'icon', type: 'upload', relationTo: 'media' },
+                { name: 'title', type: 'text', required: true },
+                { name: 'body', type: 'text', required: true },
+              ],
+            },
           ],
         },
         {
