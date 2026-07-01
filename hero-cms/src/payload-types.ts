@@ -1685,6 +1685,17 @@ export interface YefWebsite {
   homeHeroHeadlineLine2?: string | null;
   homeHeroSubheading?: string | null;
   homeHeroCtaText?: string | null;
+  homeWhateverHeadlineLine1?: string | null;
+  homeWhateverHeadlineLine2?: string | null;
+  homeWhateverBody?: string | null;
+  homeWhateverImage?: (number | null) | Media;
+  homeWhateverServices?:
+    | {
+        icon?: (number | null) | Media;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
   policies?:
     | {
         title: string;
@@ -3002,6 +3013,17 @@ export interface YefWebsiteSelect<T extends boolean = true> {
   homeHeroHeadlineLine2?: T;
   homeHeroSubheading?: T;
   homeHeroCtaText?: T;
+  homeWhateverHeadlineLine1?: T;
+  homeWhateverHeadlineLine2?: T;
+  homeWhateverBody?: T;
+  homeWhateverImage?: T;
+  homeWhateverServices?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        id?: T;
+      };
   policies?:
     | T
     | {

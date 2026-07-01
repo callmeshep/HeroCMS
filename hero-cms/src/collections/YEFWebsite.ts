@@ -75,6 +75,32 @@ export const YEFWebsite: CollectionConfig = {
             },
             { name: 'homeHeroSubheading', label: 'Hero — Subheading', type: 'text' },
             { name: 'homeHeroCtaText', label: 'Hero — CTA Button Text', type: 'text' },
+            {
+              name: 'homeWhateverHeadlineLine1',
+              label: 'Whatever Section — Headline Line 1 (Dark)',
+              type: 'text',
+            },
+            {
+              name: 'homeWhateverHeadlineLine2',
+              label: 'Whatever Section — Headline Line 2 (Green)',
+              type: 'text',
+            },
+            { name: 'homeWhateverBody', label: 'Whatever Section — Body Text', type: 'textarea' },
+            {
+              name: 'homeWhateverImage',
+              label: 'Whatever Section — Image',
+              type: 'upload',
+              relationTo: 'media',
+            },
+            {
+              name: 'homeWhateverServices',
+              label: 'Whatever Section — Service Cards',
+              type: 'array',
+              fields: [
+                { name: 'icon', type: 'upload', relationTo: 'media' },
+                { name: 'label', type: 'text', required: true },
+              ],
+            },
           ],
         },
         {
