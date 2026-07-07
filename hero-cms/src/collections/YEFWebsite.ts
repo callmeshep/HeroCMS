@@ -104,7 +104,6 @@ export const YEFWebsite: CollectionConfig = {
             },
             { name: 'homeCtaBannerHeadline', label: 'CTA Banner — Headline', type: 'text' },
             { name: 'homeCtaBannerCtaText', label: 'CTA Banner — CTA Button Text', type: 'text' },
-            { name: 'homeCtaBannerCtaUrl', label: 'CTA Banner — CTA Button URL', type: 'text' },
             {
               name: 'homeCtaBannerImage',
               label: 'CTA Banner — Background Image',
