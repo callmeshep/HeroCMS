@@ -58,6 +58,12 @@ export const YEFWebsite: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
             },
+            {
+              name: 'fixedStamp',
+              label: 'FIXED Stamp Image',
+              type: 'upload',
+              relationTo: 'media',
+            },
           ],
         },
         {
