@@ -60,6 +60,13 @@ export const YEFServicePages: CollectionConfig = {
       admin: { description: 'e.g. #1281E2' },
     },
     {
+      name: 'secondaryColour',
+      label: 'Secondary Colour (hex) — light background tint',
+      type: 'text',
+      required: true,
+      admin: { description: 'e.g. #D6E9FC for light blue' },
+    },
+    {
       name: 'metaDescription',
       label: 'Meta Description',
       type: 'textarea',
