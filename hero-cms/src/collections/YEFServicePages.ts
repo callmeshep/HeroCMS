@@ -1,3 +1,4 @@
+import type { CollectionConfig } from 'payload'
 import { isSuperAdmin } from '../access/isSuperAdmin'
 import { isAdminOrSuperAdmin } from '../access/isAdminOrSuperAdmin'
 import { hasTenantAccess } from '../access/hasTenantAccess'
@@ -71,16 +72,23 @@ export const YEFServicePages: CollectionConfig = {
           fields: [
             { name: 'heroHeadlineLine1', label: 'Headline Line 1 (Coloured)', type: 'text' },
             { name: 'heroHeadlineLine2', label: 'Headline Line 2 (Dark)', type: 'text' },
-            { name: 'heroEngineerImage', label: 'Engineer Image', type: 'upload', relationTo: 'media' },
-            { name: 'heroEngineerLabel', label: 'Engineer Label (e.g. Meet Asif, One of Our Best Plumbers)', type: 'text' },
+            {
+              name: 'heroEngineerImage',
+              label: 'Engineer Image',
+              type: 'upload',
+              relationTo: 'media',
+            },
+            {
+              name: 'heroEngineerLabel',
+              label: 'Engineer Label (e.g. Meet Asif, One of Our Best Plumbers)',
+              type: 'text',
+            },
             { name: 'heroCtaText', label: 'CTA Button Text', type: 'text' },
             {
               name: 'heroBullets',
               label: 'Bullet Points',
               type: 'array',
-              fields: [
-                { name: 'text', type: 'text', required: true },
-              ],
+              fields: [{ name: 'text', type: 'text', required: true }],
             },
           ],
         },
