@@ -133,6 +133,21 @@ export const YEFServicePages: CollectionConfig = {
     },
   ],
   hooks: {
+    beforeChange: [
+      async ({ data, operation, req }) => {
+        if (operation === 'create') {
+          const tenant = await req.payload.find({
+            collection: 'tenants',
+            where: { slug: { equals: 'your-emergency-fixed' } },
+            limit: 1,
+          })
+          if (tenant.docs[0]) {
+            data.tenant = tenant.docs[0].id
+          }
+        }
+        return data
+      },
+    ],
     afterChange: [triggerDeployHook],
   },
 }
