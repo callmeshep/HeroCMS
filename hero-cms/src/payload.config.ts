@@ -32,6 +32,7 @@ import { YEFImageGallery } from './collections/YEFImageGallery'
 import { YEFForms } from './collections/YEFForms'
 import { YEFSubmissions } from './collections/YEFSubmissions'
 import { YEFWebsite } from './collections/YEFWebsite'
+import { YEFServicePages } from './collections/YEFServicePages'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -100,6 +101,7 @@ export default buildConfig({
     YEFForms,
     YEFSubmissions,
     YEFWebsite,
+    YEFServicePages,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
