@@ -42,6 +42,12 @@ export const YEFServicePages: CollectionConfig = {
       admin: { description: 'e.g. emergency-plumbing' },
     },
     {
+      name: 'fixedStamp',
+      label: 'FIXED Stamp (service-coloured SVG)',
+      type: 'upload',
+      relationTo: 'media',
+    },
+    {
       name: 'serviceType',
       label: 'Service Type',
       type: 'select',
@@ -89,6 +95,12 @@ export const YEFServicePages: CollectionConfig = {
               name: 'heroEngineerLabel',
               label: 'Engineer Label (e.g. Meet Asif, One of Our Best Plumbers)',
               type: 'text',
+            },
+            {
+              name: 'heroEngineerArrow',
+              label: 'Engineer Arrow SVG',
+              type: 'upload',
+              relationTo: 'media',
             },
             { name: 'heroCtaText', label: 'CTA Button Text', type: 'text' },
             {
