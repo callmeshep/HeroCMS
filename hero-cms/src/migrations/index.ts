@@ -1,24 +1,23 @@
-import * as migration_20260508_182823 from './20260508_182823';
-import * as migration_20260510_214014 from './20260510_214014';
-import * as migration_20260520_154420_add_worth_noting_to_feature_rows from './20260520_154420_add_worth_noting_to_feature_rows';
-import * as migration_20260611_231951_add_form_notification_fields from './20260611_231951_add_form_notification_fields';
-import * as migration_20260611_233343_add_submission_email_field from './20260611_233343_add_submission_email_field';
-import * as migration_20260611_234546_add_integrations_fields from './20260611_234546_add_integrations_fields';
-import * as migration_20260616_191501 from './20260616_191501';
-import * as migration_20260617_204251 from './20260617_204251';
-import * as migration_20260624_135244 from './20260624_135244';
-import * as migration_20260624_175128 from './20260624_175128';
-import * as migration_20260624_183453 from './20260624_183453';
-import * as migration_20260624_214003 from './20260624_214003';
-import * as migration_20260624_220020 from './20260624_220020';
-import * as migration_20260625_004731 from './20260625_004731';
-import * as migration_20260625_005711 from './20260625_005711';
-import * as migration_20260629_165824 from './20260629_165824';
-import * as migration_20260630_185138 from './20260630_185138';
-import * as migration_20260630_230940 from './20260630_230940';
-import * as migration_20260701_002219 from './20260701_002219';
-import * as migration_20260701_133030 from './20260701_133030';
-import * as migration_20260711_021045 from './20260711_021045';
+import * as migration_20260508_182823 from './20260508_182823'
+import * as migration_20260510_214014 from './20260510_214014'
+import * as migration_20260520_154420_add_worth_noting_to_feature_rows from './20260520_154420_add_worth_noting_to_feature_rows'
+import * as migration_20260611_231951_add_form_notification_fields from './20260611_231951_add_form_notification_fields'
+import * as migration_20260611_233343_add_submission_email_field from './20260611_233343_add_submission_email_field'
+import * as migration_20260611_234546_add_integrations_fields from './20260611_234546_add_integrations_fields'
+import * as migration_20260616_191501 from './20260616_191501'
+import * as migration_20260617_204251 from './20260617_204251'
+import * as migration_20260624_135244 from './20260624_135244'
+import * as migration_20260624_175128 from './20260624_175128'
+import * as migration_20260624_183453 from './20260624_183453'
+import * as migration_20260624_214003 from './20260624_214003'
+import * as migration_20260624_220020 from './20260624_220020'
+import * as migration_20260625_004731 from './20260625_004731'
+import * as migration_20260625_005711 from './20260625_005711'
+import * as migration_20260629_165824 from './20260629_165824'
+import * as migration_20260630_185138 from './20260630_185138'
+import * as migration_20260630_230940 from './20260630_230940'
+import * as migration_20260701_002219 from './20260701_002219'
+import * as migration_20260701_133030 from './20260701_133030'
 
 export const migrations = [
   {
@@ -121,9 +120,4 @@ export const migrations = [
     down: migration_20260701_133030.down,
     name: '20260701_133030',
   },
-  {
-    up: migration_20260711_021045.up,
-    down: migration_20260711_021045.down,
-    name: '20260711_021045'
-  },
-];
+]
