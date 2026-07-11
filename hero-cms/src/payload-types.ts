@@ -93,6 +93,8 @@ export interface Config {
     'yef-forms': YefForm;
     'yef-submissions': YefSubmission;
     'yef-website': YefWebsite;
+    'yef-service-pages': YefServicePage;
+    'yef-blog-posts': YefBlogPost;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -130,6 +132,8 @@ export interface Config {
     'yef-forms': YefFormsSelect<false> | YefFormsSelect<true>;
     'yef-submissions': YefSubmissionsSelect<false> | YefSubmissionsSelect<true>;
     'yef-website': YefWebsiteSelect<false> | YefWebsiteSelect<true>;
+    'yef-service-pages': YefServicePagesSelect<false> | YefServicePagesSelect<true>;
+    'yef-blog-posts': YefBlogPostsSelect<false> | YefBlogPostsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -1681,6 +1685,7 @@ export interface YefWebsite {
   reviewsPlatformsLabel?: string | null;
   heroBackgroundImage?: (number | null) | Media;
   heroHeadlineUnderlineSVG?: (number | null) | Media;
+  fixedStamp?: (number | null) | Media;
   homeHeroHeadlineLine1?: string | null;
   homeHeroHeadlineLine2?: string | null;
   homeHeroSubheading?: string | null;
@@ -1693,6 +1698,42 @@ export interface YefWebsite {
     | {
         icon?: (number | null) | Media;
         label: string;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  homeCtaBannerHeadline?: string | null;
+  homeCtaBannerCtaText?: string | null;
+  homeCtaBannerImage?: (number | null) | Media;
+  homeCtaBannerImageMobile?: (number | null) | Media;
+  homePromiseHeadlineLine1?: string | null;
+  homePromiseHeadlineLine2?: string | null;
+  homePromiseCards?:
+    | {
+        icon?: (number | null) | Media;
+        title: string;
+        body: string;
+        id?: string | null;
+      }[]
+    | null;
+  homeHowItWorksHeadlineLine1?: string | null;
+  homeHowItWorksHeadlineLine2?: string | null;
+  homeHowItWorksSteps?:
+    | {
+        image?: (number | null) | Media;
+        title: string;
+        body: string;
+        id?: string | null;
+      }[]
+    | null;
+  homeFaqHeadlineLine1?: string | null;
+  homeFaqHeadlineLine2?: string | null;
+  homeFaqBody?: string | null;
+  homeFaqCtaText?: string | null;
+  homeFaqItems?:
+    | {
+        question: string;
+        answer: string;
         id?: string | null;
       }[]
     | null;
@@ -1718,6 +1759,109 @@ export interface YefWebsite {
         id?: string | null;
       }[]
     | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "yef-service-pages".
+ */
+export interface YefServicePage {
+  id: number;
+  tenant: number | Tenant;
+  /**
+   * e.g. Emergency Plumbing
+   */
+  title: string;
+  /**
+   * e.g. emergency-plumbing
+   */
+  slug: string;
+  fixedStamp?: (number | null) | Media;
+  serviceType: 'plumbing' | 'heating' | 'electrics';
+  /**
+   * e.g. #1281E2
+   */
+  primaryColour: string;
+  /**
+   * e.g. #D6E9FC for light blue
+   */
+  secondaryColour: string;
+  metaDescription?: string | null;
+  heroHeadlineLine1?: string | null;
+  heroHeadlineLine2?: string | null;
+  heroEngineerImage?: (number | null) | Media;
+  heroEngineerLabel?: string | null;
+  heroEngineerArrow?: (number | null) | Media;
+  heroCtaText?: string | null;
+  heroBullets?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  whateverHeadlineLine1?: string | null;
+  whateverHeadlineLine2?: string | null;
+  whateverBody?: string | null;
+  whateverImage?: (number | null) | Media;
+  whateverServices?:
+    | {
+        icon?: (number | null) | Media;
+        label: string;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  faqHeadlineLine1?: string | null;
+  faqHeadlineLine2?: string | null;
+  faqBody?: string | null;
+  faqCtaText?: string | null;
+  faqItems?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "yef-blog-posts".
+ */
+export interface YefBlogPost {
+  id: number;
+  tenant: number | Tenant;
+  /**
+   * e.g. What to Do If You Think You Can Smell Gas
+   */
+  title: string;
+  /**
+   * e.g. what-to-do-if-you-think-you-can-smell-gas — page will be at /blog/[slug]
+   */
+  slug: string;
+  /**
+   * Displayed on the post, e.g. 11th September 2026
+   */
+  publishedDate: string;
+  bodyContent: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  seoTitle?: string | null;
+  seoDescription?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1848,6 +1992,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'yef-website';
         value: number | YefWebsite;
+      } | null)
+    | ({
+        relationTo: 'yef-service-pages';
+        value: number | YefServicePage;
+      } | null)
+    | ({
+        relationTo: 'yef-blog-posts';
+        value: number | YefBlogPost;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -3009,6 +3161,7 @@ export interface YefWebsiteSelect<T extends boolean = true> {
   reviewsPlatformsLabel?: T;
   heroBackgroundImage?: T;
   heroHeadlineUnderlineSVG?: T;
+  fixedStamp?: T;
   homeHeroHeadlineLine1?: T;
   homeHeroHeadlineLine2?: T;
   homeHeroSubheading?: T;
@@ -3022,6 +3175,42 @@ export interface YefWebsiteSelect<T extends boolean = true> {
     | {
         icon?: T;
         label?: T;
+        url?: T;
+        id?: T;
+      };
+  homeCtaBannerHeadline?: T;
+  homeCtaBannerCtaText?: T;
+  homeCtaBannerImage?: T;
+  homeCtaBannerImageMobile?: T;
+  homePromiseHeadlineLine1?: T;
+  homePromiseHeadlineLine2?: T;
+  homePromiseCards?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  homeHowItWorksHeadlineLine1?: T;
+  homeHowItWorksHeadlineLine2?: T;
+  homeHowItWorksSteps?:
+    | T
+    | {
+        image?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  homeFaqHeadlineLine1?: T;
+  homeFaqHeadlineLine2?: T;
+  homeFaqBody?: T;
+  homeFaqCtaText?: T;
+  homeFaqItems?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
         id?: T;
       };
   policies?:
@@ -3032,6 +3221,72 @@ export interface YefWebsiteSelect<T extends boolean = true> {
         content?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "yef-service-pages_select".
+ */
+export interface YefServicePagesSelect<T extends boolean = true> {
+  tenant?: T;
+  title?: T;
+  slug?: T;
+  fixedStamp?: T;
+  serviceType?: T;
+  primaryColour?: T;
+  secondaryColour?: T;
+  metaDescription?: T;
+  heroHeadlineLine1?: T;
+  heroHeadlineLine2?: T;
+  heroEngineerImage?: T;
+  heroEngineerLabel?: T;
+  heroEngineerArrow?: T;
+  heroCtaText?: T;
+  heroBullets?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  whateverHeadlineLine1?: T;
+  whateverHeadlineLine2?: T;
+  whateverBody?: T;
+  whateverImage?: T;
+  whateverServices?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  faqHeadlineLine1?: T;
+  faqHeadlineLine2?: T;
+  faqBody?: T;
+  faqCtaText?: T;
+  faqItems?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "yef-blog-posts_select".
+ */
+export interface YefBlogPostsSelect<T extends boolean = true> {
+  tenant?: T;
+  title?: T;
+  slug?: T;
+  publishedDate?: T;
+  bodyContent?: T;
+  seoTitle?: T;
+  seoDescription?: T;
   updatedAt?: T;
   createdAt?: T;
 }
