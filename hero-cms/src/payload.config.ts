@@ -50,6 +50,7 @@ export default buildConfig({
     'https://emergencyhero.co.uk',
     'https://www.emergencyhero.co.uk',
     'http://localhost:4321',
+    'https://herocms.app',
   ],
   admin: {
     user: Users.slug,
