@@ -91,7 +91,7 @@ export default buildConfig({
     EmergencyHeroBrandAssets,
     EmergencyHeroWebsite,
     EmergencyHeroServices,
-    EngineerHubWebsite
+    EngineerHubWebsite,
     EmergencyHeroKnowledgeBase,
     EmergencyHeroTeamMembers,
     EmergencyHeroSubmissions,
