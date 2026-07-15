@@ -93,6 +93,7 @@ export default buildConfig({
     EmergencyHeroWebsite,
     EmergencyHeroServices,
     EngineerHubWebsite,
+    EngineerHubKnowledgeArticles,
     EmergencyHeroKnowledgeBase,
     EmergencyHeroTeamMembers,
     EmergencyHeroSubmissions,
