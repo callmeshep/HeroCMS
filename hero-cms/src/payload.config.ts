@@ -17,6 +17,7 @@ import { HeroCareEmailTemplates } from './collections/HeroCareEmailTemplates'
 import { EmergencyHeroBrandAssets } from './collections/EmergencyHeroBrandAssets'
 import { EmergencyHeroWebsite } from './collections/EmergencyHeroWebsite'
 import { EmergencyHeroServices } from './collections/EmergencyHeroServices'
+import { EngineerHubWebsite } from './collections/EngineerHubWebsite'
 import { EmergencyHeroKnowledgeBase } from './collections/EmergencyHeroKnowledgeBase'
 import { EmergencyHeroTeamMembers } from './collections/EmergencyHeroTeamMembers'
 import { EmergencyHeroSubmissions } from './collections/EmergencyHeroSubmissions'
@@ -90,6 +91,7 @@ export default buildConfig({
     EmergencyHeroBrandAssets,
     EmergencyHeroWebsite,
     EmergencyHeroServices,
+    EngineerHubWebsite
     EmergencyHeroKnowledgeBase,
     EmergencyHeroTeamMembers,
     EmergencyHeroSubmissions,
