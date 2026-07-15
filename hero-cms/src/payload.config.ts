@@ -19,6 +19,7 @@ import { EmergencyHeroWebsite } from './collections/EmergencyHeroWebsite'
 import { EmergencyHeroServices } from './collections/EmergencyHeroServices'
 import { EngineerHubWebsite } from './collections/EngineerHubWebsite'
 import { EngineerHubKnowledgeArticles } from './collections/EngineerHubKnowledgeArticles'
+import { EngineerHubWishlistIdeas } from './collections/EngineerHubWishlistIdeas'
 import { EmergencyHeroKnowledgeBase } from './collections/EmergencyHeroKnowledgeBase'
 import { EmergencyHeroTeamMembers } from './collections/EmergencyHeroTeamMembers'
 import { EmergencyHeroSubmissions } from './collections/EmergencyHeroSubmissions'
@@ -94,6 +95,7 @@ export default buildConfig({
     EmergencyHeroServices,
     EngineerHubWebsite,
     EngineerHubKnowledgeArticles,
+    EngineerHubWishlistIdeas,
     EmergencyHeroKnowledgeBase,
     EmergencyHeroTeamMembers,
     EmergencyHeroSubmissions,
