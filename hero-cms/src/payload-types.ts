@@ -80,6 +80,7 @@ export interface Config {
     'emergency-hero-brand-assets': EmergencyHeroBrandAsset;
     'emergency-hero-website': EmergencyHeroWebsite;
     'emergency-hero-services': EmergencyHeroService;
+    'engineer-hub-website': EngineerHubWebsite;
     'emergency-hero-knowledge-base': EmergencyHeroKnowledgeBase;
     'emergency-hero-team-members': EmergencyHeroTeamMember;
     'emergency-hero-submissions': EmergencyHeroSubmission;
@@ -119,6 +120,7 @@ export interface Config {
     'emergency-hero-brand-assets': EmergencyHeroBrandAssetsSelect<false> | EmergencyHeroBrandAssetsSelect<true>;
     'emergency-hero-website': EmergencyHeroWebsiteSelect<false> | EmergencyHeroWebsiteSelect<true>;
     'emergency-hero-services': EmergencyHeroServicesSelect<false> | EmergencyHeroServicesSelect<true>;
+    'engineer-hub-website': EngineerHubWebsiteSelect<false> | EngineerHubWebsiteSelect<true>;
     'emergency-hero-knowledge-base': EmergencyHeroKnowledgeBaseSelect<false> | EmergencyHeroKnowledgeBaseSelect<true>;
     'emergency-hero-team-members': EmergencyHeroTeamMembersSelect<false> | EmergencyHeroTeamMembersSelect<true>;
     'emergency-hero-submissions': EmergencyHeroSubmissionsSelect<false> | EmergencyHeroSubmissionsSelect<true>;
@@ -1390,6 +1392,118 @@ export interface EmergencyHeroService {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "engineer-hub-website".
+ */
+export interface EngineerHubWebsite {
+  id: number;
+  tenant: number | Tenant;
+  internalTitle?: string | null;
+  logo?: (number | null) | Media;
+  footerStrapline?: string | null;
+  footerCopyrightText?: string | null;
+  issueActive?: boolean | null;
+  issuePillLabel?: string | null;
+  issueTitle?: string | null;
+  issueAnnouncedAt?: string | null;
+  issueBody?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  khSectionHeadline?: string | null;
+  appSectionHeadline?: string | null;
+  wishlistHeadline?: string | null;
+  wishlistBodyText?: string | null;
+  updateLogHeadline?: string | null;
+  updateLogBodyText?: string | null;
+  updateLogEntries?:
+    | {
+        tag: 'Fixed' | 'Added';
+        title: string;
+        date?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  formsSectionHeadline?: string | null;
+  reportProblemHeadline?: string | null;
+  reportProblemBodyText?: string | null;
+  insuranceHeadline?: string | null;
+  insuranceBodyText?: string | null;
+  surveys?:
+    | {
+        surveyId: string;
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  membershipSectionHeadline?: string | null;
+  tiers?:
+    | {
+        name: string;
+        price?: string | null;
+        pricePeriod?: string | null;
+        features?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        ctaButtonText?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  contactSectionHeadline?: string | null;
+  contacts?:
+    | {
+        name: string;
+        role?: string | null;
+        avatarColour?: string | null;
+        phone?: string | null;
+        email?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  messageCardHeadline?: string | null;
+  messageCardRoleLabel?: string | null;
+  messageCardCtaText?: string | null;
+  policies?:
+    | {
+        title: string;
+        lastUpdated?: string | null;
+        content?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "emergency-hero-knowledge-base".
  */
 export interface EmergencyHeroKnowledgeBase {
@@ -1940,6 +2054,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'emergency-hero-services';
         value: number | EmergencyHeroService;
+      } | null)
+    | ({
+        relationTo: 'engineer-hub-website';
+        value: number | EngineerHubWebsite;
       } | null)
     | ({
         relationTo: 'emergency-hero-knowledge-base';
@@ -2888,6 +3006,89 @@ export interface EmergencyHeroServicesSelect<T extends boolean = true> {
   reviewCategory?: T;
   rngMin?: T;
   rngMax?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "engineer-hub-website_select".
+ */
+export interface EngineerHubWebsiteSelect<T extends boolean = true> {
+  tenant?: T;
+  internalTitle?: T;
+  logo?: T;
+  footerStrapline?: T;
+  footerCopyrightText?: T;
+  issueActive?: T;
+  issuePillLabel?: T;
+  issueTitle?: T;
+  issueAnnouncedAt?: T;
+  issueBody?: T;
+  khSectionHeadline?: T;
+  appSectionHeadline?: T;
+  wishlistHeadline?: T;
+  wishlistBodyText?: T;
+  updateLogHeadline?: T;
+  updateLogBodyText?: T;
+  updateLogEntries?:
+    | T
+    | {
+        tag?: T;
+        title?: T;
+        date?: T;
+        id?: T;
+      };
+  formsSectionHeadline?: T;
+  reportProblemHeadline?: T;
+  reportProblemBodyText?: T;
+  insuranceHeadline?: T;
+  insuranceBodyText?: T;
+  surveys?:
+    | T
+    | {
+        surveyId?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  membershipSectionHeadline?: T;
+  tiers?:
+    | T
+    | {
+        name?: T;
+        price?: T;
+        pricePeriod?: T;
+        features?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        ctaButtonText?: T;
+        id?: T;
+      };
+  contactSectionHeadline?: T;
+  contacts?:
+    | T
+    | {
+        name?: T;
+        role?: T;
+        avatarColour?: T;
+        phone?: T;
+        email?: T;
+        id?: T;
+      };
+  messageCardHeadline?: T;
+  messageCardRoleLabel?: T;
+  messageCardCtaText?: T;
+  policies?:
+    | T
+    | {
+        title?: T;
+        lastUpdated?: T;
+        content?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
