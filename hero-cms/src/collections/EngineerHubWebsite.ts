@@ -46,6 +46,7 @@ export const EngineerHubWebsite: CollectionConfig = {
           fields: [
             { name: 'logo', label: 'Logo', type: 'upload', relationTo: 'media' },
             { name: 'footerLogo', label: 'Footer Logo', type: 'upload', relationTo: 'media' },
+            { name: 'favicon', label: 'Favicon', type: 'upload', relationTo: 'media' },
             { name: 'footerStrapline', label: 'Footer Strapline', type: 'text' },
             { name: 'footerCopyrightText', label: 'Footer Copyright Text', type: 'text' },
           ],
