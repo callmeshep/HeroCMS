@@ -45,6 +45,7 @@ export const EngineerHubWebsite: CollectionConfig = {
           label: 'Globals',
           fields: [
             { name: 'logo', label: 'Logo', type: 'upload', relationTo: 'media' },
+            { name: 'footerLogo', label: 'Footer Logo', type: 'upload', relationTo: 'media' },
             { name: 'footerStrapline', label: 'Footer Strapline', type: 'text' },
             { name: 'footerCopyrightText', label: 'Footer Copyright Text', type: 'text' },
           ],
@@ -57,7 +58,12 @@ export const EngineerHubWebsite: CollectionConfig = {
             { name: 'issueActive', label: 'Active', type: 'checkbox', defaultValue: false },
             { name: 'issuePillLabel', label: 'Pill Label', type: 'text' },
             { name: 'issueTitle', label: 'Issue Title', type: 'text' },
-            { name: 'issueAnnouncedAt', label: 'Announced At', type: 'date', admin: { date: { pickerAppearance: 'dayAndTime' } } },
+            {
+              name: 'issueAnnouncedAt',
+              label: 'Announced At',
+              type: 'date',
+              admin: { date: { pickerAppearance: 'dayAndTime' } },
+            },
             { name: 'issueBody', label: 'Body', type: 'richText' },
           ],
         },
@@ -66,7 +72,12 @@ export const EngineerHubWebsite: CollectionConfig = {
         {
           label: 'Knowledge Hub',
           fields: [
-            { name: 'khSectionHeadline', label: 'Section Headline', type: 'text', defaultValue: 'Knowledge Hub' },
+            {
+              name: 'khSectionHeadline',
+              label: 'Section Headline',
+              type: 'text',
+              defaultValue: 'Knowledge Hub',
+            },
           ],
         },
 
@@ -74,17 +85,38 @@ export const EngineerHubWebsite: CollectionConfig = {
         {
           label: 'The App',
           fields: [
-            { name: 'appSectionHeadline', label: 'Section Headline', type: 'text', defaultValue: 'The App' },
-            { name: 'wishlistHeadline', label: 'Wishlist Card — Headline', type: 'text', defaultValue: 'App Wishlist' },
+            {
+              name: 'appSectionHeadline',
+              label: 'Section Headline',
+              type: 'text',
+              defaultValue: 'The App',
+            },
+            {
+              name: 'wishlistHeadline',
+              label: 'Wishlist Card — Headline',
+              type: 'text',
+              defaultValue: 'App Wishlist',
+            },
             { name: 'wishlistBodyText', label: 'Wishlist Card — Body Text', type: 'textarea' },
-            { name: 'updateLogHeadline', label: 'Update Log Card — Headline', type: 'text', defaultValue: 'App Update Log' },
+            {
+              name: 'updateLogHeadline',
+              label: 'Update Log Card — Headline',
+              type: 'text',
+              defaultValue: 'App Update Log',
+            },
             { name: 'updateLogBodyText', label: 'Update Log Card — Body Text', type: 'textarea' },
             {
               name: 'updateLogEntries',
               label: 'Update Log Entries',
               type: 'array',
               fields: [
-                { name: 'tag', label: 'Tag', type: 'select', options: ['Fixed', 'Added'], required: true },
+                {
+                  name: 'tag',
+                  label: 'Tag',
+                  type: 'select',
+                  options: ['Fixed', 'Added'],
+                  required: true,
+                },
                 { name: 'title', label: 'Title', type: 'text', required: true },
                 { name: 'date', label: 'Date', type: 'date' },
               ],
@@ -96,17 +128,41 @@ export const EngineerHubWebsite: CollectionConfig = {
         {
           label: 'Forms & Surveys',
           fields: [
-            { name: 'formsSectionHeadline', label: 'Section Headline', type: 'text', defaultValue: 'Forms & Surveys' },
-            { name: 'reportProblemHeadline', label: 'Report a Problem — Headline', type: 'text', defaultValue: 'Report a Problem' },
-            { name: 'reportProblemBodyText', label: 'Report a Problem — Body Text', type: 'textarea' },
-            { name: 'insuranceHeadline', label: 'Insurance & Docs — Headline', type: 'text', defaultValue: 'Insurance & docs' },
+            {
+              name: 'formsSectionHeadline',
+              label: 'Section Headline',
+              type: 'text',
+              defaultValue: 'Forms & Surveys',
+            },
+            {
+              name: 'reportProblemHeadline',
+              label: 'Report a Problem — Headline',
+              type: 'text',
+              defaultValue: 'Report a Problem',
+            },
+            {
+              name: 'reportProblemBodyText',
+              label: 'Report a Problem — Body Text',
+              type: 'textarea',
+            },
+            {
+              name: 'insuranceHeadline',
+              label: 'Insurance & Docs — Headline',
+              type: 'text',
+              defaultValue: 'Insurance & docs',
+            },
             { name: 'insuranceBodyText', label: 'Insurance & Docs — Body Text', type: 'textarea' },
             {
               name: 'surveys',
               label: 'Surveys',
               type: 'array',
               fields: [
-                { name: 'surveyId', label: 'Survey ID (used by front-end)', type: 'text', required: true },
+                {
+                  name: 'surveyId',
+                  label: 'Survey ID (used by front-end)',
+                  type: 'text',
+                  required: true,
+                },
                 { name: 'title', label: 'Title', type: 'text', required: true },
                 { name: 'description', label: 'Description', type: 'textarea' },
               ],
@@ -118,7 +174,12 @@ export const EngineerHubWebsite: CollectionConfig = {
         {
           label: 'Membership',
           fields: [
-            { name: 'membershipSectionHeadline', label: 'Section Headline', type: 'text', defaultValue: 'Membership' },
+            {
+              name: 'membershipSectionHeadline',
+              label: 'Section Headline',
+              type: 'text',
+              defaultValue: 'Membership',
+            },
             {
               name: 'tiers',
               label: 'Tiers',
@@ -143,7 +204,12 @@ export const EngineerHubWebsite: CollectionConfig = {
         {
           label: 'Get in Touch',
           fields: [
-            { name: 'contactSectionHeadline', label: 'Section Headline', type: 'text', defaultValue: 'Get in touch' },
+            {
+              name: 'contactSectionHeadline',
+              label: 'Section Headline',
+              type: 'text',
+              defaultValue: 'Get in touch',
+            },
             {
               name: 'contacts',
               label: 'Contacts',
@@ -151,14 +217,29 @@ export const EngineerHubWebsite: CollectionConfig = {
               fields: [
                 { name: 'name', label: 'Name', type: 'text', required: true },
                 { name: 'role', label: 'Role', type: 'text' },
-                { name: 'avatarColour', label: 'Avatar Colour (hex)', type: 'text' },
+                { name: 'avatar', label: 'Avatar', type: 'upload', relationTo: 'media' },
                 { name: 'phone', label: 'Phone', type: 'text' },
                 { name: 'email', label: 'Email', type: 'text' },
               ],
             },
-            { name: 'messageCardHeadline', label: '"Leave a message" Card — Headline', type: 'text', defaultValue: 'Leave a message' },
-            { name: 'messageCardRoleLabel', label: '"Leave a message" Card — Role Label', type: 'text', defaultValue: 'General enquiries' },
-            { name: 'messageCardCtaText', label: '"Leave a message" Card — CTA Text', type: 'text', defaultValue: 'Write a message' },
+            {
+              name: 'messageCardHeadline',
+              label: '"Leave a message" Card — Headline',
+              type: 'text',
+              defaultValue: 'Leave a message',
+            },
+            {
+              name: 'messageCardRoleLabel',
+              label: '"Leave a message" Card — Role Label',
+              type: 'text',
+              defaultValue: 'General enquiries',
+            },
+            {
+              name: 'messageCardCtaText',
+              label: '"Leave a message" Card — CTA Text',
+              type: 'text',
+              defaultValue: 'Write a message',
+            },
           ],
         },
 
