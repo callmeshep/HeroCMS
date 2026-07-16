@@ -106,6 +106,13 @@ export const EngineerHubWebsite: CollectionConfig = {
               defaultValue: 'Peach',
             },
             {
+              name: 'wishlistIcon',
+              label: 'Wishlist Card — Icon (Material Symbol name)',
+              type: 'text',
+              defaultValue: 'lightbulb',
+              admin: { description: 'Look up icon names at fonts.google.com/icons' },
+            },
+            {
               name: 'updateLogHeadline',
               label: 'Update Log Card — Headline',
               type: 'text',
@@ -118,6 +125,13 @@ export const EngineerHubWebsite: CollectionConfig = {
               type: 'select',
               options: ['Peach', 'Pink', 'Blue', 'Lavender', 'Mint', 'Yellow', 'White'],
               defaultValue: 'Lavender',
+            },
+            {
+              name: 'updateLogIcon',
+              label: 'Update Log Card — Icon (Material Symbol name)',
+              type: 'text',
+              defaultValue: 'edit_square',
+              admin: { description: 'Look up icon names at fonts.google.com/icons' },
             },
             {
               name: 'updateLogEntries',
@@ -155,6 +169,13 @@ export const EngineerHubWebsite: CollectionConfig = {
               options: ['Peach', 'Pink', 'Blue', 'Lavender', 'Mint', 'Yellow', 'White'],
               defaultValue: 'Mint',
             },
+            {
+              name: 'appDownloadIcon',
+              label: 'Download App Card — Icon (Material Symbol name)',
+              type: 'text',
+              defaultValue: 'download',
+              admin: { description: 'Look up icon names at fonts.google.com/icons' },
+            },
           ],
         },
 
@@ -187,6 +208,13 @@ export const EngineerHubWebsite: CollectionConfig = {
               defaultValue: 'Yellow',
             },
             {
+              name: 'reportProblemIcon',
+              label: 'Report a Problem — Icon (Material Symbol name)',
+              type: 'text',
+              defaultValue: 'report',
+              admin: { description: 'Look up icon names at fonts.google.com/icons' },
+            },
+            {
               name: 'insuranceHeadline',
               label: 'Insurance & Docs — Headline',
               type: 'text',
@@ -199,6 +227,13 @@ export const EngineerHubWebsite: CollectionConfig = {
               type: 'select',
               options: ['Peach', 'Pink', 'Blue', 'Lavender', 'Mint', 'Yellow', 'White'],
               defaultValue: 'Blue',
+            },
+            {
+              name: 'insuranceIcon',
+              label: 'Insurance & Docs — Icon (Material Symbol name)',
+              type: 'text',
+              defaultValue: 'verified_user',
+              admin: { description: 'Look up icon names at fonts.google.com/icons' },
             },
             {
               name: 'surveys',
@@ -218,6 +253,13 @@ export const EngineerHubWebsite: CollectionConfig = {
                   label: 'Card Colour',
                   type: 'select',
                   options: ['Peach', 'Pink', 'Blue', 'Lavender', 'Mint', 'Yellow', 'White'],
+                },
+                {
+                  name: 'icon',
+                  label: 'Icon (Material Symbol name)',
+                  type: 'text',
+                  defaultValue: 'checklist',
+                  admin: { description: 'Look up icon names at fonts.google.com/icons' },
                 },
               ],
             },
@@ -240,6 +282,13 @@ export const EngineerHubWebsite: CollectionConfig = {
               type: 'select',
               options: ['Peach', 'Pink', 'Blue', 'Lavender', 'Mint', 'Yellow', 'White'],
               defaultValue: 'Lavender',
+            },
+            {
+              name: 'membershipTiersIcon',
+              label: 'Membership Tiers Card — Icon (Material Symbol name)',
+              type: 'text',
+              defaultValue: 'military_tech',
+              admin: { description: 'Look up icon names at fonts.google.com/icons' },
             },
             {
               name: 'tiers',

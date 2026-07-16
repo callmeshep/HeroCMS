@@ -46,6 +46,16 @@ export const EngineerHubKnowledgeArticles: CollectionConfig = {
       options: ['Peach', 'Pink', 'Blue', 'Lavender', 'Mint', 'Yellow', 'White'],
       required: true,
     },
+    {
+      name: 'icon',
+      label: 'Icon (Material Symbol name)',
+      type: 'text',
+      defaultValue: 'article',
+      admin: {
+        description:
+          'Look up icon names at fonts.google.com/icons — copy the name shown under the icon (e.g. "lightbulb", "report_problem") and paste it here.',
+      },
+    },
     { name: 'excerpt', label: 'Excerpt', type: 'textarea', required: true },
     { name: 'readTime', label: 'Read Time / Meta (e.g. "2 min read")', type: 'text' },
     { name: 'postedDate', label: 'Posted Date', type: 'date' },
@@ -61,7 +71,10 @@ export const EngineerHubKnowledgeArticles: CollectionConfig = {
       name: 'order',
       label: 'Order',
       type: 'number',
-      admin: { description: 'Controls position and which articles fall behind "Load more" (first 6 per section shown)' },
+      admin: {
+        description:
+          'Controls position and which articles fall behind "Load more" (first 6 per section shown)',
+      },
     },
   ],
 }
