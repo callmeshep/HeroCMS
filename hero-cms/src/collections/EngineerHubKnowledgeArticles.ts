@@ -36,7 +36,7 @@ export const EngineerHubKnowledgeArticles: CollectionConfig = {
       name: 'tag',
       label: 'Tag',
       type: 'select',
-      options: ['Update', 'Tip', 'How-to'],
+      options: ['Update', 'Tip', 'How-to', 'FAQ', 'Guide'],
       required: true,
     },
     {
@@ -57,7 +57,6 @@ export const EngineerHubKnowledgeArticles: CollectionConfig = {
       },
     },
     { name: 'excerpt', label: 'Excerpt', type: 'textarea', required: true },
-    { name: 'readTime', label: 'Read Time / Meta (e.g. "2 min read")', type: 'text' },
     { name: 'postedDate', label: 'Posted Date', type: 'date' },
     { name: 'body', label: 'Body', type: 'richText', required: true },
     {
