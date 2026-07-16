@@ -62,6 +62,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
     theme: 'light',
+    css: path.resolve(dirname, 'app/(payload)/custom.scss'),
     meta: {
       titleSuffix: '— Hero CMS',
       icons: [
