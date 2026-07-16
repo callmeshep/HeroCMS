@@ -165,6 +165,12 @@ export const EngineerHubWebsite: CollectionConfig = {
                 },
                 { name: 'title', label: 'Title', type: 'text', required: true },
                 { name: 'description', label: 'Description', type: 'textarea' },
+                {
+                  name: 'tone',
+                  label: 'Card Colour',
+                  type: 'select',
+                  options: ['Peach', 'Pink', 'Blue', 'Lavender', 'Mint', 'Yellow', 'White'],
+                },
               ],
             },
           ],
