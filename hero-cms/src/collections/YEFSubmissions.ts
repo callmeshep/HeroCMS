@@ -75,6 +75,37 @@ export const YEFSubmissions: CollectionConfig = {
       type: 'text',
     },
     {
+      name: 'journey',
+      type: 'text',
+      admin: { hidden: true },
+    },
+    {
+      name: 'trades',
+      label: 'Trades',
+      type: 'array',
+      fields: [{ name: 'value', type: 'text' }],
+    },
+    {
+      name: 'accreditations',
+      label: 'Accreditations',
+      type: 'array',
+      fields: [{ name: 'value', type: 'text' }],
+    },
+    {
+      name: 'uploadedDocuments',
+      label: 'Uploaded Documents',
+      type: 'array',
+      fields: [
+        { name: 'label', type: 'text' },
+        { name: 'fileUrl', label: 'File URL', type: 'text' },
+      ],
+    },
+    {
+      name: 'coverageRadius',
+      label: 'Coverage Radius (Miles)',
+      type: 'number',
+    },
+    {
       name: 'submittedAt',
       label: 'Submitted At',
       type: 'date',

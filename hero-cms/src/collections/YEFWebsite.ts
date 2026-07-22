@@ -258,6 +258,11 @@ export const YEFWebsite: CollectionConfig = {
               type: 'text',
             },
             {
+              name: 'engineerAppFaqHeadlineLine2Prefix',
+              label: 'FAQ — Headline Line 2 (Prefix, e.g. "Maybe it\'s been")',
+              type: 'text',
+            },
+            {
               name: 'engineerAppFaqHeadlineUnderlineText',
               label: 'FAQ — Headline (Underlined word, e.g. "answered")',
               type: 'text',
