@@ -178,6 +178,104 @@ export const YEFWebsite: CollectionConfig = {
           ],
         },
         {
+          label: 'Engineer Application',
+          fields: [
+            {
+              name: 'engineerAppHeroUnderlineText',
+              label: 'Hero — Headline (Underlined, e.g. "Join our team")',
+              type: 'text',
+            },
+            {
+              name: 'engineerAppHeroHeadlineRemainder',
+              label: 'Hero — Headline (Remainder, e.g. "of emergency engineers")',
+              type: 'text',
+            },
+            { name: 'engineerAppHeroSubheading', label: 'Hero — Subheading', type: 'textarea' },
+            {
+              name: 'engineerAppQ1Label',
+              label: 'Q1 — Section Label',
+              type: 'text',
+            },
+            {
+              name: 'engineerAppQ1Sublabel',
+              label: 'Q1 — Section Sublabel',
+              type: 'text',
+            },
+            {
+              name: 'engineerAppTrades',
+              label: 'Q1 — Trades',
+              type: 'array',
+              fields: [
+                { name: 'icon', type: 'upload', relationTo: 'media' },
+                { name: 'label', type: 'text', required: true },
+              ],
+            },
+            {
+              name: 'engineerAppQ2Label',
+              label: 'Q2 — Section Label',
+              type: 'text',
+            },
+            {
+              name: 'engineerAppQ2Sublabel',
+              label: 'Q2 — Section Sublabel',
+              type: 'text',
+            },
+            {
+              name: 'engineerAppAccreditations',
+              label: 'Q2 — Accreditations',
+              type: 'array',
+              fields: [
+                { name: 'icon', type: 'upload', relationTo: 'media' },
+                { name: 'label', type: 'text', required: true },
+                { name: 'requiresFileUpload', label: 'Requires File Upload', type: 'checkbox' },
+                { name: 'fileUploadLabel', label: 'File Upload Label', type: 'text' },
+              ],
+            },
+            {
+              name: 'engineerAppQ3Label',
+              label: 'Q3 — Section Label',
+              type: 'text',
+            },
+            {
+              name: 'engineerAppQ3Sublabel',
+              label: 'Q3 — Section Sublabel',
+              type: 'text',
+            },
+            {
+              name: 'engineerAppRadiusOptions',
+              label: 'Q3 — Radius Options',
+              type: 'array',
+              fields: [{ name: 'miles', type: 'number', required: true }],
+            },
+            {
+              name: 'engineerAppSubmitButtonText',
+              label: 'Submit Button Text',
+              type: 'text',
+            },
+            {
+              name: 'engineerAppFaqHeadlineLine1',
+              label: 'FAQ — Headline Line 1',
+              type: 'text',
+            },
+            {
+              name: 'engineerAppFaqHeadlineUnderlineText',
+              label: 'FAQ — Headline (Underlined word, e.g. "answered")',
+              type: 'text',
+            },
+            { name: 'engineerAppFaqBody', label: 'FAQ — Body Text', type: 'textarea' },
+            { name: 'engineerAppFaqCtaText', label: 'FAQ — CTA Button Text', type: 'text' },
+            {
+              name: 'engineerAppFaqItems',
+              label: 'FAQ — Items',
+              type: 'array',
+              fields: [
+                { name: 'question', type: 'text', required: true },
+                { name: 'answer', type: 'textarea', required: true },
+              ],
+            },
+          ],
+        },
+        {
           label: 'Policies',
           fields: [
             {
