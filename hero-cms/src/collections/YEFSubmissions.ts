@@ -25,14 +25,22 @@ export const YEFSubmissions: CollectionConfig = {
     beforeChange: [
       async ({ data, operation, req }) => {
         if (operation === 'create') {
+          console.log('[YEFSubmissions beforeChange] start')
           data.submittedAt = new Date().toISOString()
-          const tenant = await req.payload.find({
-            collection: 'tenants',
-            where: { slug: { equals: 'your-emergency-fixed' } },
-            limit: 1,
-          })
-          if (tenant.docs[0]) {
-            data.tenant = tenant.docs[0].id
+          try {
+            const tenant = await req.payload.find({
+              collection: 'tenants',
+              where: { slug: { equals: 'your-emergency-fixed' } },
+              limit: 1,
+              overrideAccess: true,
+            })
+            console.log('[YEFSubmissions beforeChange] tenant lookup result:', tenant.docs)
+            if (tenant.docs[0]) {
+              data.tenant = tenant.docs[0].id
+            }
+          } catch (err) {
+            console.error('[YEFSubmissions beforeChange] tenant lookup error:', err)
+            throw err
           }
         }
         return data

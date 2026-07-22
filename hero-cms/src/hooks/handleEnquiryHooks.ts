@@ -184,6 +184,8 @@ async function handleEngineerApplication(doc: any, config: any, req: any) {
 export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, operation, req }) => {
   if (operation !== 'create') return doc
 
+  console.log('[handleEnquiryHooks] fired for doc:', doc.id, 'journey:', doc.journey)
+
   try {
     const tenantId = typeof doc.tenant === 'object' ? doc.tenant.id : doc.tenant
     if (!tenantId) return doc
