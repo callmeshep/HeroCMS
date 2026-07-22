@@ -53,6 +53,11 @@ export const APIKeys: CollectionConfig = {
       type: 'text',
     },
     {
+      name: 'adminNotificationEmail',
+      label: 'Admin Notification Email',
+      type: 'email',
+    },
+    {
       name: 'ga4MeasurementId',
       label: 'GA4 Measurement ID',
       type: 'text',
