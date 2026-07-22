@@ -4,8 +4,8 @@ const replaceMergeTags = (template: string, data: Record<string, string>): strin
   template.replace(/\{(\w+)\}/g, (_match, key) => data[key] ?? '')
 
 const ENGINEER_APPLICATION_GHL_CONFIG = {
-  pipelineId: 'REPLACE_WITH_PIPELINE_ID',
-  stageId: 'REPLACE_WITH_STAGE_ID',
+  pipelineId: 'zWZxHVJNoCCUWaLaKPlm',
+  stageId: '82a97e4e-7e1e-458a-b59c-cff7787528bd',
   tag: 'Engineer Application',
   source: 'Your Emergency Fixed',
 }
