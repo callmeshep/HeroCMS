@@ -3,6 +3,13 @@ import type { CollectionAfterChangeHook } from 'payload'
 const replaceMergeTags = (template: string, data: Record<string, string>): string =>
   template.replace(/\{(\w+)\}/g, (_match, key) => data[key] ?? '')
 
+const ENGINEER_APPLICATION_GHL_CONFIG = {
+  pipelineId: 'REPLACE_WITH_PIPELINE_ID',
+  stageId: 'REPLACE_WITH_STAGE_ID',
+  tag: 'Engineer Application',
+  source: 'Your Emergency Fixed',
+}
+
 const GHL_CONFIG: Record<
   string,
   {
@@ -84,6 +91,96 @@ async function findGHLOpportunityByContactId(
   return data.opportunities?.[0]?.id ?? null
 }
 
+async function handleEngineerApplication(doc: any, config: any, req: any) {
+  const submissionCollection = 'yef-submissions'
+
+  if (config.crmWebhookURL && config.crmAPIKey) {
+    const locationId = config.crmWebhookURL
+    const apiKey = config.crmAPIKey
+
+    try {
+      const contactPayload: Record<string, any> = {
+        locationId,
+        name: doc.name ?? '',
+        email: doc.email ?? '',
+        phone: normalisePhone(doc.phoneNumber ?? ''),
+        tags: [ENGINEER_APPLICATION_GHL_CONFIG.tag],
+        source: ENGINEER_APPLICATION_GHL_CONFIG.source,
+      }
+
+      const contactData = await ghlRequest('/contacts/', 'POST', apiKey, contactPayload)
+      const contactId = contactData.contact?.id
+
+      if (contactId) {
+        const trades = (doc.trades ?? []).map((t: any) => t.value).join(', ')
+
+        await ghlRequest('/opportunities/', 'POST', apiKey, {
+          locationId,
+          name: `Engineer Application — ${doc.name}${trades ? ` — ${trades}` : ''}`,
+          pipelineId: ENGINEER_APPLICATION_GHL_CONFIG.pipelineId,
+          pipelineStageId: ENGINEER_APPLICATION_GHL_CONFIG.stageId,
+          contactId,
+          status: 'open',
+        })
+      }
+
+      await req.payload.update({
+        collection: submissionCollection as any,
+        id: doc.id,
+        data: { webhookStatus: 'sent' },
+      })
+    } catch (ghlErr) {
+      console.error('GHL engineer application error:', ghlErr)
+      try {
+        await req.payload.update({
+          collection: submissionCollection as any,
+          id: doc.id,
+          data: { webhookStatus: 'failed' },
+        })
+      } catch {
+        console.error('webhookStatus update error (failed)')
+      }
+    }
+  }
+
+  if (config.adminNotificationEmail && config.resendFromEmail && config.resendFromName) {
+    const trades = (doc.trades ?? []).map((t: any) => t.value).join(', ') || 'None selected'
+    const accreditations =
+      (doc.accreditations ?? []).map((a: any) => a.value).join(', ') || 'None selected'
+    const documents =
+      (doc.uploadedDocuments ?? [])
+        .map((d: any) => `<a href="${d.fileUrl}">${d.label}</a>`)
+        .join('<br>') || 'None uploaded'
+
+    try {
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        },
+        body: JSON.stringify({
+          from: `${config.resendFromName} <${config.resendFromEmail}>`,
+          to: [config.adminNotificationEmail],
+          subject: `New Engineer Application — ${doc.name}`,
+          html: `
+            <h1>New Engineer Application</h1>
+            <p><strong>Name:</strong> ${doc.name ?? ''}</p>
+            <p><strong>Email:</strong> ${doc.email ?? ''}</p>
+            <p><strong>Mobile:</strong> ${doc.phoneNumber ?? ''}</p>
+            <p><strong>Trades:</strong> ${trades}</p>
+            <p><strong>Accreditations:</strong> ${accreditations}</p>
+            <p><strong>Coverage radius:</strong> ${doc.coverageRadius ?? ''} miles</p>
+            <p><strong>Documents:</strong><br>${documents}</p>
+          `,
+        }),
+      })
+    } catch (emailErr) {
+      console.error('Resend engineer application notification error:', emailErr)
+    }
+  }
+}
+
 export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, operation, req }) => {
   if (operation !== 'create') return doc
 
@@ -102,6 +199,12 @@ export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, opera
 
     const tenantRecord = await req.payload.findByID({ collection: 'tenants', id: tenantId })
     const tenantSlug: string = tenantRecord?.slug ?? ''
+
+    if (doc.journey === 'engineer-application') {
+      await handleEngineerApplication(doc, config, req)
+      return doc
+    }
+
     const ghl = GHL_CONFIG[tenantSlug] ?? GHL_CONFIG['herocare']
 
     const formId = typeof doc.form === 'object' ? doc.form.id : doc.form
