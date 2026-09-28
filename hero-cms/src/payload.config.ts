@@ -11,6 +11,7 @@ import { Media } from './collections/Media'
 import { Tenants } from './collections/Tenants'
 import { APIKeys } from './collections/APIKeys'
 import { HeroCareWebsite } from './collections/HeroCareWebsite'
+import { HeroCareLandingPages } from './collections/HeroCareLandingPages'
 import { HeroCareImageGallery } from './collections/HeroCareImageGallery'
 import { HeroCareBrandAssets } from './collections/HeroCareBrandAssets'
 import { HeroCareEmailTemplates } from './collections/HeroCareEmailTemplates'
@@ -94,6 +95,7 @@ export default buildConfig({
     HeroCareForms,
     HeroCareSubmissions,
     HeroCareWebsite,
+    HeroCareLandingPages,
     EmergencyHeroBrandAssets,
     EmergencyHeroWebsite,
     EmergencyHeroServices,

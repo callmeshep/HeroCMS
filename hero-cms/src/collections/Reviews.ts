@@ -11,7 +11,7 @@ export const Reviews: CollectionConfig = {
   admin: {
     group: 'Admin',
     useAsTitle: 'customerName',
-    defaultColumns: ['customerName', 'rating', 'serviceType', 'tenant', 'visible'],
+    defaultColumns: ['customerName', 'rating', 'serviceType', 'visible'],
   },
   access: {
     read: isAdminOrSuperAdmin,
@@ -51,6 +51,12 @@ export const Reviews: CollectionConfig = {
         { label: 'Drainage', value: 'drainage' },
         { label: 'General', value: 'general' },
       ],
+    },
+    {
+      name: 'title',
+      label: 'Title (optional)',
+      type: 'text',
+      admin: { description: 'Short heading shown on review cards, e.g. Highly recommend' },
     },
     {
       name: 'reviewBody',

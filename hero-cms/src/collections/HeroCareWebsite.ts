@@ -62,16 +62,58 @@ export const HeroCareWebsite: CollectionConfig = {
             { name: 'trustpilotLink', label: 'Trustpilot Link', type: 'text' },
             {
               name: 'heroBackgroundImage',
-              label: 'Hero — Background Image',
+              label: 'Background Image — Thank You & Policy Pages',
               type: 'upload',
               relationTo: 'media',
+            },
+            {
+              name: 'homepage',
+              label: 'Homepage',
+              type: 'relationship',
+              relationTo: 'herocare-landing-pages',
+              admin: {
+                description: 'The landing page shown at herocare.co.uk/',
+              },
+            },
+            {
+              name: 'footerLogo',
+              label: 'Footer — Logo',
+              type: 'upload',
+              relationTo: 'media',
+            },
+            {
+              name: 'footerLocationHeading',
+              label: 'Footer — Location Heading',
+              type: 'text',
+              admin: { description: 'e.g. Based in Manchester, serving nationwide' },
+            },
+            {
+              name: 'footerAddress',
+              label: 'Footer — Company Details & Address',
+              type: 'textarea',
+              admin: {
+                description:
+                  'One item per line. Include the registered company name, company number and registered office address.',
+              },
+            },
+            {
+              name: 'footerMapImage',
+              label: 'Footer — Map Image',
+              type: 'upload',
+              relationTo: 'media',
+            },
+            {
+              name: 'footerMapLink',
+              label: 'Footer — Map Link',
+              type: 'text',
+              admin: { description: 'Google Maps link opened when the map is clicked' },
             },
           ],
         },
 
         // HOMEOWNERS TAB
         {
-          label: 'Homeowners',
+          label: 'Legacy — Old Homepage & Thank You Page',
           fields: [
             { name: 'heroHeadlineLine1', label: 'Hero — Headline Line 1', type: 'text' },
             { name: 'heroHeadlineLine2', label: 'Hero — Headline Line 2', type: 'text' },
@@ -172,7 +214,7 @@ export const HeroCareWebsite: CollectionConfig = {
 
         // LANDLORDS TAB
         {
-          label: 'Landlords',
+          label: 'Legacy — Landlords',
           fields: [
             { name: 'landlordHeroHeadlineLine1', label: 'Hero — Headline Line 1', type: 'text' },
             { name: 'landlordHeroHeadlineLine2', label: 'Hero — Headline Line 2', type: 'text' },
@@ -274,7 +316,7 @@ export const HeroCareWebsite: CollectionConfig = {
 
         // PRICING TAB
         {
-          label: 'Pricing',
+          label: 'Legacy — Pricing',
           fields: [
             { name: 'calloutFeeLabel', label: 'Call-out Fee Selector — Label', type: 'text' },
             {

@@ -77,10 +77,14 @@ export interface Config {
     'herocare-forms': HerocareForm;
     'herocare-submissions': HerocareSubmission;
     'herocare-website': HerocareWebsite;
+    'herocare-landing-pages': HerocareLandingPage;
     'emergency-hero-brand-assets': EmergencyHeroBrandAsset;
     'emergency-hero-website': EmergencyHeroWebsite;
     'emergency-hero-services': EmergencyHeroService;
     'engineer-hub-website': EngineerHubWebsite;
+    'engineer-hub-knowledge-articles': EngineerHubKnowledgeArticle;
+    'engineer-hub-wishlist-ideas': EngineerHubWishlistIdea;
+    'engineer-hub-submissions': EngineerHubSubmission;
     'emergency-hero-knowledge-base': EmergencyHeroKnowledgeBase;
     'emergency-hero-team-members': EmergencyHeroTeamMember;
     'emergency-hero-submissions': EmergencyHeroSubmission;
@@ -117,10 +121,14 @@ export interface Config {
     'herocare-forms': HerocareFormsSelect<false> | HerocareFormsSelect<true>;
     'herocare-submissions': HerocareSubmissionsSelect<false> | HerocareSubmissionsSelect<true>;
     'herocare-website': HerocareWebsiteSelect<false> | HerocareWebsiteSelect<true>;
+    'herocare-landing-pages': HerocareLandingPagesSelect<false> | HerocareLandingPagesSelect<true>;
     'emergency-hero-brand-assets': EmergencyHeroBrandAssetsSelect<false> | EmergencyHeroBrandAssetsSelect<true>;
     'emergency-hero-website': EmergencyHeroWebsiteSelect<false> | EmergencyHeroWebsiteSelect<true>;
     'emergency-hero-services': EmergencyHeroServicesSelect<false> | EmergencyHeroServicesSelect<true>;
     'engineer-hub-website': EngineerHubWebsiteSelect<false> | EngineerHubWebsiteSelect<true>;
+    'engineer-hub-knowledge-articles': EngineerHubKnowledgeArticlesSelect<false> | EngineerHubKnowledgeArticlesSelect<true>;
+    'engineer-hub-wishlist-ideas': EngineerHubWishlistIdeasSelect<false> | EngineerHubWishlistIdeasSelect<true>;
+    'engineer-hub-submissions': EngineerHubSubmissionsSelect<false> | EngineerHubSubmissionsSelect<true>;
     'emergency-hero-knowledge-base': EmergencyHeroKnowledgeBaseSelect<false> | EmergencyHeroKnowledgeBaseSelect<true>;
     'emergency-hero-team-members': EmergencyHeroTeamMembersSelect<false> | EmergencyHeroTeamMembersSelect<true>;
     'emergency-hero-submissions': EmergencyHeroSubmissionsSelect<false> | EmergencyHeroSubmissionsSelect<true>;
@@ -250,6 +258,7 @@ export interface ApiKey {
   resendFromEmail?: string | null;
   crmWebhookURL?: string | null;
   crmAPIKey?: string | null;
+  adminNotificationEmail?: string | null;
   /**
    * e.g. G-XXXXXXXXXX — leave blank to disable GA4
    */
@@ -438,6 +447,24 @@ export interface HerocareWebsite {
   trustpilotReviewCount?: number | null;
   trustpilotLink?: string | null;
   heroBackgroundImage?: (number | null) | Media;
+  /**
+   * The landing page shown at herocare.co.uk/
+   */
+  homepage?: (number | null) | HerocareLandingPage;
+  footerLogo?: (number | null) | Media;
+  /**
+   * e.g. Based in Manchester, serving nationwide
+   */
+  footerLocationHeading?: string | null;
+  /**
+   * One item per line. Include the registered company name, company number and registered office address.
+   */
+  footerAddress?: string | null;
+  footerMapImage?: (number | null) | Media;
+  /**
+   * Google Maps link opened when the map is clicked
+   */
+  footerMapLink?: string | null;
   heroHeadlineLine1?: string | null;
   heroHeadlineLine2?: string | null;
   heroBulletPoints?:
@@ -633,6 +660,152 @@ export interface HerocareWebsite {
         id?: string | null;
       }[]
     | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Each record is a full page. To start a new campaign, open an existing page, click Duplicate, then change the slug and content. The homepage is chosen in Website → Globals.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "herocare-landing-pages".
+ */
+export interface HerocareLandingPage {
+  id: number;
+  tenant: number | Tenant;
+  /**
+   * For your reference only, e.g. Homepage or Winter Campaign
+   */
+  title: string;
+  /**
+   * e.g. winter-offer → herocare.co.uk/winter-offer. Lowercase letters, numbers and hyphens only.
+   */
+  slug: string;
+  heroHeadlineLine1?: string | null;
+  heroHeadlineLine2?: string | null;
+  heroSubheading?: string | null;
+  heroCtaText?: string | null;
+  /**
+   * #plans scrolls to the plans section
+   */
+  heroCtaLink?: string | null;
+  heroImageDesktop?: (number | null) | Media;
+  /**
+   * Portrait crop. Falls back to the desktop image if empty.
+   */
+  heroImageMobile?: (number | null) | Media;
+  heroAsSeenOnLabel?: string | null;
+  heroAsSeenOnLogos?:
+    | {
+        logo: number | Media;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Pink strip under the hero. Bold part shows first, e.g. Bold "Cancel" + Regular "any time".
+   */
+  trustBarItems?:
+    | {
+        boldText?: string | null;
+        regularText?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  coveredEyebrow?: string | null;
+  coveredHeadline?: string | null;
+  coveredSubheading?: string | null;
+  coveredCards?:
+    | {
+        icon?: (number | null) | Media;
+        title: string;
+        body?: string | null;
+        colour?: ('coral' | 'blue' | 'amber' | 'purple') | null;
+        id?: string | null;
+      }[]
+    | null;
+  howEyebrow?: string | null;
+  howHeadline?: string | null;
+  /**
+   * Numbers are added automatically.
+   */
+  howSteps?:
+    | {
+        title: string;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Pick the reviews shown in the carousel. Drag to reorder. Only visible reviews are listed.
+   */
+  featuredReviews?: (number | Review)[] | null;
+  plansEyebrow?: string | null;
+  plansHeadline?: string | null;
+  plans?:
+    | {
+        name: string;
+        colour?: ('blue' | 'pink') | null;
+        features?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        ctaText?: string | null;
+        /**
+         * Full Stripe payment link URL for this plan
+         */
+        stripeLink?: string | null;
+        /**
+         * e.g. then £14.99 per month from January with code GRANDHERO
+         */
+        smallPrint?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  navLinks?:
+    | {
+        label: string;
+        /**
+         * Section anchors: #whats-covered, #how-it-works, #reviews, #plans
+         */
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
+  navCtaText?: string | null;
+  /**
+   * Falls back to the desktop text if empty
+   */
+  navCtaTextMobile?: string | null;
+  navCtaLink?: string | null;
+  footerCtaText?: string | null;
+  footerCtaLink?: string | null;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  /**
+   * Tick for campaign pages that are near-copies of the homepage, to avoid duplicate-content issues.
+   */
+  noIndex?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews".
+ */
+export interface Review {
+  id: number;
+  customerName: string;
+  rating: '1' | '2' | '3' | '4' | '5';
+  serviceType: 'plumbing' | 'heating' | 'electrics' | 'drainage' | 'general';
+  /**
+   * Short heading shown on review cards, e.g. Highly recommend
+   */
+  title?: string | null;
+  reviewBody?: string | null;
+  date?: string | null;
+  visible?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1399,6 +1572,8 @@ export interface EngineerHubWebsite {
   tenant: number | Tenant;
   internalTitle?: string | null;
   logo?: (number | null) | Media;
+  footerLogo?: (number | null) | Media;
+  favicon?: (number | null) | Media;
   footerStrapline?: string | null;
   footerCopyrightText?: string | null;
   issueActive?: boolean | null;
@@ -1424,8 +1599,18 @@ export interface EngineerHubWebsite {
   appSectionHeadline?: string | null;
   wishlistHeadline?: string | null;
   wishlistBodyText?: string | null;
+  wishlistTone?: ('Peach' | 'Pink' | 'Blue' | 'Lavender' | 'Mint' | 'Yellow' | 'White') | null;
+  /**
+   * Look up icon names at fonts.google.com/icons
+   */
+  wishlistIcon?: string | null;
   updateLogHeadline?: string | null;
   updateLogBodyText?: string | null;
+  updateLogTone?: ('Peach' | 'Pink' | 'Blue' | 'Lavender' | 'Mint' | 'Yellow' | 'White') | null;
+  /**
+   * Look up icon names at fonts.google.com/icons
+   */
+  updateLogIcon?: string | null;
   updateLogEntries?:
     | {
         tag: 'Fixed' | 'Added';
@@ -1434,20 +1619,49 @@ export interface EngineerHubWebsite {
         id?: string | null;
       }[]
     | null;
+  appDownloadHeadline?: string | null;
+  appDownloadBodyText?: string | null;
+  appStoreUrl?: string | null;
+  googlePlayUrl?: string | null;
+  appDownloadTone?: ('Peach' | 'Pink' | 'Blue' | 'Lavender' | 'Mint' | 'Yellow' | 'White') | null;
+  /**
+   * Look up icon names at fonts.google.com/icons
+   */
+  appDownloadIcon?: string | null;
   formsSectionHeadline?: string | null;
   reportProblemHeadline?: string | null;
   reportProblemBodyText?: string | null;
+  reportProblemTone?: ('Peach' | 'Pink' | 'Blue' | 'Lavender' | 'Mint' | 'Yellow' | 'White') | null;
+  /**
+   * Look up icon names at fonts.google.com/icons
+   */
+  reportProblemIcon?: string | null;
   insuranceHeadline?: string | null;
   insuranceBodyText?: string | null;
+  insuranceTone?: ('Peach' | 'Pink' | 'Blue' | 'Lavender' | 'Mint' | 'Yellow' | 'White') | null;
+  /**
+   * Look up icon names at fonts.google.com/icons
+   */
+  insuranceIcon?: string | null;
   surveys?:
     | {
         surveyId: string;
         title: string;
         description?: string | null;
+        tone?: ('Peach' | 'Pink' | 'Blue' | 'Lavender' | 'Mint' | 'Yellow' | 'White') | null;
+        /**
+         * Look up icon names at fonts.google.com/icons
+         */
+        icon?: string | null;
         id?: string | null;
       }[]
     | null;
   membershipSectionHeadline?: string | null;
+  membershipTiersTone?: ('Peach' | 'Pink' | 'Blue' | 'Lavender' | 'Mint' | 'Yellow' | 'White') | null;
+  /**
+   * Look up icon names at fonts.google.com/icons
+   */
+  membershipTiersIcon?: string | null;
   tiers?:
     | {
         name: string;
@@ -1468,15 +1682,17 @@ export interface EngineerHubWebsite {
     | {
         name: string;
         role?: string | null;
-        avatarColour?: string | null;
+        avatar?: (number | null) | Media;
         phone?: string | null;
         email?: string | null;
+        tone?: ('Peach' | 'Pink' | 'Blue' | 'Lavender' | 'Mint' | 'Yellow' | 'White') | null;
         id?: string | null;
       }[]
     | null;
   messageCardHeadline?: string | null;
   messageCardRoleLabel?: string | null;
   messageCardCtaText?: string | null;
+  messageCardTone?: ('Peach' | 'Pink' | 'Blue' | 'Lavender' | 'Mint' | 'Yellow' | 'White') | null;
   policies?:
     | {
         title: string;
@@ -1499,6 +1715,112 @@ export interface EngineerHubWebsite {
         id?: string | null;
       }[]
     | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "engineer-hub-knowledge-articles".
+ */
+export interface EngineerHubKnowledgeArticle {
+  id: number;
+  tenant: number | Tenant;
+  title: string;
+  tag: 'Update' | 'Tip' | 'How-to' | 'FAQ' | 'Guide';
+  tone: 'Peach' | 'Pink' | 'Blue' | 'Lavender' | 'Mint' | 'Yellow' | 'White';
+  /**
+   * Look up icon names at fonts.google.com/icons — copy the name shown under the icon (e.g. "lightbulb", "report_problem") and paste it here.
+   */
+  icon?: string | null;
+  excerpt: string;
+  postedDate?: string | null;
+  body: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  section: 'Knowledge Hub' | 'The App' | 'Membership';
+  /**
+   * Controls position and which articles fall behind "Load more" (first 6 per section shown)
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "engineer-hub-wishlist-ideas".
+ */
+export interface EngineerHubWishlistIdea {
+  id: number;
+  tenant: number | Tenant;
+  ideaText: string;
+  whyItWouldHelp?: string | null;
+  /**
+   * From the gate session — not shown publicly
+   */
+  submittedByEmail?: string | null;
+  reviewStatus: 'Pending' | 'Approved' | 'Rejected';
+  voteCount?: number | null;
+  /**
+   * Used to stop the same engineer voting twice — not exposed publicly
+   */
+  voterEmails?:
+    | {
+        email: string;
+        id?: string | null;
+      }[]
+    | null;
+  submittedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "engineer-hub-submissions".
+ */
+export interface EngineerHubSubmission {
+  id: number;
+  tenant: number | Tenant;
+  formType: 'Report a Problem' | 'Insurance Upload' | 'Membership Enquiry' | 'Message' | 'Survey Response';
+  name?: string | null;
+  contactDetail?: string | null;
+  categoryOrIssueType?: string | null;
+  /**
+   * Report a Problem only
+   */
+  jobReference?: string | null;
+  description?: string | null;
+  /**
+   * Insurance uploads
+   */
+  uploadedFile?: (number | null) | Media;
+  /**
+   * Insurance uploads
+   */
+  expiryDate?: string | null;
+  /**
+   * Membership enquiry — Bronze/Silver/Gold
+   */
+  tierRequested?: string | null;
+  surveyId?: string | null;
+  surveyResponse?: string | null;
+  surveyComment?: string | null;
+  submittedAt?: string | null;
+  /**
+   * Resend email to the mailbox — no CRM webhook for this tenant
+   */
+  notificationStatus?: ('Pending' | 'Sent' | 'Failed') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1613,21 +1935,6 @@ export interface EmergencyHeroEmailTemplate {
   } | null;
   buttonText?: string | null;
   buttonUrl?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "reviews".
- */
-export interface Review {
-  id: number;
-  customerName: string;
-  rating: '1' | '2' | '3' | '4' | '5';
-  serviceType: 'plumbing' | 'heating' | 'electrics' | 'drainage' | 'general';
-  reviewBody?: string | null;
-  date?: string | null;
-  visible?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1777,6 +2084,27 @@ export interface YefSubmission {
   postcode?: string | null;
   service?: string | null;
   email?: string | null;
+  journey?: string | null;
+  trades?:
+    | {
+        value?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  accreditations?:
+    | {
+        value?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  uploadedDocuments?:
+    | {
+        label?: string | null;
+        fileUrl?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  coverageRadius?: number | null;
   submittedAt?: string | null;
   webhookStatus?: ('pending' | 'sent' | 'failed') | null;
   updatedAt: string;
@@ -1845,6 +2173,50 @@ export interface YefWebsite {
   homeFaqBody?: string | null;
   homeFaqCtaText?: string | null;
   homeFaqItems?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  engineerAppHeroUnderlineText?: string | null;
+  engineerAppHeroHeadlineRemainder?: string | null;
+  engineerAppHeroSubheading?: string | null;
+  engineerAppQ1Label?: string | null;
+  engineerAppQ1Sublabel?: string | null;
+  engineerAppTrades?:
+    | {
+        icon?: (number | null) | Media;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  engineerAppQ2Label?: string | null;
+  engineerAppQ2Sublabel?: string | null;
+  engineerAppAccreditations?:
+    | {
+        icon?: (number | null) | Media;
+        label: string;
+        requiresFileUpload?: boolean | null;
+        fileUploadLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  engineerAppQ3Label?: string | null;
+  engineerAppQ3Sublabel?: string | null;
+  engineerAppRadiusOptions?:
+    | {
+        miles: number;
+        id?: string | null;
+      }[]
+    | null;
+  engineerAppSubmitButtonText?: string | null;
+  engineerAppFaqHeadlineLine1?: string | null;
+  engineerAppFaqHeadlineLine2Prefix?: string | null;
+  engineerAppFaqHeadlineUnderlineText?: string | null;
+  engineerAppFaqBody?: string | null;
+  engineerAppFaqCtaText?: string | null;
+  engineerAppFaqItems?:
     | {
         question: string;
         answer: string;
@@ -2044,6 +2416,10 @@ export interface PayloadLockedDocument {
         value: number | HerocareWebsite;
       } | null)
     | ({
+        relationTo: 'herocare-landing-pages';
+        value: number | HerocareLandingPage;
+      } | null)
+    | ({
         relationTo: 'emergency-hero-brand-assets';
         value: number | EmergencyHeroBrandAsset;
       } | null)
@@ -2058,6 +2434,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'engineer-hub-website';
         value: number | EngineerHubWebsite;
+      } | null)
+    | ({
+        relationTo: 'engineer-hub-knowledge-articles';
+        value: number | EngineerHubKnowledgeArticle;
+      } | null)
+    | ({
+        relationTo: 'engineer-hub-wishlist-ideas';
+        value: number | EngineerHubWishlistIdea;
+      } | null)
+    | ({
+        relationTo: 'engineer-hub-submissions';
+        value: number | EngineerHubSubmission;
       } | null)
     | ({
         relationTo: 'emergency-hero-knowledge-base';
@@ -2224,6 +2612,7 @@ export interface ApiKeysSelect<T extends boolean = true> {
   resendFromEmail?: T;
   crmWebhookURL?: T;
   crmAPIKey?: T;
+  adminNotificationEmail?: T;
   ga4MeasurementId?: T;
   gtmContainerId?: T;
   scripts?:
@@ -2360,6 +2749,12 @@ export interface HerocareWebsiteSelect<T extends boolean = true> {
   trustpilotReviewCount?: T;
   trustpilotLink?: T;
   heroBackgroundImage?: T;
+  homepage?: T;
+  footerLogo?: T;
+  footerLocationHeading?: T;
+  footerAddress?: T;
+  footerMapImage?: T;
+  footerMapLink?: T;
   heroHeadlineLine1?: T;
   heroHeadlineLine2?: T;
   heroBulletPoints?:
@@ -2541,6 +2936,94 @@ export interface HerocareWebsiteSelect<T extends boolean = true> {
         content?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "herocare-landing-pages_select".
+ */
+export interface HerocareLandingPagesSelect<T extends boolean = true> {
+  tenant?: T;
+  title?: T;
+  slug?: T;
+  heroHeadlineLine1?: T;
+  heroHeadlineLine2?: T;
+  heroSubheading?: T;
+  heroCtaText?: T;
+  heroCtaLink?: T;
+  heroImageDesktop?: T;
+  heroImageMobile?: T;
+  heroAsSeenOnLabel?: T;
+  heroAsSeenOnLogos?:
+    | T
+    | {
+        logo?: T;
+        url?: T;
+        id?: T;
+      };
+  trustBarItems?:
+    | T
+    | {
+        boldText?: T;
+        regularText?: T;
+        id?: T;
+      };
+  coveredEyebrow?: T;
+  coveredHeadline?: T;
+  coveredSubheading?: T;
+  coveredCards?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        body?: T;
+        colour?: T;
+        id?: T;
+      };
+  howEyebrow?: T;
+  howHeadline?: T;
+  howSteps?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  featuredReviews?: T;
+  plansEyebrow?: T;
+  plansHeadline?: T;
+  plans?:
+    | T
+    | {
+        name?: T;
+        colour?: T;
+        features?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        ctaText?: T;
+        stripeLink?: T;
+        smallPrint?: T;
+        id?: T;
+      };
+  navLinks?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+        id?: T;
+      };
+  navCtaText?: T;
+  navCtaTextMobile?: T;
+  navCtaLink?: T;
+  footerCtaText?: T;
+  footerCtaLink?: T;
+  metaTitle?: T;
+  metaDescription?: T;
+  noIndex?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -3017,6 +3500,8 @@ export interface EngineerHubWebsiteSelect<T extends boolean = true> {
   tenant?: T;
   internalTitle?: T;
   logo?: T;
+  footerLogo?: T;
+  favicon?: T;
   footerStrapline?: T;
   footerCopyrightText?: T;
   issueActive?: T;
@@ -3028,8 +3513,12 @@ export interface EngineerHubWebsiteSelect<T extends boolean = true> {
   appSectionHeadline?: T;
   wishlistHeadline?: T;
   wishlistBodyText?: T;
+  wishlistTone?: T;
+  wishlistIcon?: T;
   updateLogHeadline?: T;
   updateLogBodyText?: T;
+  updateLogTone?: T;
+  updateLogIcon?: T;
   updateLogEntries?:
     | T
     | {
@@ -3038,20 +3527,34 @@ export interface EngineerHubWebsiteSelect<T extends boolean = true> {
         date?: T;
         id?: T;
       };
+  appDownloadHeadline?: T;
+  appDownloadBodyText?: T;
+  appStoreUrl?: T;
+  googlePlayUrl?: T;
+  appDownloadTone?: T;
+  appDownloadIcon?: T;
   formsSectionHeadline?: T;
   reportProblemHeadline?: T;
   reportProblemBodyText?: T;
+  reportProblemTone?: T;
+  reportProblemIcon?: T;
   insuranceHeadline?: T;
   insuranceBodyText?: T;
+  insuranceTone?: T;
+  insuranceIcon?: T;
   surveys?:
     | T
     | {
         surveyId?: T;
         title?: T;
         description?: T;
+        tone?: T;
+        icon?: T;
         id?: T;
       };
   membershipSectionHeadline?: T;
+  membershipTiersTone?: T;
+  membershipTiersIcon?: T;
   tiers?:
     | T
     | {
@@ -3073,14 +3576,16 @@ export interface EngineerHubWebsiteSelect<T extends boolean = true> {
     | {
         name?: T;
         role?: T;
-        avatarColour?: T;
+        avatar?: T;
         phone?: T;
         email?: T;
+        tone?: T;
         id?: T;
       };
   messageCardHeadline?: T;
   messageCardRoleLabel?: T;
   messageCardCtaText?: T;
+  messageCardTone?: T;
   policies?:
     | T
     | {
@@ -3089,6 +3594,68 @@ export interface EngineerHubWebsiteSelect<T extends boolean = true> {
         content?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "engineer-hub-knowledge-articles_select".
+ */
+export interface EngineerHubKnowledgeArticlesSelect<T extends boolean = true> {
+  tenant?: T;
+  title?: T;
+  tag?: T;
+  tone?: T;
+  icon?: T;
+  excerpt?: T;
+  postedDate?: T;
+  body?: T;
+  section?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "engineer-hub-wishlist-ideas_select".
+ */
+export interface EngineerHubWishlistIdeasSelect<T extends boolean = true> {
+  tenant?: T;
+  ideaText?: T;
+  whyItWouldHelp?: T;
+  submittedByEmail?: T;
+  reviewStatus?: T;
+  voteCount?: T;
+  voterEmails?:
+    | T
+    | {
+        email?: T;
+        id?: T;
+      };
+  submittedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "engineer-hub-submissions_select".
+ */
+export interface EngineerHubSubmissionsSelect<T extends boolean = true> {
+  tenant?: T;
+  formType?: T;
+  name?: T;
+  contactDetail?: T;
+  categoryOrIssueType?: T;
+  jobReference?: T;
+  description?: T;
+  uploadedFile?: T;
+  expiryDate?: T;
+  tierRequested?: T;
+  surveyId?: T;
+  surveyResponse?: T;
+  surveyComment?: T;
+  submittedAt?: T;
+  notificationStatus?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -3201,6 +3768,7 @@ export interface ReviewsSelect<T extends boolean = true> {
   customerName?: T;
   rating?: T;
   serviceType?: T;
+  title?: T;
   reviewBody?: T;
   date?: T;
   visible?: T;
@@ -3341,6 +3909,27 @@ export interface YefSubmissionsSelect<T extends boolean = true> {
   postcode?: T;
   service?: T;
   email?: T;
+  journey?: T;
+  trades?:
+    | T
+    | {
+        value?: T;
+        id?: T;
+      };
+  accreditations?:
+    | T
+    | {
+        value?: T;
+        id?: T;
+      };
+  uploadedDocuments?:
+    | T
+    | {
+        label?: T;
+        fileUrl?: T;
+        id?: T;
+      };
+  coverageRadius?: T;
   submittedAt?: T;
   webhookStatus?: T;
   updatedAt?: T;
@@ -3408,6 +3997,50 @@ export interface YefWebsiteSelect<T extends boolean = true> {
   homeFaqBody?: T;
   homeFaqCtaText?: T;
   homeFaqItems?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  engineerAppHeroUnderlineText?: T;
+  engineerAppHeroHeadlineRemainder?: T;
+  engineerAppHeroSubheading?: T;
+  engineerAppQ1Label?: T;
+  engineerAppQ1Sublabel?: T;
+  engineerAppTrades?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        id?: T;
+      };
+  engineerAppQ2Label?: T;
+  engineerAppQ2Sublabel?: T;
+  engineerAppAccreditations?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        requiresFileUpload?: T;
+        fileUploadLabel?: T;
+        id?: T;
+      };
+  engineerAppQ3Label?: T;
+  engineerAppQ3Sublabel?: T;
+  engineerAppRadiusOptions?:
+    | T
+    | {
+        miles?: T;
+        id?: T;
+      };
+  engineerAppSubmitButtonText?: T;
+  engineerAppFaqHeadlineLine1?: T;
+  engineerAppFaqHeadlineLine2Prefix?: T;
+  engineerAppFaqHeadlineUnderlineText?: T;
+  engineerAppFaqBody?: T;
+  engineerAppFaqCtaText?: T;
+  engineerAppFaqItems?:
     | T
     | {
         question?: T;
