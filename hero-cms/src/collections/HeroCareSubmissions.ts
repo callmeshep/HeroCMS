@@ -1,8 +1,10 @@
 import type { CollectionConfig } from 'payload'
+import { APIError } from 'payload'
 import { isSuperAdmin } from '../access/isSuperAdmin'
-import { isAdminOrSuperAdmin } from '../access/isAdminOrSuperAdmin'
 import { hasTenantAccess } from '../access/hasTenantAccess'
 import { handleEnquiryHooks } from '../hooks/handleEnquiryHooks'
+
+const isPurchase = (data: any) => data?.journey === 'purchase'
 
 export const HeroCareSubmissions: CollectionConfig = {
   slug: 'herocare-submissions',
@@ -16,9 +18,10 @@ export const HeroCareSubmissions: CollectionConfig = {
     defaultColumns: [
       'name',
       'journey',
+      'plan',
+      'promoCode',
       'trigger',
       'stage',
-      'device',
       'submittedAt',
       'webhookStatus',
     ],
@@ -30,6 +33,44 @@ export const HeroCareSubmissions: CollectionConfig = {
     delete: isSuperAdmin,
   },
   hooks: {
+    beforeValidate: [
+      async ({ data, operation, req }) => {
+        // Purchases come only from the Stripe webhook — reject anything without the shared secret
+        if (operation === 'create' && isPurchase(data)) {
+          const expected = process.env.HEROCARE_WEBHOOK_SECRET
+          const provided = req.headers?.get?.('x-herocare-webhook-secret')
+          if (!expected || !provided || provided !== expected) {
+            throw new APIError('Unauthorised purchase submission', 401)
+          }
+
+          const checkoutForm = await req.payload.find({
+            collection: 'herocare-forms',
+            where: { name: { equals: 'Stripe Checkout' } },
+            limit: 1,
+            overrideAccess: true,
+          })
+          if (!checkoutForm.docs[0]) {
+            throw new APIError('HeroCare form record "Stripe Checkout" is missing', 500)
+          }
+
+          const tenant = await req.payload.find({
+            collection: 'tenants',
+            where: { slug: { equals: 'herocare' } },
+            limit: 1,
+            overrideAccess: true,
+          })
+
+          return {
+            ...data,
+            form: checkoutForm.docs[0].id,
+            tenant: tenant.docs[0]?.id,
+            trigger: 'stripe-checkout',
+            stage: 'purchase',
+          }
+        }
+        return data
+      },
+    ],
     beforeChange: [
       async ({ data, operation, req }) => {
         if (operation === 'create') {
@@ -74,6 +115,7 @@ export const HeroCareSubmissions: CollectionConfig = {
       options: [
         { label: 'Homeowner', value: 'homeowner' },
         { label: 'Landlord', value: 'landlord' },
+        { label: 'Purchase', value: 'purchase' },
       ],
     },
     {
@@ -83,6 +125,7 @@ export const HeroCareSubmissions: CollectionConfig = {
       options: [
         { label: 'Button Click', value: 'button-click' },
         { label: 'Header Form', value: 'header-form' },
+        { label: 'Stripe Checkout', value: 'stripe-checkout' },
       ],
     },
     {
@@ -92,6 +135,7 @@ export const HeroCareSubmissions: CollectionConfig = {
       options: [
         { label: 'Step 1 — Header Form', value: 'step-1' },
         { label: 'Step 2 — Popup', value: 'step-2' },
+        { label: 'Purchase Complete', value: 'purchase' },
       ],
     },
     {
@@ -111,7 +155,7 @@ export const HeroCareSubmissions: CollectionConfig = {
       name: 'postcode',
       type: 'text',
       admin: {
-        condition: (data) => data.journey === 'homeowner',
+        condition: (data) => data.journey === 'homeowner' || data.journey === 'purchase',
       },
     },
     {
@@ -139,6 +183,32 @@ export const HeroCareSubmissions: CollectionConfig = {
       name: 'email',
       label: 'Email Address',
       type: 'text',
+    },
+    {
+      type: 'collapsible',
+      label: 'Purchase Details',
+      admin: {
+        condition: (data) => data.journey === 'purchase',
+        initCollapsed: false,
+      },
+      fields: [
+        { name: 'addressLine1', label: 'Property Address — Line 1', type: 'text' },
+        { name: 'addressLine2', label: 'Property Address — Line 2', type: 'text' },
+        { name: 'city', label: 'Town / City', type: 'text' },
+        { name: 'plan', label: 'Plan', type: 'text' },
+        { name: 'priceId', label: 'Stripe Price ID', type: 'text' },
+        { name: 'monthlyAmount', label: 'Monthly Price (£)', type: 'text' },
+        { name: 'promoCode', label: 'Promo Code', type: 'text' },
+        { name: 'trialEnd', label: 'First Payment Date', type: 'date' },
+        {
+          name: 'stripeSessionId',
+          label: 'Stripe Checkout Session ID',
+          type: 'text',
+          unique: true,
+        },
+        { name: 'stripeCustomerId', label: 'Stripe Customer ID', type: 'text' },
+        { name: 'stripeSubscriptionId', label: 'Stripe Subscription ID', type: 'text' },
+      ],
     },
     {
       name: 'submittedAt',

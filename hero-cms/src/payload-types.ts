@@ -408,9 +408,9 @@ export interface HerocareSubmission {
    * The form this submission belongs to
    */
   form: number | HerocareForm;
-  journey: 'homeowner' | 'landlord';
-  trigger: 'button-click' | 'header-form';
-  stage: 'step-1' | 'step-2';
+  journey: 'homeowner' | 'landlord' | 'purchase';
+  trigger: 'button-click' | 'header-form' | 'stripe-checkout';
+  stage: 'step-1' | 'step-2' | 'purchase';
   device?: ('desktop' | 'mobile' | 'tablet') | null;
   name?: string | null;
   postcode?: string | null;
@@ -418,6 +418,17 @@ export interface HerocareSubmission {
   numberOfProperties?: number | null;
   phoneNumber?: string | null;
   email?: string | null;
+  addressLine1?: string | null;
+  addressLine2?: string | null;
+  city?: string | null;
+  plan?: string | null;
+  priceId?: string | null;
+  monthlyAmount?: string | null;
+  promoCode?: string | null;
+  trialEnd?: string | null;
+  stripeSessionId?: string | null;
+  stripeCustomerId?: string | null;
+  stripeSubscriptionId?: string | null;
   submittedAt?: string | null;
   webhookStatus?: ('pending' | 'sent' | 'failed') | null;
   updatedAt: string;
@@ -741,9 +752,21 @@ export interface HerocareLandingPage {
   featuredReviews?: (number | Review)[] | null;
   plansEyebrow?: string | null;
   plansHeadline?: string | null;
+  /**
+   * Wrap words in **double asterisks** to make them bold, e.g. with promo code **GRANDHERO**
+   */
+  plansSubheading?: string | null;
+  promoLabel?: string | null;
+  promoPlaceholder?: string | null;
+  promoSuccessMessage?: string | null;
+  promoErrorMessage?: string | null;
   plans?:
     | {
         name: string;
+        /**
+         * e.g. Home emergency call outs for…
+         */
+        tagline?: string | null;
         colour?: ('blue' | 'pink') | null;
         features?:
           | {
@@ -753,9 +776,9 @@ export interface HerocareLandingPage {
           | null;
         ctaText?: string | null;
         /**
-         * Full Stripe payment link URL for this plan
+         * From Stripe → Product catalogue → the plan → Pricing. Starts with price_
          */
-        stripeLink?: string | null;
+        stripePriceId?: string | null;
         /**
          * e.g. then £14.99 per month from January with code GRANDHERO
          */
@@ -2721,6 +2744,17 @@ export interface HerocareSubmissionsSelect<T extends boolean = true> {
   numberOfProperties?: T;
   phoneNumber?: T;
   email?: T;
+  addressLine1?: T;
+  addressLine2?: T;
+  city?: T;
+  plan?: T;
+  priceId?: T;
+  monthlyAmount?: T;
+  promoCode?: T;
+  trialEnd?: T;
+  stripeSessionId?: T;
+  stripeCustomerId?: T;
+  stripeSubscriptionId?: T;
   submittedAt?: T;
   webhookStatus?: T;
   updatedAt?: T;
@@ -2993,10 +3027,16 @@ export interface HerocareLandingPagesSelect<T extends boolean = true> {
   featuredReviews?: T;
   plansEyebrow?: T;
   plansHeadline?: T;
+  plansSubheading?: T;
+  promoLabel?: T;
+  promoPlaceholder?: T;
+  promoSuccessMessage?: T;
+  promoErrorMessage?: T;
   plans?:
     | T
     | {
         name?: T;
+        tagline?: T;
         colour?: T;
         features?:
           | T
@@ -3005,7 +3045,7 @@ export interface HerocareLandingPagesSelect<T extends boolean = true> {
               id?: T;
             };
         ctaText?: T;
-        stripeLink?: T;
+        stripePriceId?: T;
         smallPrint?: T;
         id?: T;
       };

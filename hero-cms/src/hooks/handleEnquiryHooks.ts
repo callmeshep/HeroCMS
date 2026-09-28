@@ -181,6 +181,152 @@ async function handleEngineerApplication(doc: any, config: any, req: any) {
   }
 }
 
+const HEROCARE_CUSTOMERS_PIPELINE = 'HeroCare Customers'
+
+const escapeHtml = (value: unknown): string =>
+  String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+
+async function findPipelineFirstStage(
+  locationId: string,
+  apiKey: string,
+  pipelineName: string,
+): Promise<{ pipelineId: string; stageId: string }> {
+  const data = await ghlRequest(`/opportunities/pipelines?locationId=${locationId}`, 'GET', apiKey)
+  const pipeline = (data.pipelines ?? []).find(
+    (p: any) => (p.name ?? '').trim().toLowerCase() === pipelineName.toLowerCase(),
+  )
+  if (!pipeline) throw new Error(`GHL pipeline "${pipelineName}" not found`)
+  const stages = [...(pipeline.stages ?? [])].sort(
+    (a: any, b: any) => (a.position ?? 0) - (b.position ?? 0),
+  )
+  if (!stages[0]) throw new Error(`GHL pipeline "${pipelineName}" has no stages`)
+  return { pipelineId: pipeline.id, stageId: stages[0].id }
+}
+
+async function handlePurchase(
+  doc: any,
+  config: any,
+  form: any,
+  submissionCollection: string,
+  req: any,
+) {
+  const setStatus = async (status: 'sent' | 'failed') => {
+    try {
+      await req.payload.update({
+        collection: submissionCollection as any,
+        id: doc.id,
+        data: { webhookStatus: status },
+      })
+    } catch {
+      console.error(`webhookStatus update error (${status})`)
+    }
+  }
+
+  // GHL — create or update contact, tag, and add opportunity to HeroCare Customers
+  if (config.crmWebhookURL && config.crmAPIKey) {
+    const locationId = config.crmWebhookURL
+    const apiKey = config.crmAPIKey
+
+    try {
+      const upsert = await ghlRequest('/contacts/upsert', 'POST', apiKey, {
+        locationId,
+        name: doc.name ?? '',
+        email: doc.email || undefined,
+        phone: doc.phoneNumber ? normalisePhone(doc.phoneNumber) : undefined,
+        address1: [doc.addressLine1, doc.addressLine2].filter(Boolean).join(', ') || undefined,
+        city: doc.city || undefined,
+        postalCode: doc.postcode || undefined,
+        country: 'GB',
+        source: 'HeroCare Stripe Checkout',
+      })
+      const contactId = upsert.contact?.id
+      if (!contactId) throw new Error('GHL upsert returned no contact ID')
+
+      const tags: string[] = ['HeroCare', 'HeroCare Customer']
+      if (doc.promoCode) tags.push(doc.promoCode)
+      await ghlRequest(`/contacts/${contactId}/tags`, 'POST', apiKey, { tags })
+
+      const { pipelineId, stageId } = await findPipelineFirstStage(
+        locationId,
+        apiKey,
+        HEROCARE_CUSTOMERS_PIPELINE,
+      )
+      const monetaryValue = Number.parseFloat(doc.monthlyAmount ?? '')
+
+      await ghlRequest('/opportunities/', 'POST', apiKey, {
+        locationId,
+        name: `${doc.plan || 'HeroCare'} — ${doc.name || doc.email || 'New customer'}`,
+        pipelineId,
+        pipelineStageId: stageId,
+        contactId,
+        status: 'open',
+        ...(Number.isFinite(monetaryValue) ? { monetaryValue } : {}),
+      })
+
+      await setStatus('sent')
+    } catch (ghlErr) {
+      console.error('GHL purchase error:', ghlErr)
+      await setStatus('failed')
+    }
+  }
+
+  // Admin notification — recipients come from the "Stripe Checkout" form record
+  const recipients: string[] = (form?.notificationRecipients ?? [])
+    .map((r: { email?: string }) => r.email)
+    .filter(Boolean)
+
+  if (
+    form?.notificationsEnabled !== false &&
+    recipients.length > 0 &&
+    config.resendFromEmail &&
+    config.resendFromName
+  ) {
+    const firstPayment = doc.trialEnd
+      ? new Date(doc.trialEnd).toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+          timeZone: 'Europe/London',
+        })
+      : 'Charged at sign-up'
+    const address = [doc.addressLine1, doc.addressLine2, doc.city, doc.postcode]
+      .filter(Boolean)
+      .map(escapeHtml)
+      .join('<br>')
+
+    try {
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        },
+        body: JSON.stringify({
+          from: `${config.resendFromName} <${config.resendFromEmail}>`,
+          to: recipients,
+          subject: `New HeroCare sign-up — ${doc.plan ?? ''} — ${doc.name ?? ''}`,
+          html: `
+            <h1>New HeroCare sign-up</h1>
+            <p><strong>Plan:</strong> ${escapeHtml(doc.plan)} (£${escapeHtml(doc.monthlyAmount)}/month)</p>
+            <p><strong>Promo code:</strong> ${escapeHtml(doc.promoCode) || 'None'}</p>
+            <p><strong>First payment:</strong> ${escapeHtml(firstPayment)}</p>
+            <p><strong>Name:</strong> ${escapeHtml(doc.name)}</p>
+            <p><strong>Email:</strong> ${escapeHtml(doc.email)}</p>
+            <p><strong>Phone:</strong> ${escapeHtml(doc.phoneNumber)}</p>
+            <p><strong>Property address:</strong><br>${address}</p>
+          `,
+        }),
+      })
+    } catch (emailErr) {
+      console.error('Resend purchase notification error:', emailErr)
+    }
+  }
+}
+
 export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, operation, req }) => {
   if (operation !== 'create') return doc
 
@@ -217,6 +363,11 @@ export const handleEnquiryHooks: CollectionAfterChangeHook = async ({ doc, opera
       } catch {
         form = null
       }
+    }
+
+    if (doc.journey === 'purchase') {
+      await handlePurchase(doc, config, form, ghl.submissionCollection, req)
+      return doc
     }
 
     const mergeData: Record<string, string> = {

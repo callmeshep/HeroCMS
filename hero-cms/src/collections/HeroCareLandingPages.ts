@@ -215,11 +215,49 @@ export const HeroCareLandingPages: CollectionConfig = {
             { name: 'plansEyebrow', label: 'Eyebrow (small pink label)', type: 'text' },
             { name: 'plansHeadline', label: 'Headline', type: 'text' },
             {
+              name: 'plansSubheading',
+              label: 'Subheading',
+              type: 'text',
+              admin: {
+                description:
+                  'Wrap words in **double asterisks** to make them bold, e.g. with promo code **GRANDHERO**',
+              },
+            },
+            {
+              name: 'promoLabel',
+              label: 'Promo Box — Label',
+              type: 'text',
+              defaultValue: 'Promo Code',
+            },
+            {
+              name: 'promoPlaceholder',
+              label: 'Promo Box — Placeholder',
+              type: 'text',
+              defaultValue: 'Enter Promo Code',
+            },
+            {
+              name: 'promoSuccessMessage',
+              label: 'Promo Box — Success Message',
+              type: 'text',
+              defaultValue: "Code applied — you won't pay anything until 1 January 2027.",
+            },
+            {
+              name: 'promoErrorMessage',
+              label: 'Promo Box — Error Message',
+              type: 'text',
+              defaultValue: "Sorry, that code isn't valid or has expired.",
+            },
+            {
               name: 'plans',
               label: 'Plans',
               type: 'array',
               fields: [
                 { name: 'name', type: 'text', required: true },
+                {
+                  name: 'tagline',
+                  type: 'text',
+                  admin: { description: 'e.g. Home emergency call outs for…' },
+                },
                 {
                   name: 'colour',
                   type: 'select',
@@ -237,10 +275,19 @@ export const HeroCareLandingPages: CollectionConfig = {
                 },
                 { name: 'ctaText', label: 'Button Text', type: 'text' },
                 {
-                  name: 'stripeLink',
-                  label: 'Stripe Payment Link',
+                  name: 'stripePriceId',
+                  label: 'Stripe Price ID',
                   type: 'text',
-                  admin: { description: 'Full Stripe payment link URL for this plan' },
+                  admin: {
+                    description:
+                      'From Stripe → Product catalogue → the plan → Pricing. Starts with price_',
+                  },
+                  validate: (value: unknown) => {
+                    if (!value) return true
+                    if (typeof value !== 'string' || !/^price_[A-Za-z0-9]+$/.test(value.trim()))
+                      return 'Must be a Stripe Price ID starting with price_'
+                    return true
+                  },
                 },
                 {
                   name: 'smallPrint',
