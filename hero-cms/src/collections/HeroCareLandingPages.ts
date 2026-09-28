@@ -68,8 +68,8 @@ export const HeroCareLandingPages: CollectionConfig = {
       hooks: {
         beforeDuplicate: [({ value }) => (value ? `${value}-copy` : value)],
       },
-      validate: (value) => {
-        if (!value) return 'Page URL is required'
+      validate: (value: unknown) => {
+        if (typeof value !== 'string' || !value) return 'Page URL is required'
         if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value))
           return 'Use lowercase letters, numbers and hyphens only (no spaces)'
         if (RESERVED_SLUGS.includes(value))
