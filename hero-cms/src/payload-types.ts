@@ -776,9 +776,9 @@ export interface HerocareLandingPage {
           | null;
         ctaText?: string | null;
         /**
-         * From Stripe → Product catalogue → the plan → Pricing. Starts with price_
+         * Full payment link URL. To apply a discount code automatically, add ?prefilled_promo_code=CODE to the end, e.g. https://buy.stripe.com/abc123?prefilled_promo_code=GRANDHERO
          */
-        stripePriceId?: string | null;
+        stripeLink?: string | null;
         /**
          * e.g. then £14.99 per month from January with code GRANDHERO
          */
@@ -3045,7 +3045,7 @@ export interface HerocareLandingPagesSelect<T extends boolean = true> {
               id?: T;
             };
         ctaText?: T;
-        stripePriceId?: T;
+        stripeLink?: T;
         smallPrint?: T;
         id?: T;
       };

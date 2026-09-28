@@ -223,29 +223,32 @@ export const HeroCareLandingPages: CollectionConfig = {
                   'Wrap words in **double asterisks** to make them bold, e.g. with promo code **GRANDHERO**',
               },
             },
+            // Promo box fields — not currently used (discount is applied via the Stripe link). Kept for possible reuse.
             {
               name: 'promoLabel',
               label: 'Promo Box — Label',
               type: 'text',
               defaultValue: 'Promo Code',
+              admin: { hidden: true },
             },
             {
               name: 'promoPlaceholder',
               label: 'Promo Box — Placeholder',
               type: 'text',
               defaultValue: 'Enter Promo Code',
+              admin: { hidden: true },
             },
             {
               name: 'promoSuccessMessage',
               label: 'Promo Box — Success Message',
               type: 'text',
-              defaultValue: "Code applied — you won't pay anything until 1 January 2027.",
+              admin: { hidden: true },
             },
             {
               name: 'promoErrorMessage',
               label: 'Promo Box — Error Message',
               type: 'text',
-              defaultValue: "Sorry, that code isn't valid or has expired.",
+              admin: { hidden: true },
             },
             {
               name: 'plans',
@@ -275,17 +278,17 @@ export const HeroCareLandingPages: CollectionConfig = {
                 },
                 { name: 'ctaText', label: 'Button Text', type: 'text' },
                 {
-                  name: 'stripePriceId',
-                  label: 'Stripe Price ID',
+                  name: 'stripeLink',
+                  label: 'Stripe Payment Link',
                   type: 'text',
                   admin: {
                     description:
-                      'From Stripe → Product catalogue → the plan → Pricing. Starts with price_',
+                      'Full payment link URL. To apply a discount code automatically, add ?prefilled_promo_code=CODE to the end, e.g. https://buy.stripe.com/abc123?prefilled_promo_code=GRANDHERO',
                   },
                   validate: (value: unknown) => {
                     if (!value) return true
-                    if (typeof value !== 'string' || !/^price_[A-Za-z0-9]+$/.test(value.trim()))
-                      return 'Must be a Stripe Price ID starting with price_'
+                    if (typeof value !== 'string' || !/^https:\/\/\S+$/.test(value.trim()))
+                      return 'Must be a full link starting with https://'
                     return true
                   },
                 },
