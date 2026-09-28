@@ -226,6 +226,8 @@ async function handlePurchase(
     }
   }
 
+  let ghlError = 'GHL is not configured for HeroCare (missing location ID or API key)'
+
   // GHL — create or update contact, tag, and add opportunity to HeroCare Customers
   if (config.crmWebhookURL && config.crmAPIKey) {
     const locationId = config.crmWebhookURL
@@ -268,8 +270,10 @@ async function handlePurchase(
       })
 
       await setStatus('sent')
+      ghlError = ''
     } catch (ghlErr) {
       console.error('GHL purchase error:', ghlErr)
+      ghlError = ghlErr instanceof Error ? ghlErr.message : String(ghlErr)
       await setStatus('failed')
     }
   }
@@ -280,6 +284,7 @@ async function handlePurchase(
     .filter(Boolean)
 
   if (
+    ghlError &&
     form?.notificationsEnabled !== false &&
     recipients.length > 0 &&
     config.resendFromEmail &&
@@ -308,9 +313,11 @@ async function handlePurchase(
         body: JSON.stringify({
           from: `${config.resendFromName} <${config.resendFromEmail}>`,
           to: recipients,
-          subject: `New HeroCare sign-up — ${doc.plan ?? ''} — ${doc.name ?? ''}`,
+          subject: `HeroCare sale NOT added to GHL — action needed — ${doc.name ?? ''}`,
           html: `
-            <h1>New HeroCare sign-up</h1>
+            <h1>HeroCare sale not added to GHL</h1>
+            <p>This customer has signed up and been saved in Hero CMS, but could not be added to the HeroCare Customers pipeline in GHL. Please add them manually.</p>
+            <p><strong>Reason:</strong> ${escapeHtml(ghlError)}</p>
             <p><strong>Plan:</strong> ${escapeHtml(doc.plan)} (£${escapeHtml(doc.monthlyAmount)}/month)</p>
             <p><strong>Promo code:</strong> ${escapeHtml(doc.promoCode) || 'None'}</p>
             <p><strong>First payment:</strong> ${escapeHtml(firstPayment)}</p>
