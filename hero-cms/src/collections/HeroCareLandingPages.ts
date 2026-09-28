@@ -259,7 +259,18 @@ export const HeroCareLandingPages: CollectionConfig = {
                 {
                   name: 'tagline',
                   type: 'text',
-                  admin: { description: 'e.g. Home emergency call outs for…' },
+                  admin: { description: 'Optional line under the price. Leave empty to hide.' },
+                },
+                {
+                  name: 'price',
+                  type: 'text',
+                  admin: { description: 'e.g. £14.99' },
+                },
+                {
+                  name: 'pricePeriod',
+                  label: 'Price Period',
+                  type: 'text',
+                  defaultValue: 'per month',
                 },
                 {
                   name: 'colour',

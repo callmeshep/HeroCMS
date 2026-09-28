@@ -764,9 +764,14 @@ export interface HerocareLandingPage {
     | {
         name: string;
         /**
-         * e.g. Home emergency call outs for…
+         * Optional line under the price. Leave empty to hide.
          */
         tagline?: string | null;
+        /**
+         * e.g. £14.99
+         */
+        price?: string | null;
+        pricePeriod?: string | null;
         colour?: ('blue' | 'pink') | null;
         features?:
           | {
@@ -3037,6 +3042,8 @@ export interface HerocareLandingPagesSelect<T extends boolean = true> {
     | {
         name?: T;
         tagline?: T;
+        price?: T;
+        pricePeriod?: T;
         colour?: T;
         features?:
           | T
