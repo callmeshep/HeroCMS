@@ -750,6 +750,16 @@ export interface HerocareLandingPage {
    * Pick the reviews shown in the carousel. Drag to reorder. Only visible reviews are listed.
    */
   featuredReviews?: (number | Review)[] | null;
+  /**
+   * Shown faded under the reviews. Any colour logo works — they are turned white automatically.
+   */
+  reviewLogos?:
+    | {
+        logo: number | Media;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   plansEyebrow?: string | null;
   plansHeadline?: string | null;
   /**
@@ -3030,6 +3040,13 @@ export interface HerocareLandingPagesSelect<T extends boolean = true> {
         id?: T;
       };
   featuredReviews?: T;
+  reviewLogos?:
+    | T
+    | {
+        logo?: T;
+        url?: T;
+        id?: T;
+      };
   plansEyebrow?: T;
   plansHeadline?: T;
   plansSubheading?: T;

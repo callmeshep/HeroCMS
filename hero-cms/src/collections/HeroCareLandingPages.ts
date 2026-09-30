@@ -205,6 +205,19 @@ export const HeroCareLandingPages: CollectionConfig = {
                   'Pick the reviews shown in the carousel. Drag to reorder. Only visible reviews are listed.',
               },
             },
+            {
+              name: 'reviewLogos',
+              label: 'Review Logos (under the reviews)',
+              type: 'array',
+              admin: {
+                description:
+                  'Shown faded under the reviews. Any colour logo works — they are turned white automatically.',
+              },
+              fields: [
+                { name: 'logo', type: 'upload', relationTo: 'media', required: true },
+                { name: 'url', label: 'Link (optional)', type: 'text' },
+              ],
+            },
           ],
         },
 
