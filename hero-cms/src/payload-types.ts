@@ -476,6 +476,35 @@ export interface HerocareWebsite {
    * Google Maps link opened when the map is clicked
    */
   footerMapLink?: string | null;
+  tyHeadlineLine1?: string | null;
+  tyHeadlineLine2?: string | null;
+  tySubheading?: string | null;
+  tyAppStoreLink?: string | null;
+  tyGooglePlayLink?: string | null;
+  tyPlanHeadlineLine1?: string | null;
+  tyPlanHeadlineLine2?: string | null;
+  policies?:
+    | {
+        title: string;
+        footerLinkLabel?: string | null;
+        content?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
   heroHeadlineLine1?: string | null;
   heroHeadlineLine2?: string | null;
   heroBulletPoints?:
@@ -539,13 +568,6 @@ export interface HerocareWebsite {
   popupImage?: (number | null) | Media;
   popupCtaText?: string | null;
   popupThankYouMessage?: string | null;
-  tyHeadlineLine1?: string | null;
-  tyHeadlineLine2?: string | null;
-  tySubheading?: string | null;
-  tyAppStoreLink?: string | null;
-  tyGooglePlayLink?: string | null;
-  tyPlanHeadlineLine1?: string | null;
-  tyPlanHeadlineLine2?: string | null;
   landlordHeroHeadlineLine1?: string | null;
   landlordHeroHeadlineLine2?: string | null;
   landlordHeroBulletPoints?:
@@ -649,28 +671,6 @@ export interface HerocareWebsite {
   aboutYourPlanCtaHeadlineLine1?: string | null;
   aboutYourPlanCtaHeadlineLine2?: string | null;
   aboutYourPlanCtaPhone?: string | null;
-  policies?:
-    | {
-        title: string;
-        footerLinkLabel?: string | null;
-        content?: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        } | null;
-        id?: string | null;
-      }[]
-    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -2867,6 +2867,21 @@ export interface HerocareWebsiteSelect<T extends boolean = true> {
   footerAddress?: T;
   footerMapImage?: T;
   footerMapLink?: T;
+  tyHeadlineLine1?: T;
+  tyHeadlineLine2?: T;
+  tySubheading?: T;
+  tyAppStoreLink?: T;
+  tyGooglePlayLink?: T;
+  tyPlanHeadlineLine1?: T;
+  tyPlanHeadlineLine2?: T;
+  policies?:
+    | T
+    | {
+        title?: T;
+        footerLinkLabel?: T;
+        content?: T;
+        id?: T;
+      };
   heroHeadlineLine1?: T;
   heroHeadlineLine2?: T;
   heroBulletPoints?:
@@ -2930,13 +2945,6 @@ export interface HerocareWebsiteSelect<T extends boolean = true> {
   popupImage?: T;
   popupCtaText?: T;
   popupThankYouMessage?: T;
-  tyHeadlineLine1?: T;
-  tyHeadlineLine2?: T;
-  tySubheading?: T;
-  tyAppStoreLink?: T;
-  tyGooglePlayLink?: T;
-  tyPlanHeadlineLine1?: T;
-  tyPlanHeadlineLine2?: T;
   landlordHeroHeadlineLine1?: T;
   landlordHeroHeadlineLine2?: T;
   landlordHeroBulletPoints?:
@@ -3040,14 +3048,6 @@ export interface HerocareWebsiteSelect<T extends boolean = true> {
   aboutYourPlanCtaHeadlineLine1?: T;
   aboutYourPlanCtaHeadlineLine2?: T;
   aboutYourPlanCtaPhone?: T;
-  policies?:
-    | T
-    | {
-        title?: T;
-        footerLinkLabel?: T;
-        content?: T;
-        id?: T;
-      };
   updatedAt?: T;
   createdAt?: T;
 }

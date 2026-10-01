@@ -4,6 +4,10 @@ import { isAdminOrSuperAdmin } from '../access/isAdminOrSuperAdmin'
 import { hasTenantAccess } from '../access/hasTenantAccess'
 import { triggerDeployHook } from '../hooks/triggerDeployHook'
 
+// Legacy tabs are hidden in the CMS but their fields and data are kept, for possible reuse.
+// To show one again, delete its `admin: HIDDEN_TAB` line.
+const HIDDEN_TAB = { condition: () => false }
+
 export const HeroCareWebsite: CollectionConfig = {
   slug: 'herocare-website',
   labels: {
@@ -111,9 +115,49 @@ export const HeroCareWebsite: CollectionConfig = {
           ],
         },
 
-        // HOMEOWNERS TAB
+        // THANK YOU PAGE (still live — moved out of the old legacy tab)
         {
-          label: 'Legacy — Old Homepage & Thank You Page',
+          label: 'Thank You Page',
+          fields: [
+            { name: 'tyHeadlineLine1', label: 'Headline Line 1', type: 'text' },
+            { name: 'tyHeadlineLine2', label: 'Headline Line 2 (Pink)', type: 'text' },
+            { name: 'tySubheading', label: 'Subheading', type: 'text' },
+            { name: 'tyAppStoreLink', label: 'App Store Link', type: 'text' },
+            { name: 'tyGooglePlayLink', label: 'Google Play Link', type: 'text' },
+            {
+              name: 'tyPlanHeadlineLine1',
+              label: 'Plan Section Headline Line 1',
+              type: 'text',
+            },
+            {
+              name: 'tyPlanHeadlineLine2',
+              label: 'Plan Section Headline Line 2 (Pink)',
+              type: 'text',
+            },
+          ],
+        },
+
+        // POLICIES TAB
+        {
+          label: 'Policies',
+          fields: [
+            {
+              name: 'policies',
+              label: 'Policy Pages',
+              type: 'array',
+              fields: [
+                { name: 'title', type: 'text', required: true },
+                { name: 'footerLinkLabel', label: 'Footer Link Label', type: 'text' },
+                { name: 'content', type: 'richText' },
+              ],
+            },
+          ],
+        },
+
+        // LEGACY — OLD HOMEPAGE (hidden)
+        {
+          label: 'Legacy — Old Homepage',
+          admin: HIDDEN_TAB,
           fields: [
             { name: 'heroHeadlineLine1', label: 'Hero — Headline Line 1', type: 'text' },
             { name: 'heroHeadlineLine2', label: 'Hero — Headline Line 2', type: 'text' },
@@ -194,27 +238,13 @@ export const HeroCareWebsite: CollectionConfig = {
             { name: 'popupImage', label: 'Pop-up — Image', type: 'upload', relationTo: 'media' },
             { name: 'popupCtaText', label: 'Pop-up — CTA Button Text', type: 'text' },
             { name: 'popupThankYouMessage', label: 'Pop-up — Thank You Message', type: 'text' },
-            { name: 'tyHeadlineLine1', label: 'Thank You — Headline Line 1', type: 'text' },
-            { name: 'tyHeadlineLine2', label: 'Thank You — Headline Line 2 (Pink)', type: 'text' },
-            { name: 'tySubheading', label: 'Thank You — Subheading', type: 'text' },
-            { name: 'tyAppStoreLink', label: 'Thank You — App Store Link', type: 'text' },
-            { name: 'tyGooglePlayLink', label: 'Thank You — Google Play Link', type: 'text' },
-            {
-              name: 'tyPlanHeadlineLine1',
-              label: 'Thank You — Plan Section Headline Line 1',
-              type: 'text',
-            },
-            {
-              name: 'tyPlanHeadlineLine2',
-              label: 'Thank You — Plan Section Headline Line 2 (Pink)',
-              type: 'text',
-            },
           ],
         },
 
-        // LANDLORDS TAB
+        // LEGACY — LANDLORDS (hidden)
         {
           label: 'Legacy — Landlords',
+          admin: HIDDEN_TAB,
           fields: [
             { name: 'landlordHeroHeadlineLine1', label: 'Hero — Headline Line 1', type: 'text' },
             { name: 'landlordHeroHeadlineLine2', label: 'Hero — Headline Line 2', type: 'text' },
@@ -314,9 +344,10 @@ export const HeroCareWebsite: CollectionConfig = {
           ],
         },
 
-        // PRICING TAB
+        // LEGACY — PRICING (hidden)
         {
           label: 'Legacy — Pricing',
+          admin: HIDDEN_TAB,
           fields: [
             { name: 'calloutFeeLabel', label: 'Call-out Fee Selector — Label', type: 'text' },
             {
@@ -391,23 +422,6 @@ export const HeroCareWebsite: CollectionConfig = {
               name: 'aboutYourPlanCtaPhone',
               label: 'About Your Plan — CTA Phone Number',
               type: 'text',
-            },
-          ],
-        },
-
-        // POLICIES TAB
-        {
-          label: 'Policies',
-          fields: [
-            {
-              name: 'policies',
-              label: 'Policy Pages',
-              type: 'array',
-              fields: [
-                { name: 'title', type: 'text', required: true },
-                { name: 'footerLinkLabel', label: 'Footer Link Label', type: 'text' },
-                { name: 'content', type: 'richText' },
-              ],
             },
           ],
         },
