@@ -691,6 +691,11 @@ export interface HerocareLandingPage {
    * e.g. winter-offer → herocare.co.uk/winter-offer. Lowercase letters, numbers and hyphens only.
    */
   slug: string;
+  /**
+   * Sets which sections show and in what order. Campaign pages normally use Homepage.
+   */
+  pageLayout: 'home' | 'about';
+  heroSize?: ('full' | 'compact') | null;
   heroHeadlineLine1?: string | null;
   heroHeadlineLine2?: string | null;
   heroSubheading?: string | null;
@@ -705,6 +710,9 @@ export interface HerocareLandingPage {
    */
   heroImageMobile?: (number | null) | Media;
   heroAsSeenOnLabel?: string | null;
+  /**
+   * Not shown on a Compact hero.
+   */
   heroAsSeenOnLogos?:
     | {
         logo: number | Media;
@@ -760,6 +768,11 @@ export interface HerocareLandingPage {
         id?: string | null;
       }[]
     | null;
+  plansBackground?: ('white' | 'navy') | null;
+  /**
+   * Optional. Shown faintly (10%) behind the navy. Leave empty for plain navy.
+   */
+  plansBackgroundImage?: (number | null) | Media;
   plansEyebrow?: string | null;
   plansHeadline?: string | null;
   /**
@@ -801,11 +814,61 @@ export interface HerocareLandingPage {
         id?: string | null;
       }[]
     | null;
+  whoShow?: boolean | null;
+  whoEyebrow?: string | null;
+  whoHeadline?: string | null;
+  /**
+   * Leave a blank line between paragraphs. **double asterisks** = bold. [link text](https://...) = link.
+   */
+  whoBody?: string | null;
+  /**
+   * e.g. About Us. Leave empty to hide the button.
+   */
+  whoButtonText?: string | null;
+  whoButtonLink?: string | null;
+  /**
+   * Arrows appear when there is more than one person.
+   */
+  whoTeam?:
+    | {
+        photo: number | Media;
+        name?: string | null;
+        role?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  compareEyebrow?: string | null;
+  compareHeadline?: string | null;
+  compareBody?: string | null;
+  compareButtonText?: string | null;
+  compareButtonLink?: string | null;
+  compareColumn1Label?: string | null;
+  compareColumn2Label?: string | null;
+  compareRows?:
+    | {
+        label: string;
+        column1?: boolean | null;
+        column2?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  faqsEyebrow?: string | null;
+  faqsHeadline?: string | null;
+  faqItems?:
+    | {
+        question: string;
+        /**
+         * Leave a blank line between paragraphs. **double asterisks** = bold. [link text](https://...) = link.
+         */
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
   navLinks?:
     | {
         label: string;
         /**
-         * Section anchors: #whats-covered, #how-it-works, #reviews, #plans
+         * Section anchors: #whats-covered, #plans, #who-we-are, #how-it-works, #reviews, #compare, #faqs
          */
         link: string;
         id?: string | null;
@@ -2996,6 +3059,8 @@ export interface HerocareLandingPagesSelect<T extends boolean = true> {
   tenant?: T;
   title?: T;
   slug?: T;
+  pageLayout?: T;
+  heroSize?: T;
   heroHeadlineLine1?: T;
   heroHeadlineLine2?: T;
   heroSubheading?: T;
@@ -3047,6 +3112,8 @@ export interface HerocareLandingPagesSelect<T extends boolean = true> {
         url?: T;
         id?: T;
       };
+  plansBackground?: T;
+  plansBackgroundImage?: T;
   plansEyebrow?: T;
   plansHeadline?: T;
   plansSubheading?: T;
@@ -3071,6 +3138,44 @@ export interface HerocareLandingPagesSelect<T extends boolean = true> {
         ctaText?: T;
         stripeLink?: T;
         smallPrint?: T;
+        id?: T;
+      };
+  whoShow?: T;
+  whoEyebrow?: T;
+  whoHeadline?: T;
+  whoBody?: T;
+  whoButtonText?: T;
+  whoButtonLink?: T;
+  whoTeam?:
+    | T
+    | {
+        photo?: T;
+        name?: T;
+        role?: T;
+        id?: T;
+      };
+  compareEyebrow?: T;
+  compareHeadline?: T;
+  compareBody?: T;
+  compareButtonText?: T;
+  compareButtonLink?: T;
+  compareColumn1Label?: T;
+  compareColumn2Label?: T;
+  compareRows?:
+    | T
+    | {
+        label?: T;
+        column1?: T;
+        column2?: T;
+        id?: T;
+      };
+  faqsEyebrow?: T;
+  faqsHeadline?: T;
+  faqItems?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
         id?: T;
       };
   navLinks?:

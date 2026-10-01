@@ -16,7 +16,12 @@ const RESERVED_SLUGS = [
   'affiliates',
   'landlords',
   'landlord-thank-you',
+  'embed',
+  'api',
 ]
+
+const TEXT_HELP =
+  'Leave a blank line between paragraphs. **double asterisks** = bold. [link text](https://...) = link.'
 
 export const HeroCareLandingPages: CollectionConfig = {
   slug: 'herocare-landing-pages',
@@ -78,12 +83,37 @@ export const HeroCareLandingPages: CollectionConfig = {
       },
     },
     {
+      name: 'pageLayout',
+      label: 'Page Layout',
+      type: 'select',
+      defaultValue: 'home',
+      required: true,
+      options: [
+        { label: "Homepage — What's Covered, Plans, Who We Are, How It Works", value: 'home' },
+        { label: 'About — Who We Are, Plans + Compare, FAQs', value: 'about' },
+      ],
+      admin: {
+        description:
+          'Sets which sections show and in what order. Campaign pages normally use Homepage.',
+      },
+    },
+    {
       type: 'tabs',
       tabs: [
         // HERO
         {
           label: 'Hero',
           fields: [
+            {
+              name: 'heroSize',
+              label: 'Hero Size',
+              type: 'select',
+              defaultValue: 'full',
+              options: [
+                { label: 'Full (homepage)', value: 'full' },
+                { label: 'Compact (e.g. About page)', value: 'compact' },
+              ],
+            },
             { name: 'heroHeadlineLine1', label: 'Headline Line 1', type: 'text' },
             { name: 'heroHeadlineLine2', label: 'Headline Line 2', type: 'text' },
             { name: 'heroSubheading', label: 'Subheading', type: 'text' },
@@ -118,6 +148,7 @@ export const HeroCareLandingPages: CollectionConfig = {
               name: 'heroAsSeenOnLogos',
               label: '"As Seen On" Logos',
               type: 'array',
+              admin: { description: 'Not shown on a Compact hero.' },
               fields: [
                 { name: 'logo', type: 'upload', relationTo: 'media', required: true },
                 { name: 'url', label: 'Link (optional)', type: 'text' },
@@ -225,6 +256,27 @@ export const HeroCareLandingPages: CollectionConfig = {
         {
           label: 'Plans',
           fields: [
+            {
+              name: 'plansBackground',
+              label: 'Background',
+              type: 'select',
+              defaultValue: 'white',
+              options: [
+                { label: 'White', value: 'white' },
+                { label: 'Navy', value: 'navy' },
+              ],
+            },
+            {
+              name: 'plansBackgroundImage',
+              label: 'Background Photo (Navy only)',
+              type: 'upload',
+              relationTo: 'media',
+              admin: {
+                description:
+                  'Optional. Shown faintly (10%) behind the navy. Leave empty for plain navy.',
+                condition: (data) => data?.plansBackground === 'navy',
+              },
+            },
             { name: 'plansEyebrow', label: 'Eyebrow (small pink label)', type: 'text' },
             { name: 'plansHeadline', label: 'Headline', type: 'text' },
             {
@@ -329,6 +381,114 @@ export const HeroCareLandingPages: CollectionConfig = {
           ],
         },
 
+        // WHO WE ARE
+        {
+          label: 'Who We Are',
+          fields: [
+            {
+              name: 'whoShow',
+              label: 'Show this section',
+              type: 'checkbox',
+              defaultValue: false,
+            },
+            { name: 'whoEyebrow', label: 'Eyebrow (small pink label)', type: 'text' },
+            { name: 'whoHeadline', label: 'Headline', type: 'text' },
+            { name: 'whoBody', label: 'Text', type: 'textarea', admin: { description: TEXT_HELP } },
+            {
+              name: 'whoButtonText',
+              label: 'Button Text (optional)',
+              type: 'text',
+              admin: { description: 'e.g. About Us. Leave empty to hide the button.' },
+            },
+            {
+              name: 'whoButtonLink',
+              label: 'Button Link',
+              type: 'text',
+              defaultValue: '/about-us/',
+            },
+            {
+              name: 'whoTeam',
+              label: 'Team Members',
+              type: 'array',
+              admin: { description: 'Arrows appear when there is more than one person.' },
+              fields: [
+                { name: 'photo', type: 'upload', relationTo: 'media', required: true },
+                { name: 'name', type: 'text' },
+                { name: 'role', type: 'text' },
+              ],
+            },
+          ],
+        },
+
+        // COMPARE (About layout)
+        {
+          label: 'Compare',
+          description: 'Shown on pages using the About layout, under the plans.',
+          fields: [
+            { name: 'compareEyebrow', label: 'Eyebrow (small pink label)', type: 'text' },
+            { name: 'compareHeadline', label: 'Headline', type: 'text' },
+            { name: 'compareBody', label: 'Text', type: 'textarea' },
+            { name: 'compareButtonText', label: 'Button Text (optional)', type: 'text' },
+            {
+              name: 'compareButtonLink',
+              label: 'Button Link',
+              type: 'text',
+              defaultValue: '#plans',
+            },
+            {
+              name: 'compareColumn1Label',
+              label: 'Column 1 Name',
+              type: 'text',
+              defaultValue: 'HeroCare',
+            },
+            {
+              name: 'compareColumn2Label',
+              label: 'Column 2 Name',
+              type: 'text',
+              defaultValue: 'Insurance',
+            },
+            {
+              name: 'compareRows',
+              label: 'Rows',
+              type: 'array',
+              fields: [
+                { name: 'label', type: 'text', required: true },
+                { name: 'column1', label: 'Column 1 — tick', type: 'checkbox', defaultValue: true },
+                {
+                  name: 'column2',
+                  label: 'Column 2 — tick',
+                  type: 'checkbox',
+                  defaultValue: false,
+                },
+              ],
+            },
+          ],
+        },
+
+        // FAQS (About layout)
+        {
+          label: 'FAQs',
+          description: 'Shown on pages using the About layout.',
+          fields: [
+            { name: 'faqsEyebrow', label: 'Eyebrow (small pink label)', type: 'text' },
+            { name: 'faqsHeadline', label: 'Headline', type: 'text' },
+            {
+              name: 'faqItems',
+              label: 'Questions',
+              type: 'array',
+              fields: [
+                { name: 'question', type: 'text', required: true },
+                {
+                  name: 'answer',
+                  type: 'textarea',
+                  required: true,
+                  admin: { description: TEXT_HELP },
+                },
+              ],
+            },
+          ],
+        },
+
         // NAV & FOOTER
         {
           label: 'Nav & Footer',
@@ -344,7 +504,8 @@ export const HeroCareLandingPages: CollectionConfig = {
                   type: 'text',
                   required: true,
                   admin: {
-                    description: 'Section anchors: #whats-covered, #how-it-works, #reviews, #plans',
+                    description:
+                      'Section anchors: #whats-covered, #plans, #who-we-are, #how-it-works, #reviews, #compare, #faqs',
                   },
                 },
               ],
