@@ -10,6 +10,7 @@ export const HeroCareEmailTemplates: CollectionConfig = {
     plural: 'Email Templates',
   },
   admin: {
+    hidden: true, // Hidden from the sidebar; data and API access kept
     group: 'HeroCare',
     useAsTitle: 'name',
   },

@@ -10,6 +10,7 @@ export const HeroCareImageGallery: CollectionConfig = {
     plural: 'Image Gallery',
   },
   admin: {
+    hidden: true, // Hidden from the sidebar; data and API access kept
     group: 'HeroCare',
   },
   access: {

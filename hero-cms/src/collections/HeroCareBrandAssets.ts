@@ -10,6 +10,7 @@ export const HeroCareBrandAssets: CollectionConfig = {
     plural: 'Brand Assets',
   },
   admin: {
+    hidden: true, // Hidden from the sidebar; data and API access kept
     group: 'HeroCare',
     useAsTitle: 'name',
   },
