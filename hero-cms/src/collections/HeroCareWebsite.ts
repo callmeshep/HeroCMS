@@ -137,6 +137,62 @@ export const HeroCareWebsite: CollectionConfig = {
           ],
         },
 
+        // POP-UP (shown on every page built from Pages: homepage, About, campaigns)
+        {
+          label: 'Pop-up',
+          description:
+            'Two-step offer pop-up. It appears once when the visitor reaches the bottom of the page, and once after the delay below (each at most once per visit). Plans come from the page being viewed.',
+          fields: [
+            {
+              name: 'offerPopupEnabled',
+              label: 'Show the pop-up',
+              type: 'checkbox',
+              defaultValue: false,
+            },
+            {
+              name: 'offerPopupDelay',
+              label: 'Show after (seconds)',
+              type: 'number',
+              defaultValue: 20,
+              min: 0,
+              admin: {
+                description: '0 = only show it when the visitor reaches the bottom of the page.',
+              },
+            },
+            {
+              name: 'offerPopupHeadline',
+              label: 'Step 1 — Headline',
+              type: 'text',
+              defaultValue: 'Your next home repair bill could be **£0**',
+              admin: { description: 'Wrap words in **double asterisks** to make them pink.' },
+            },
+            {
+              name: 'offerPopupSubheading',
+              label: 'Step 1 — Subheading',
+              type: 'text',
+              defaultValue: 'Sign up today and pay nothing until 2027!',
+            },
+            {
+              name: 'offerPopupYesText',
+              label: 'Step 1 — Yes Button',
+              type: 'text',
+              defaultValue: 'Yes - I want to protect my home',
+            },
+            {
+              name: 'offerPopupPlansHeadline',
+              label: 'Step 2 — Headline',
+              type: 'text',
+              defaultValue: 'Protect Your Home with HeroCare',
+            },
+            {
+              name: 'offerPopupNoText',
+              label: 'No Thanks Button (both steps)',
+              type: 'text',
+              defaultValue: "No thanks - I'll take the risk",
+            },
+          ],
+        },
+
         // POLICIES TAB
         {
           label: 'Policies',

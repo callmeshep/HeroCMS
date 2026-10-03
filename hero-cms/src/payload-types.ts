@@ -483,6 +483,19 @@ export interface HerocareWebsite {
   tyGooglePlayLink?: string | null;
   tyPlanHeadlineLine1?: string | null;
   tyPlanHeadlineLine2?: string | null;
+  offerPopupEnabled?: boolean | null;
+  /**
+   * 0 = only show it when the visitor reaches the bottom of the page.
+   */
+  offerPopupDelay?: number | null;
+  /**
+   * Wrap words in **double asterisks** to make them pink.
+   */
+  offerPopupHeadline?: string | null;
+  offerPopupSubheading?: string | null;
+  offerPopupYesText?: string | null;
+  offerPopupPlansHeadline?: string | null;
+  offerPopupNoText?: string | null;
   policies?:
     | {
         title: string;
@@ -2874,6 +2887,13 @@ export interface HerocareWebsiteSelect<T extends boolean = true> {
   tyGooglePlayLink?: T;
   tyPlanHeadlineLine1?: T;
   tyPlanHeadlineLine2?: T;
+  offerPopupEnabled?: T;
+  offerPopupDelay?: T;
+  offerPopupHeadline?: T;
+  offerPopupSubheading?: T;
+  offerPopupYesText?: T;
+  offerPopupPlansHeadline?: T;
+  offerPopupNoText?: T;
   policies?:
     | T
     | {
