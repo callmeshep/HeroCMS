@@ -369,6 +369,40 @@ export const HeroCareLandingPages: CollectionConfig = {
                   },
                 },
                 {
+                  type: 'collapsible',
+                  label: 'Yearly Option',
+                  admin: {
+                    initCollapsed: true,
+                    description:
+                      'Fill in all three to offer this plan yearly. The Monthly / Yearly switch only appears when at least one plan has a yearly price and link.',
+                  },
+                  fields: [
+                    {
+                      name: 'annualPrice',
+                      label: 'Yearly Price',
+                      type: 'text',
+                      admin: { description: 'e.g. £149.99' },
+                    },
+                    {
+                      name: 'annualPricePeriod',
+                      label: 'Yearly Price Period',
+                      type: 'text',
+                      defaultValue: 'per year',
+                    },
+                    {
+                      name: 'annualStripeLink',
+                      label: 'Yearly Stripe Payment Link',
+                      type: 'text',
+                      validate: (value: unknown) => {
+                        if (!value) return true
+                        if (typeof value !== 'string' || !/^https:\/\/\S+$/.test(value.trim()))
+                          return 'Must be a full link starting with https://'
+                        return true
+                      },
+                    },
+                  ],
+                },
+                {
                   name: 'smallPrint',
                   label: 'Small Print',
                   type: 'textarea',

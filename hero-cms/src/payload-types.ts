@@ -821,6 +821,12 @@ export interface HerocareLandingPage {
          */
         stripeLink?: string | null;
         /**
+         * e.g. £149.99
+         */
+        annualPrice?: string | null;
+        annualPricePeriod?: string | null;
+        annualStripeLink?: string | null;
+        /**
          * e.g. then £14.99 per month from January with code GRANDHERO
          */
         smallPrint?: string | null;
@@ -3157,6 +3163,9 @@ export interface HerocareLandingPagesSelect<T extends boolean = true> {
             };
         ctaText?: T;
         stripeLink?: T;
+        annualPrice?: T;
+        annualPricePeriod?: T;
+        annualStripeLink?: T;
         smallPrint?: T;
         id?: T;
       };
