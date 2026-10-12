@@ -39,7 +39,7 @@ import { YEFSubmissions } from './collections/YEFSubmissions'
 import { YEFWebsite } from './collections/YEFWebsite'
 import { YEFServicePages } from './collections/YEFServicePages'
 import { YEFBlogPosts } from './collections/YEFBlogPosts'
-import { LocationSitesCollections, LocationSitesImages } from './collections/LocationSites'
+import { LocationSitesCollections, LocationSitesGlobals } from './collections/LocationSites'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -121,7 +121,7 @@ export default buildConfig({
     YEFBlogPosts,
     ...LocationSitesCollections,
   ],
-  globals: [LocationSitesImages],
+  globals: [LocationSitesGlobals],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

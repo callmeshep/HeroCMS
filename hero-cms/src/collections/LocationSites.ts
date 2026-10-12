@@ -192,15 +192,27 @@ export const LocationSitesCollections: CollectionConfig[] = LOCATION_SITE_SERVIC
   createLocationSiteCollection,
 )
 
-// Shared images for every Location Site, one tab per trade.
-// Every site in a trade uses that trade's images, so changing one here updates them all.
-export const LocationSitesImages: GlobalConfig = {
-  slug: 'location-sites-images',
-  label: 'Images',
+// Settings shared across Location Sites.
+// "All Sites" applies to every site; each trade tab applies to every site in that trade.
+const PLACEHOLDER_HELP =
+  'You can use {brandName}, {locationName}, {domain} and {year} — they are filled in automatically for each site.'
+
+// Hex colour field, e.g. #0E2C43
+const colourField = (name: string, label: string, description: string) => ({
+  name,
+  label,
+  type: 'text' as const,
+  validate: (value: string | null | undefined) =>
+    !value || /^#[0-9a-fA-F]{6}$/.test(value) ? true : 'Enter a 6-digit hex colour, e.g. #0E2C43',
+  admin: { width: '33%', placeholder: '#0E2C43', description },
+})
+
+export const LocationSitesGlobals: GlobalConfig = {
+  slug: 'location-sites-globals',
+  label: 'Globals',
   admin: {
     group: 'Location Sites',
-    description:
-      'Shared by every location site in each trade. Change an image here and it updates all of them.',
+    description: 'Shared by every location site. Change something here and it updates all of them.',
   },
   access: {
     read: () => true,
@@ -209,21 +221,83 @@ export const LocationSitesImages: GlobalConfig = {
   fields: [
     {
       type: 'tabs',
-      tabs: LOCATION_SITE_SERVICES.map((service) => ({
-        name: service.slug.replace('location-sites-', ''),
-        label: service.label,
-        fields: [
-          {
-            name: 'logoIcon',
-            label: 'Logo Icon',
-            type: 'upload',
-            relationTo: 'media',
-            admin: {
-              description: `The icon shown next to the brand name on every ${service.label} site. SVG preferred.`,
+      tabs: [
+        {
+          name: 'allSites',
+          label: 'All Sites',
+          fields: [
+            {
+              type: 'row',
+              fields: [
+                colourField(
+                  'primaryColour',
+                  'Primary Colour',
+                  'Main brand blue, used on every site',
+                ),
+                colourField(
+                  'backgroundColour',
+                  'Background Colour',
+                  'Background blue, used on every site',
+                ),
+              ],
             },
-          },
-        ],
-      })),
+            {
+              name: 'reviewLogosBanner',
+              label: 'Review Logos Banner',
+              type: 'upload',
+              relationTo: 'media',
+              admin: {
+                description: 'Small banner of review logos shown in the hero of every site',
+              },
+            },
+            {
+              name: 'footerText',
+              label: 'Footer Text',
+              type: 'text',
+              defaultValue: '© {year} Emergency Hero Ltd. trading as {brandName}',
+              admin: { description: PLACEHOLDER_HELP },
+            },
+            {
+              name: 'privacyPolicy',
+              label: 'Privacy Policy',
+              type: 'richText',
+              admin: { description: PLACEHOLDER_HELP },
+            },
+            {
+              name: 'cookiePolicy',
+              label: 'Cookie Policy',
+              type: 'richText',
+              admin: { description: PLACEHOLDER_HELP },
+            },
+            {
+              name: 'termsAndConditions',
+              label: 'Terms & Conditions',
+              type: 'richText',
+              admin: { description: PLACEHOLDER_HELP },
+            },
+          ],
+        },
+        ...LOCATION_SITE_SERVICES.map((service) => ({
+          name: service.slug.replace('location-sites-', ''),
+          label: service.label,
+          fields: [
+            colourField(
+              'accentColour',
+              'Accent Colour',
+              `Accent colour for every ${service.label} site`,
+            ),
+            {
+              name: 'logoIcon',
+              label: 'Logo Icon',
+              type: 'upload' as const,
+              relationTo: 'media' as const,
+              admin: {
+                description: `The icon shown next to the brand name on every ${service.label} site. SVG preferred.`,
+              },
+            },
+          ],
+        })),
+      ],
     },
   ],
 }
