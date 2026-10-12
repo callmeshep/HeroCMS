@@ -36,8 +36,8 @@ const REASON_COUNT = 3
 const PLACEHOLDER_HELP =
   'You can use {brandName}, {locationName}, {domain} and {year} — they are filled in automatically for each site.'
 
-const BASE_TEXT_HELP =
-  'Base text. Each site gets its own local version of this, written by AI from the keywords.'
+const BRIEF_HELP =
+  'What this card is about. Guides the AI when it writes each site — not shown on the site.'
 
 // Builds numbered groups, e.g. issue1, issue2, issue3, issue4
 const numbered = (prefix: string, label: string, count: number, fields: Field[]): Field[] =>
@@ -48,14 +48,17 @@ const numbered = (prefix: string, label: string, count: number, fields: Field[])
     fields,
   }))
 
-// Builds numbered text boxes, e.g. issue1, issue2 (used for the per-site local versions)
-const numberedText = (prefix: string, label: string, count: number): Field[] =>
-  Array.from({ length: count }, (_, i) => ({
-    name: `${prefix}${i + 1}`,
-    label: `${label} ${i + 1}`,
-    type: 'textarea' as const,
-    admin: { rows: 3 },
-  }))
+// Title + text pair used for each card on a site
+const cardFields: Field[] = [
+  { name: 'title', label: 'Title', type: 'text' },
+  { name: 'description', label: 'Text', type: 'textarea', admin: { rows: 3 } },
+]
+
+const headingField = (name = 'heading', label = 'Heading'): Field => ({
+  name,
+  label,
+  type: 'text',
+})
 
 // ============================================
 // LOCATION SITES (one collection per trade)
@@ -123,7 +126,7 @@ const createLocationSiteCollection = (service: LocationSiteService): CollectionC
     group: 'Location Sites',
     useAsTitle: 'brandName',
     defaultColumns: ['brandName', 'locationName', 'domain', 'status', 'updatedAt'],
-    description: `Single-page ${service.label.toLowerCase()} sites, one per location. Layout, images and headings come from Globals → ${service.label}.`,
+    description: `Single-page ${service.label.toLowerCase()} sites, one per location. Images and logo come from Globals → ${service.label}.`,
   },
   access: {
     read: readLocationSites,
@@ -229,36 +232,54 @@ const createLocationSiteCollection = (service: LocationSiteService): CollectionC
       ],
     },
 
-    // Per-site content (local versions of the base text in Globals)
+    // Per-site content — every word is written for this site
     {
       type: 'collapsible',
       label: 'Page Content',
       admin: {
         initCollapsed: true,
-        description: `Written for this location. Titles, images and headings come from Globals → ${service.label}.`,
+        description: `Written for this site by AI — edit freely. Images come from Globals → ${service.label}.`,
       },
       fields: [
         {
-          name: 'issues',
-          label: 'What Seems To Be The Issue — descriptions',
+          name: 'hero',
+          label: 'Hero',
           type: 'group',
-          admin: { description: `Matches Issues 1–${ISSUE_COUNT} in Globals` },
-          fields: numberedText('issue', 'Issue', ISSUE_COUNT),
+          fields: [
+            { name: 'eyebrow', label: 'Small Line Above Headline', type: 'text' },
+            {
+              name: 'headline',
+              label: 'Headline',
+              type: 'text',
+              admin: {
+                description: 'Must include the location name — it is shown in the accent colour',
+              },
+            },
+          ],
+        },
+        {
+          name: 'issues',
+          label: 'What Seems To Be The Issue',
+          type: 'group',
+          fields: [
+            headingField(),
+            { name: 'subheading', label: 'Subheading', type: 'text' },
+            ...numbered('issue', 'Issue', ISSUE_COUNT, cardFields),
+          ],
         },
         {
           name: 'steps',
-          label: 'Booking Steps — descriptions',
+          label: 'Booking Steps',
           type: 'group',
-          admin: { description: `Matches Steps 1–${STEP_COUNT} in Globals` },
-          fields: numberedText('step', 'Step', STEP_COUNT),
+          fields: [headingField(), ...numbered('step', 'Step', STEP_COUNT, cardFields)],
         },
         {
           name: 'reasons',
-          label: 'Why Choose Us — descriptions',
+          label: 'Why Choose Us',
           type: 'group',
-          admin: { description: `Matches Reasons 1–${REASON_COUNT} in Globals` },
-          fields: numberedText('reason', 'Reason', REASON_COUNT),
+          fields: [headingField(), ...numbered('reason', 'Reason', REASON_COUNT, cardFields)],
         },
+        headingField('faqsHeading', 'FAQs Heading'),
         {
           name: 'faqs',
           label: 'FAQs',
@@ -268,6 +289,22 @@ const createLocationSiteCollection = (service: LocationSiteService): CollectionC
           fields: [
             { name: 'question', label: 'Question', type: 'text', required: true },
             { name: 'answer', label: 'Answer', type: 'textarea', required: true },
+          ],
+        },
+        {
+          name: 'check',
+          label: 'Availability Check',
+          type: 'group',
+          fields: [
+            headingField(),
+            {
+              name: 'bullets',
+              label: 'Tick Points',
+              type: 'array',
+              maxRows: 4,
+              labels: { singular: 'Tick Point', plural: 'Tick Points' },
+              fields: [{ name: 'text', label: 'Text', type: 'text', required: true }],
+            },
           ],
         },
         {
@@ -417,13 +454,6 @@ const imageField = (name: string, label: string, description?: string): Field =>
   admin: description ? { description } : {},
 })
 
-const textField = (name: string, label: string, placeholder?: string, help?: string): Field => ({
-  name,
-  label,
-  type: 'text',
-  admin: { placeholder, description: help },
-})
-
 const createTradeTab = (service: LocationSiteService) => ({
   name: service.slug.replace('location-sites-', ''),
   label: service.label,
@@ -467,57 +497,36 @@ const createTradeTab = (service: LocationSiteService) => ({
     {
       type: 'collapsible' as const,
       label: 'Hero',
-      fields: [
-        textField(
-          'heroEyebrow',
-          'Small Line Above Headline',
-          `${service.noun} available 24/7 in {locationName}`,
-          PLACEHOLDER_HELP,
-        ),
-        textField(
-          'heroHeadline',
-          'Headline',
-          `Same Day Emergency ${service.noun} in {locationName}`,
-          'The location name is automatically shown in the accent colour. ' + PLACEHOLDER_HELP,
-        ),
-        imageField('heroImage', 'Background Image'),
-      ],
+      fields: [imageField('heroImage', 'Background Image')],
     },
     {
       type: 'collapsible' as const,
       label: 'What Seems To Be The Issue',
-      fields: [
-        textField('issuesHeading', 'Heading', 'What seems to be the issue?'),
-        textField(
-          'issuesSubheading',
-          'Subheading',
-          `Whatever the problem, our ${service.noun.toLowerCase()} have seen it before.`,
-        ),
-        ...numbered('issue', 'Issue', ISSUE_COUNT, [
-          textField('title', 'Title'),
-          {
-            name: 'description',
-            label: 'Base Description',
-            type: 'textarea',
-            admin: { rows: 2, description: BASE_TEXT_HELP },
-          },
-          imageField('image', 'Image'),
-        ]),
-      ],
+      fields: numbered('issue', 'Issue', ISSUE_COUNT, [
+        {
+          name: 'brief',
+          label: 'AI Brief',
+          type: 'textarea',
+          admin: { rows: 2, placeholder: 'Dripping or leaking taps', description: BRIEF_HELP },
+        },
+        imageField('image', 'Image'),
+      ]),
     },
     {
       type: 'collapsible' as const,
       label: 'Booking Steps',
       fields: [
-        textField('stepsHeading', 'Heading', "Booking couldn't be simpler"),
         imageField('stepsBackground', 'Background Image'),
         ...numbered('step', 'Step', STEP_COUNT, [
-          textField('title', 'Title'),
           {
-            name: 'description',
-            label: 'Base Description',
+            name: 'brief',
+            label: 'AI Brief',
             type: 'textarea',
-            admin: { rows: 2, description: BASE_TEXT_HELP },
+            admin: {
+              rows: 2,
+              placeholder: 'Customer calls our UK-based team',
+              description: BRIEF_HELP,
+            },
           },
         ]),
       ],
@@ -525,51 +534,24 @@ const createTradeTab = (service: LocationSiteService) => ({
     {
       type: 'collapsible' as const,
       label: 'Why Choose Us',
-      fields: [
-        textField('reasonsHeading', 'Heading', 'Why Choose {brandName}?', PLACEHOLDER_HELP),
-        ...numbered('reason', 'Reason', REASON_COUNT, [
-          imageField('icon', 'Icon', 'SVG preferred'),
-          textField('title', 'Title'),
-          {
-            name: 'description',
-            label: 'Base Description',
-            type: 'textarea',
-            admin: { rows: 2, description: BASE_TEXT_HELP },
+      fields: numbered('reason', 'Reason', REASON_COUNT, [
+        imageField('icon', 'Icon', 'SVG preferred'),
+        {
+          name: 'brief',
+          label: 'AI Brief',
+          type: 'textarea',
+          admin: {
+            rows: 2,
+            placeholder: 'Fixed price guarantee — quote agreed before any work starts',
+            description: BRIEF_HELP,
           },
-        ]),
-      ],
+        },
+      ]),
     },
     {
       type: 'collapsible' as const,
       label: 'FAQs',
-      fields: [
-        textField('faqsHeading', 'Heading', 'Frequently Asked Questions'),
-        imageField('faqsBackground', 'Background Image'),
-      ],
-    },
-    {
-      type: 'collapsible' as const,
-      label: 'Availability Check',
-      fields: [
-        textField('checkHeading', 'Heading', 'Instant Availability Check!'),
-        {
-          name: 'checkBullets',
-          label: 'Tick Points',
-          type: 'array',
-          maxRows: 4,
-          labels: { singular: 'Tick Point', plural: 'Tick Points' },
-          admin: { description: PLACEHOLDER_HELP },
-          fields: [
-            {
-              name: 'text',
-              label: 'Text',
-              type: 'text',
-              required: true,
-              admin: { placeholder: 'Excellent engineer coverage across {locationName}' },
-            },
-          ],
-        } as Field,
-      ],
+      fields: [imageField('faqsBackground', 'Background Image')],
     },
     {
       type: 'collapsible' as const,
@@ -581,6 +563,7 @@ const createTradeTab = (service: LocationSiteService) => ({
           type: 'array',
           maxRows: 8,
           labels: { singular: 'Service', plural: 'Services' },
+          admin: { description: 'Fixed list, the same on every site in this trade' },
           fields: [{ name: 'service', label: 'Service', type: 'text', required: true }],
         } as Field,
       ],
@@ -648,6 +631,18 @@ export const LocationSitesGlobals: GlobalConfig = {
                   admin: { width: '33%', placeholder: 'Instant Availability Check - Book Now' },
                 },
               ],
+            },
+            {
+              name: 'approvedClaims',
+              label: 'Approved Facts & Promises',
+              type: 'textarea',
+              admin: {
+                rows: 5,
+                placeholder:
+                  'Same day emergency attendance\nPay nothing until the work is completed\nUK-based call team',
+                description:
+                  'One per line. The only claims the AI may make when writing sites — it will not invent guarantees, prices, response times or accreditations.',
+              },
             },
             {
               name: 'reviewLogos',
