@@ -147,18 +147,11 @@ const createLocationSiteCollection = (service: LocationSiteService): CollectionC
           hooks: { beforeValidate: [normaliseDomain] },
           validate: validateDomain(service.slug),
           admin: {
-            width: '50%',
+            width: '100%',
             placeholder: 'liverpoolemergencyplumber.co.uk',
             description:
               'No https:// or www. Must also be added as a custom domain on the Cloudflare Pages project.',
           },
-        },
-        {
-          name: 'logo',
-          label: 'Logo',
-          type: 'upload',
-          relationTo: 'media',
-          admin: { width: '50%' },
         },
       ],
     },
