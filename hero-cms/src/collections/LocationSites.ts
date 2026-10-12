@@ -1,4 +1,4 @@
-import type { Access, CollectionConfig } from 'payload'
+import type { Access, CollectionConfig, GlobalConfig } from 'payload'
 import { isSuperAdmin } from '../access/isSuperAdmin'
 import { isAdminOrSuperAdmin } from '../access/isAdminOrSuperAdmin'
 import { hasTenantAccess } from '../access/hasTenantAccess'
@@ -191,3 +191,39 @@ const createLocationSiteCollection = (service: LocationSiteService): CollectionC
 export const LocationSitesCollections: CollectionConfig[] = LOCATION_SITE_SERVICES.map(
   createLocationSiteCollection,
 )
+
+// Shared images for every Location Site, one tab per trade.
+// Every site in a trade uses that trade's images, so changing one here updates them all.
+export const LocationSitesImages: GlobalConfig = {
+  slug: 'location-sites-images',
+  label: 'Images',
+  admin: {
+    group: 'Location Sites',
+    description:
+      'Shared by every location site in each trade. Change an image here and it updates all of them.',
+  },
+  access: {
+    read: () => true,
+    update: isAdminOrSuperAdmin,
+  },
+  fields: [
+    {
+      type: 'tabs',
+      tabs: LOCATION_SITE_SERVICES.map((service) => ({
+        name: service.slug.replace('location-sites-', ''),
+        label: service.label,
+        fields: [
+          {
+            name: 'logoIcon',
+            label: 'Logo Icon',
+            type: 'upload',
+            relationTo: 'media',
+            admin: {
+              description: `The icon shown next to the brand name on every ${service.label} site. SVG preferred.`,
+            },
+          },
+        ],
+      })),
+    },
+  ],
+}
