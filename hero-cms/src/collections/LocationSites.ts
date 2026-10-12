@@ -2,6 +2,7 @@ import type { Access, CollectionConfig, Field, GlobalConfig } from 'payload'
 import { isSuperAdmin } from '../access/isSuperAdmin'
 import { isAdminOrSuperAdmin } from '../access/isAdminOrSuperAdmin'
 import { hasTenantAccess } from '../access/hasTenantAccess'
+import { generateLocationSiteContent } from '../hooks/generateLocationSiteContent'
 
 // Services covered by Location Sites.
 // Each one becomes its own sidebar item (and its own database table).
@@ -127,6 +128,16 @@ const createLocationSiteCollection = (service: LocationSiteService): CollectionC
     useAsTitle: 'brandName',
     defaultColumns: ['brandName', 'locationName', 'domain', 'status', 'updatedAt'],
     description: `Single-page ${service.label.toLowerCase()} sites, one per location. Images and logo come from Globals → ${service.label}.`,
+  },
+  hooks: {
+    beforeChange: [
+      generateLocationSiteContent({
+        key: service.slug.replace('location-sites-', ''),
+        label: service.label,
+        noun: service.noun,
+        slug: service.slug,
+      }),
+    ],
   },
   access: {
     read: readLocationSites,
