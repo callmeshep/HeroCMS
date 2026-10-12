@@ -229,10 +229,10 @@ export const generateLocationSiteContent =
 
     try {
       const globals: any = await req.payload.findGlobal({
-        slug: 'location-sites-globals' as any,
+        slug: 'location-sites-globals',
         depth: 0,
         overrideAccess: true,
-      })
+      } as any)
       const tradeGlobals = globals?.[trade.key] ?? {}
       const approvedClaims = (globals?.allSites?.approvedClaims ?? '').trim()
 
