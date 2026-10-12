@@ -242,13 +242,24 @@ export const LocationSitesGlobals: GlobalConfig = {
               ],
             },
             {
-              name: 'reviewLogosBanner',
+              name: 'reviewLogos',
               label: 'Review Logos Banner',
-              type: 'upload',
-              relationTo: 'media',
+              type: 'array',
+              maxRows: 5,
+              labels: { singular: 'Review Logo', plural: 'Review Logos' },
               admin: {
-                description: 'Small banner of review logos shown in the hero of every site',
+                description:
+                  'Up to 5 review logos shown in a small banner in the hero of every site. Drag to reorder.',
               },
+              fields: [
+                {
+                  name: 'logo',
+                  label: 'Logo',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: true,
+                },
+              ],
             },
             {
               name: 'footerText',
