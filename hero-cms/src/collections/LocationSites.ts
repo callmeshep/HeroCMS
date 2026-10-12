@@ -1,4 +1,4 @@
-import type { Access, CollectionConfig, GlobalConfig } from 'payload'
+import type { Access, CollectionConfig, Field, GlobalConfig } from 'payload'
 import { isSuperAdmin } from '../access/isSuperAdmin'
 import { isAdminOrSuperAdmin } from '../access/isAdminOrSuperAdmin'
 import { hasTenantAccess } from '../access/hasTenantAccess'
@@ -6,16 +6,60 @@ import { hasTenantAccess } from '../access/hasTenantAccess'
 // Services covered by Location Sites.
 // Each one becomes its own sidebar item (and its own database table).
 export const LOCATION_SITE_SERVICES = [
-  { slug: 'location-sites-plumbing', label: 'Plumbing', example: 'Liverpool Emergency Plumber' },
-  { slug: 'location-sites-heating', label: 'Heating', example: 'Liverpool Emergency Heating' },
+  {
+    slug: 'location-sites-plumbing',
+    label: 'Plumbing',
+    noun: 'Plumbers',
+    example: 'Liverpool Emergency Plumbers',
+  },
+  {
+    slug: 'location-sites-heating',
+    label: 'Heating',
+    noun: 'Heating Engineers',
+    example: 'Liverpool Emergency Heating',
+  },
   {
     slug: 'location-sites-electrics',
     label: 'Electrics',
-    example: 'Liverpool Emergency Electrician',
+    noun: 'Electricians',
+    example: 'Liverpool Emergency Electricians',
   },
 ] as const
 
 type LocationSiteService = (typeof LOCATION_SITE_SERVICES)[number]
+
+// Number of fixed cards in each section of the page design
+const ISSUE_COUNT = 4
+const STEP_COUNT = 3
+const REASON_COUNT = 3
+
+const PLACEHOLDER_HELP =
+  'You can use {brandName}, {locationName}, {domain} and {year} — they are filled in automatically for each site.'
+
+const BASE_TEXT_HELP =
+  'Base text. Each site gets its own local version of this, written by AI from the keywords.'
+
+// Builds numbered groups, e.g. issue1, issue2, issue3, issue4
+const numbered = (prefix: string, label: string, count: number, fields: Field[]): Field[] =>
+  Array.from({ length: count }, (_, i) => ({
+    name: `${prefix}${i + 1}`,
+    label: `${label} ${i + 1}`,
+    type: 'group' as const,
+    fields,
+  }))
+
+// Builds numbered text boxes, e.g. issue1, issue2 (used for the per-site local versions)
+const numberedText = (prefix: string, label: string, count: number): Field[] =>
+  Array.from({ length: count }, (_, i) => ({
+    name: `${prefix}${i + 1}`,
+    label: `${label} ${i + 1}`,
+    type: 'textarea' as const,
+    admin: { rows: 3 },
+  }))
+
+// ============================================
+// LOCATION SITES (one collection per trade)
+// ============================================
 
 // Logged-in users see their tenant's sites. The public (the renderer) only sees Live sites.
 const readLocationSites: Access = (args) => {
@@ -79,7 +123,7 @@ const createLocationSiteCollection = (service: LocationSiteService): CollectionC
     group: 'Location Sites',
     useAsTitle: 'brandName',
     defaultColumns: ['brandName', 'locationName', 'domain', 'status', 'updatedAt'],
-    description: `Single-page ${service.label.toLowerCase()} sites, one per location. They all share the same layout and ${service.label} images.`,
+    description: `Single-page ${service.label.toLowerCase()} sites, one per location. Layout, images and headings come from Globals → ${service.label}.`,
   },
   access: {
     read: readLocationSites,
@@ -130,7 +174,7 @@ const createLocationSiteCollection = (service: LocationSiteService): CollectionC
           admin: {
             width: '50%',
             placeholder: service.example,
-            description: 'Shown in the nav, footer and page titles',
+            description: 'Used in headings, the footer and page titles',
           },
         },
       ],
@@ -179,8 +223,85 @@ const createLocationSiteCollection = (service: LocationSiteService): CollectionC
           defaultValue: false,
           admin: {
             description:
-              'Tick and save to write the page content from the keywords. This overwrites the current content.',
+              'Tick and save to write the page content from the keywords. This overwrites the content below.',
           },
+        },
+      ],
+    },
+
+    // Per-site content (local versions of the base text in Globals)
+    {
+      type: 'collapsible',
+      label: 'Page Content',
+      admin: {
+        initCollapsed: true,
+        description: `Written for this location. Titles, images and headings come from Globals → ${service.label}.`,
+      },
+      fields: [
+        {
+          name: 'issues',
+          label: 'What Seems To Be The Issue — descriptions',
+          type: 'group',
+          admin: { description: `Matches Issues 1–${ISSUE_COUNT} in Globals` },
+          fields: numberedText('issue', 'Issue', ISSUE_COUNT),
+        },
+        {
+          name: 'steps',
+          label: 'Booking Steps — descriptions',
+          type: 'group',
+          admin: { description: `Matches Steps 1–${STEP_COUNT} in Globals` },
+          fields: numberedText('step', 'Step', STEP_COUNT),
+        },
+        {
+          name: 'reasons',
+          label: 'Why Choose Us — descriptions',
+          type: 'group',
+          admin: { description: `Matches Reasons 1–${REASON_COUNT} in Globals` },
+          fields: numberedText('reason', 'Reason', REASON_COUNT),
+        },
+        {
+          name: 'faqs',
+          label: 'FAQs',
+          type: 'array',
+          maxRows: 6,
+          labels: { singular: 'FAQ', plural: 'FAQs' },
+          fields: [
+            { name: 'question', label: 'Question', type: 'text', required: true },
+            { name: 'answer', label: 'Answer', type: 'textarea', required: true },
+          ],
+        },
+        {
+          name: 'areas',
+          label: 'Areas Covered',
+          type: 'array',
+          maxRows: 8,
+          labels: { singular: 'Area', plural: 'Areas' },
+          admin: { description: 'Shown in the footer under "{Location} Areas"' },
+          fields: [{ name: 'area', label: 'Area', type: 'text', required: true }],
+        },
+        {
+          name: 'footerBlurb',
+          label: 'Footer Blurb',
+          type: 'textarea',
+          admin: {
+            rows: 2,
+            placeholder:
+              "Looking for an emergency plumber in Liverpool & surrounding areas? We've got you covered.",
+          },
+        },
+        {
+          name: 'seo',
+          label: 'SEO',
+          type: 'group',
+          fields: [
+            { name: 'metaTitle', label: 'Meta Title', type: 'text' },
+            {
+              name: 'metaDescription',
+              label: 'Meta Description',
+              type: 'textarea',
+              admin: { rows: 2 },
+            },
+          ],
         },
       ],
     },
@@ -188,14 +309,95 @@ const createLocationSiteCollection = (service: LocationSiteService): CollectionC
   timestamps: true,
 })
 
-export const LocationSitesCollections: CollectionConfig[] = LOCATION_SITE_SERVICES.map(
-  createLocationSiteCollection,
-)
+// ============================================
+// FORM SUBMISSIONS (shared by all trades)
+// ============================================
 
-// Settings shared across Location Sites.
+export const LocationSitesSubmissions: CollectionConfig = {
+  slug: 'location-sites-submissions',
+  labels: {
+    singular: 'Submission',
+    plural: 'Form Submissions',
+  },
+  admin: {
+    group: 'Location Sites',
+    useAsTitle: 'phone',
+    defaultColumns: ['phone', 'postcode', 'service', 'brandName', 'ghlSync', 'createdAt'],
+    description: 'Availability checks submitted on any location site',
+  },
+  access: {
+    read: hasTenantAccess('tenant'),
+    create: isAdminOrSuperAdmin,
+    update: isSuperAdmin,
+    delete: isSuperAdmin,
+  },
+  fields: [
+    {
+      name: 'tenant',
+      type: 'relationship',
+      relationTo: 'tenants',
+      required: true,
+      admin: { position: 'sidebar' },
+    },
+    {
+      type: 'row',
+      fields: [
+        { name: 'postcode', label: 'Postcode', type: 'text', admin: { width: '50%' } },
+        { name: 'phone', label: 'Phone Number', type: 'text', admin: { width: '50%' } },
+      ],
+    },
+    {
+      name: 'service',
+      label: 'Service',
+      type: 'select',
+      options: LOCATION_SITE_SERVICES.map((service) => ({
+        label: service.label,
+        value: service.slug.replace('location-sites-', ''),
+      })),
+    },
+    {
+      type: 'row',
+      fields: [
+        { name: 'brandName', label: 'Brand Name', type: 'text', admin: { width: '33%' } },
+        { name: 'locationName', label: 'Location', type: 'text', admin: { width: '33%' } },
+        { name: 'domain', label: 'Domain', type: 'text', admin: { width: '33%' } },
+      ],
+    },
+    {
+      name: 'ghlSync',
+      label: 'GHL Sync',
+      type: 'select',
+      defaultValue: 'pending',
+      options: [
+        { label: 'Pending', value: 'pending' },
+        { label: 'Sent', value: 'sent' },
+        { label: 'Failed', value: 'failed' },
+      ],
+      admin: { position: 'sidebar', readOnly: true },
+    },
+    {
+      name: 'ghlError',
+      label: 'GHL Error',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+        condition: (data) => data?.ghlSync === 'failed',
+      },
+    },
+  ],
+  timestamps: true,
+}
+
+export const LocationSitesCollections: CollectionConfig[] = [
+  ...LOCATION_SITE_SERVICES.map(createLocationSiteCollection),
+  LocationSitesSubmissions,
+]
+
+// ============================================
+// GLOBALS
 // "All Sites" applies to every site; each trade tab applies to every site in that trade.
-const PLACEHOLDER_HELP =
-  'You can use {brandName}, {locationName}, {domain} and {year} — they are filled in automatically for each site.'
+// ============================================
 
 // Hex colour field, e.g. #0E2C43
 const colourField = (name: string, label: string, description: string) => ({
@@ -205,6 +407,185 @@ const colourField = (name: string, label: string, description: string) => ({
   validate: (value: string | null | undefined) =>
     !value || /^#[0-9a-fA-F]{6}$/.test(value) ? true : 'Enter a 6-digit hex colour, e.g. #0E2C43',
   admin: { width: '33%', placeholder: '#0E2C43', description },
+})
+
+const imageField = (name: string, label: string, description?: string): Field => ({
+  name,
+  label,
+  type: 'upload',
+  relationTo: 'media',
+  admin: description ? { description } : {},
+})
+
+const textField = (name: string, label: string, placeholder?: string, help?: string): Field => ({
+  name,
+  label,
+  type: 'text',
+  admin: { placeholder, description: help },
+})
+
+const createTradeTab = (service: LocationSiteService) => ({
+  name: service.slug.replace('location-sites-', ''),
+  label: service.label,
+  fields: [
+    {
+      type: 'row' as const,
+      fields: [
+        colourField(
+          'accentColour',
+          'Accent Colour',
+          `Accent colour for every ${service.label} site`,
+        ),
+      ],
+    },
+    {
+      type: 'row' as const,
+      fields: [
+        {
+          ...imageField(
+            'logoIcon',
+            'Logo Icon',
+            'Shown next to the location name in the logo. SVG preferred.',
+          ),
+          admin: {
+            width: '50%',
+            description: 'Shown next to the location name in the logo. SVG preferred.',
+          },
+        } as Field,
+        {
+          name: 'logoSubtitle',
+          label: 'Logo Subtitle',
+          type: 'text',
+          admin: {
+            width: '50%',
+            placeholder: `Emergency ${service.noun}`,
+            description: 'Second line of the logo, under the location name',
+          },
+        } as Field,
+      ],
+    },
+    {
+      type: 'collapsible' as const,
+      label: 'Hero',
+      fields: [
+        textField(
+          'heroEyebrow',
+          'Small Line Above Headline',
+          `${service.noun} available 24/7 in {locationName}`,
+          PLACEHOLDER_HELP,
+        ),
+        textField(
+          'heroHeadline',
+          'Headline',
+          `Same Day Emergency ${service.noun} in {locationName}`,
+          'The location name is automatically shown in the accent colour. ' + PLACEHOLDER_HELP,
+        ),
+        imageField('heroImage', 'Background Image'),
+      ],
+    },
+    {
+      type: 'collapsible' as const,
+      label: 'What Seems To Be The Issue',
+      fields: [
+        textField('issuesHeading', 'Heading', 'What seems to be the issue?'),
+        textField(
+          'issuesSubheading',
+          'Subheading',
+          `Whatever the problem, our ${service.noun.toLowerCase()} have seen it before.`,
+        ),
+        ...numbered('issue', 'Issue', ISSUE_COUNT, [
+          textField('title', 'Title'),
+          {
+            name: 'description',
+            label: 'Base Description',
+            type: 'textarea',
+            admin: { rows: 2, description: BASE_TEXT_HELP },
+          },
+          imageField('image', 'Image'),
+        ]),
+      ],
+    },
+    {
+      type: 'collapsible' as const,
+      label: 'Booking Steps',
+      fields: [
+        textField('stepsHeading', 'Heading', "Booking couldn't be simpler"),
+        imageField('stepsBackground', 'Background Image'),
+        ...numbered('step', 'Step', STEP_COUNT, [
+          textField('title', 'Title'),
+          {
+            name: 'description',
+            label: 'Base Description',
+            type: 'textarea',
+            admin: { rows: 2, description: BASE_TEXT_HELP },
+          },
+        ]),
+      ],
+    },
+    {
+      type: 'collapsible' as const,
+      label: 'Why Choose Us',
+      fields: [
+        textField('reasonsHeading', 'Heading', 'Why Choose {brandName}?', PLACEHOLDER_HELP),
+        ...numbered('reason', 'Reason', REASON_COUNT, [
+          imageField('icon', 'Icon', 'SVG preferred'),
+          textField('title', 'Title'),
+          {
+            name: 'description',
+            label: 'Base Description',
+            type: 'textarea',
+            admin: { rows: 2, description: BASE_TEXT_HELP },
+          },
+        ]),
+      ],
+    },
+    {
+      type: 'collapsible' as const,
+      label: 'FAQs',
+      fields: [
+        textField('faqsHeading', 'Heading', 'Frequently Asked Questions'),
+        imageField('faqsBackground', 'Background Image'),
+      ],
+    },
+    {
+      type: 'collapsible' as const,
+      label: 'Availability Check',
+      fields: [
+        textField('checkHeading', 'Heading', 'Instant Availability Check!'),
+        {
+          name: 'checkBullets',
+          label: 'Tick Points',
+          type: 'array',
+          maxRows: 4,
+          labels: { singular: 'Tick Point', plural: 'Tick Points' },
+          admin: { description: PLACEHOLDER_HELP },
+          fields: [
+            {
+              name: 'text',
+              label: 'Text',
+              type: 'text',
+              required: true,
+              admin: { placeholder: 'Excellent engineer coverage across {locationName}' },
+            },
+          ],
+        } as Field,
+      ],
+    },
+    {
+      type: 'collapsible' as const,
+      label: 'Footer',
+      fields: [
+        {
+          name: 'whatWeDo',
+          label: 'What We Do',
+          type: 'array',
+          maxRows: 8,
+          labels: { singular: 'Service', plural: 'Services' },
+          fields: [{ name: 'service', label: 'Service', type: 'text', required: true }],
+        } as Field,
+      ],
+    },
+  ],
 })
 
 export const LocationSitesGlobals: GlobalConfig = {
@@ -242,6 +623,33 @@ export const LocationSitesGlobals: GlobalConfig = {
               ],
             },
             {
+              type: 'row',
+              fields: [
+                {
+                  name: 'phoneNumber',
+                  label: 'Phone Number',
+                  type: 'text',
+                  admin: {
+                    width: '33%',
+                    placeholder: '07123 456789',
+                    description: 'Used for the phone button on every site',
+                  },
+                },
+                {
+                  name: 'navButtonLabel',
+                  label: 'Nav Button Text',
+                  type: 'text',
+                  admin: { width: '33%', placeholder: 'Check Availability' },
+                },
+                {
+                  name: 'formLabel',
+                  label: 'Hero Form Label',
+                  type: 'text',
+                  admin: { width: '33%', placeholder: 'Instant Availability Check - Book Now' },
+                },
+              ],
+            },
+            {
               name: 'reviewLogos',
               label: 'Review Logos Banner',
               type: 'array',
@@ -249,7 +657,7 @@ export const LocationSitesGlobals: GlobalConfig = {
               labels: { singular: 'Review Logo', plural: 'Review Logos' },
               admin: {
                 description:
-                  'Up to 5 review logos shown in a small banner in the hero of every site. Drag to reorder.',
+                  'Up to 5 review logos shown in a scrolling banner in the hero of every site. Drag to reorder.',
               },
               fields: [
                 {
@@ -264,9 +672,10 @@ export const LocationSitesGlobals: GlobalConfig = {
             {
               name: 'footerText',
               label: 'Footer Text',
-              type: 'text',
-              defaultValue: '© {year} Emergency Hero Ltd. trading as {brandName}',
-              admin: { description: PLACEHOLDER_HELP },
+              type: 'textarea',
+              defaultValue:
+                '{brandName} is a trading name of Emergency Hero Ltd. Registered in England and Wales, company number 14389904. © {year} Emergency Hero Ltd. All rights reserved.',
+              admin: { rows: 2, description: PLACEHOLDER_HELP },
             },
             {
               name: 'privacyPolicy',
@@ -288,26 +697,7 @@ export const LocationSitesGlobals: GlobalConfig = {
             },
           ],
         },
-        ...LOCATION_SITE_SERVICES.map((service) => ({
-          name: service.slug.replace('location-sites-', ''),
-          label: service.label,
-          fields: [
-            colourField(
-              'accentColour',
-              'Accent Colour',
-              `Accent colour for every ${service.label} site`,
-            ),
-            {
-              name: 'logoIcon',
-              label: 'Logo Icon',
-              type: 'upload' as const,
-              relationTo: 'media' as const,
-              admin: {
-                description: `The icon shown next to the brand name on every ${service.label} site. SVG preferred.`,
-              },
-            },
-          ],
-        })),
+        ...LOCATION_SITE_SERVICES.map(createTradeTab),
       ],
     },
   ],
