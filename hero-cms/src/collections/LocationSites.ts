@@ -1,8 +1,9 @@
-import type { Access, CollectionConfig, Field, GlobalConfig } from 'payload'
+import type { CollectionConfig, Field, GlobalConfig } from 'payload'
 import { isSuperAdmin } from '../access/isSuperAdmin'
 import { isAdminOrSuperAdmin } from '../access/isAdminOrSuperAdmin'
 import { hasTenantAccess } from '../access/hasTenantAccess'
 import { generateLocationSiteContent } from '../hooks/generateLocationSiteContent'
+import { sendLocationSiteLeadToGhl } from '../hooks/sendLocationSiteLeadToGhl'
 
 // Services covered by Location Sites.
 // Each one becomes its own sidebar item (and its own database table).
@@ -64,12 +65,6 @@ const headingField = (name = 'heading', label = 'Heading'): Field => ({
 // ============================================
 // LOCATION SITES (one collection per trade)
 // ============================================
-
-// Logged-in users see their tenant's sites. The public (the renderer) only sees Live sites.
-const readLocationSites: Access = (args) => {
-  if (!args.req.user) return { status: { equals: 'live' } }
-  return hasTenantAccess('tenant')(args)
-}
 
 // Turns "https://www.Example.co.uk/page" into "example.co.uk"
 const normaliseDomain = ({ value }: { value?: unknown }) => {
@@ -140,7 +135,8 @@ const createLocationSiteCollection = (service: LocationSiteService): CollectionC
     ],
   },
   access: {
-    read: readLocationSites,
+    // Not public — the renderer reads sites through the secret /api/location-sites/page endpoint
+    read: hasTenantAccess('tenant'),
     create: isAdminOrSuperAdmin,
     update: hasTenantAccess('tenant'),
     delete: isSuperAdmin,
@@ -360,18 +356,115 @@ const createLocationSiteCollection = (service: LocationSiteService): CollectionC
               "Looking for an emergency plumber in Liverpool & surrounding areas? We've got you covered.",
           },
         },
+      ],
+    },
+
+    // SEO, tracking and code injection
+    {
+      type: 'collapsible',
+      label: 'Tracking & SEO',
+      admin: { initCollapsed: true },
+      fields: [
         {
           name: 'seo',
           label: 'SEO',
           type: 'group',
+          admin: {
+            description:
+              'What Google shows for this site. Written by AI when content is generated — edit freely.',
+          },
           fields: [
-            { name: 'metaTitle', label: 'Meta Title', type: 'text' },
+            {
+              name: 'metaTitle',
+              label: 'SEO Title',
+              type: 'text',
+              admin: { description: 'Aim for 50–60 characters' },
+            },
             {
               name: 'metaDescription',
-              label: 'Meta Description',
+              label: 'SEO Description',
               type: 'textarea',
-              admin: { rows: 2 },
+              admin: { rows: 2, description: 'Aim for 140–155 characters' },
             },
+          ],
+        },
+        {
+          name: 'tracking',
+          label: 'Tracking',
+          type: 'group',
+          admin: {
+            description:
+              'Only loads after the visitor accepts cookies. Use GA4 here — not a GTM container that also contains GA4, or visits are counted twice.',
+          },
+          fields: [
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'ga4Id',
+                  label: 'GA4 Measurement ID',
+                  type: 'text',
+                  validate: (value: string | null | undefined) =>
+                    !value || /^G-[A-Z0-9]{4,}$/.test(value)
+                      ? true
+                      : 'Should look like G-XXXXXXXXXX',
+                  admin: { width: '50%', placeholder: 'G-XXXXXXXXXX' },
+                },
+                {
+                  name: 'metaPixelId',
+                  label: 'Meta Pixel ID',
+                  type: 'text',
+                  validate: (value: string | null | undefined) =>
+                    !value || /^\d{6,20}$/.test(value) ? true : 'Numbers only',
+                  admin: { width: '50%', placeholder: '123456789012345' },
+                },
+              ],
+            },
+            {
+              name: 'ghlTag',
+              label: 'GHL Tag',
+              type: 'text',
+              admin: {
+                description:
+                  'Added to every lead from this site, alongside the tags in Globals. Leave blank to use the domain.',
+              },
+            },
+          ],
+        },
+        {
+          name: 'files',
+          label: 'llms.txt & robots.txt',
+          type: 'group',
+          admin: {
+            description:
+              'Both are generated automatically. Only fill these in to replace the generated version.',
+          },
+          fields: [
+            {
+              name: 'llmsTxt',
+              label: 'llms.txt (override)',
+              type: 'textarea',
+              admin: { rows: 6 },
+            },
+            {
+              name: 'robotsTxt',
+              label: 'robots.txt (override)',
+              type: 'textarea',
+              admin: { rows: 4 },
+            },
+          ],
+        },
+        {
+          name: 'code',
+          label: 'Code Injection',
+          type: 'group',
+          admin: {
+            description:
+              'For this site only. Loads after the visitor accepts cookies, alongside the code in Globals → All Sites.',
+          },
+          fields: [
+            { name: 'head', label: 'Head', type: 'code', admin: { language: 'html' } },
+            { name: 'body', label: 'End of body', type: 'code', admin: { language: 'html' } },
           ],
         },
       ],
@@ -395,6 +488,9 @@ export const LocationSitesSubmissions: CollectionConfig = {
     useAsTitle: 'phone',
     defaultColumns: ['phone', 'postcode', 'service', 'brandName', 'ghlSync', 'createdAt'],
     description: 'Availability checks submitted on any location site',
+  },
+  hooks: {
+    afterChange: [sendLocationSiteLeadToGhl],
   },
   access: {
     read: hasTenantAccess('tenant'),
@@ -551,15 +647,18 @@ const createTradeTab = (service: LocationSiteService) => ({
     {
       type: 'collapsible' as const,
       label: 'What Seems To Be The Issue',
-      fields: numbered('issue', 'Issue', ISSUE_COUNT, [
-        {
-          name: 'brief',
-          label: 'AI Brief',
-          type: 'textarea',
-          admin: { rows: 2, placeholder: 'Dripping or leaking taps', description: BRIEF_HELP },
-        },
-        imageField('image', 'Image'),
-      ]),
+      fields: [
+        imageField('issuesBackground', 'Section Background Image'),
+        ...numbered('issue', 'Issue', ISSUE_COUNT, [
+          {
+            name: 'brief',
+            label: 'AI Brief',
+            type: 'textarea',
+            admin: { rows: 2, placeholder: 'Dripping or leaking taps', description: BRIEF_HELP },
+          },
+          imageField('image', 'Image'),
+        ]),
+      ],
     },
     {
       type: 'collapsible' as const,
@@ -628,7 +727,8 @@ export const LocationSitesGlobals: GlobalConfig = {
     description: 'Shared by every location site. Change something here and it updates all of them.',
   },
   access: {
-    read: () => true,
+    // Not public — the renderer reads Globals through the secret /api/location-sites/page endpoint
+    read: ({ req: { user } }) => Boolean(user),
     update: isAdminOrSuperAdmin,
   },
   fields: [
@@ -732,6 +832,74 @@ export const LocationSitesGlobals: GlobalConfig = {
               label: 'Terms & Conditions',
               type: 'richText',
               admin: { description: PLACEHOLDER_HELP },
+            },
+            {
+              type: 'collapsible',
+              label: 'GHL (leads)',
+              admin: { initCollapsed: false },
+              fields: [
+                {
+                  name: 'ghlTenant',
+                  label: 'Use GHL connection from',
+                  type: 'relationship',
+                  relationTo: 'tenants',
+                  admin: {
+                    description:
+                      "Leads are sent using this tenant's API Keys record (GHL token and location ID).",
+                  },
+                },
+                {
+                  type: 'row',
+                  fields: [
+                    {
+                      name: 'ghlPipeline',
+                      label: 'Pipeline',
+                      type: 'text',
+                      defaultValue: 'Inbound Callout Bookings',
+                      admin: { width: '50%' },
+                    },
+                    {
+                      name: 'ghlStage',
+                      label: 'Stage',
+                      type: 'text',
+                      defaultValue: 'New Lead',
+                      admin: { width: '50%' },
+                    },
+                  ],
+                },
+                {
+                  name: 'ghlTags',
+                  label: 'Tags on every lead',
+                  type: 'array',
+                  labels: { singular: 'Tag', plural: 'Tags' },
+                  admin: {
+                    description: "Each site's own GHL Tag (or its domain) is added as well.",
+                  },
+                  fields: [{ name: 'tag', label: 'Tag', type: 'text', required: true }],
+                },
+              ],
+            },
+            {
+              type: 'collapsible',
+              label: 'Code Injection (all sites)',
+              admin: { initCollapsed: true },
+              fields: [
+                {
+                  name: 'code',
+                  type: 'group',
+                  label: false,
+                  admin: { description: 'Loads on every site after the visitor accepts cookies.' },
+                  fields: [
+                    { name: 'head', label: 'Head', type: 'code', admin: { language: 'html' } },
+                    {
+                      name: 'body',
+                      label: 'End of body',
+                      type: 'code',
+                      admin: { language: 'html' },
+                    },
+                  ],
+                },
+              ],
             },
           ],
         },

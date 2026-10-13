@@ -40,6 +40,7 @@ import { YEFWebsite } from './collections/YEFWebsite'
 import { YEFServicePages } from './collections/YEFServicePages'
 import { YEFBlogPosts } from './collections/YEFBlogPosts'
 import { LocationSitesCollections, LocationSitesGlobals } from './collections/LocationSites'
+import { locationSitesEndpoints } from './endpoints/locationSites'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -122,6 +123,7 @@ export default buildConfig({
     ...LocationSitesCollections,
   ],
   globals: [LocationSitesGlobals],
+  endpoints: locationSitesEndpoints,
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
