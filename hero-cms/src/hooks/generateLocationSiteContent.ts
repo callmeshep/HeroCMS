@@ -17,7 +17,9 @@ const ISSUE_COUNT = 4
 const STEP_COUNT = 3
 const REASON_COUNT = 3
 
-// The shape Claude must return (enforced by the API via a forced tool call)
+// The shape Claude must return (enforced by the API's structured output setting).
+// Counts and lengths can't be enforced by the schema, so they're stated in descriptions
+// and checked after the response arrives.
 const card = (titleMax: number, textMax: number) => ({
   type: 'object',
   properties: {
@@ -25,12 +27,12 @@ const card = (titleMax: number, textMax: number) => ({
     text: { type: 'string', description: `Max ${textMax} characters` },
   },
   required: ['title', 'text'],
+  additionalProperties: false,
 })
 
 const cards = (count: number, titleMax: number, textMax: number) => ({
   type: 'array',
-  minItems: count,
-  maxItems: count,
+  description: `Exactly ${count} items`,
   items: card(titleMax, textMax),
 })
 
@@ -71,8 +73,7 @@ const PAGE_SCHEMA = {
     faqsHeading: { type: 'string', description: 'Max 45 characters' },
     faqs: {
       type: 'array',
-      minItems: 3,
-      maxItems: 3,
+      description: 'Exactly 3 items',
       items: {
         type: 'object',
         properties: {
@@ -80,19 +81,18 @@ const PAGE_SCHEMA = {
           answer: { type: 'string', description: 'Max 250 characters' },
         },
         required: ['question', 'answer'],
+        additionalProperties: false,
       },
     },
     checkHeading: { type: 'string', description: 'Max 40 characters' },
     checkBullets: {
       type: 'array',
-      minItems: 3,
-      maxItems: 3,
+      description: 'Exactly 3 items',
       items: { type: 'string', description: 'Max 60 characters' },
     },
     areas: {
       type: 'array',
-      minItems: 6,
-      maxItems: 6,
+      description: 'Exactly 6 items',
       items: { type: 'string', description: 'A real district, suburb or nearby town' },
     },
     footerBlurb: { type: 'string', description: 'Max 140 characters' },
@@ -121,6 +121,7 @@ const PAGE_SCHEMA = {
     'metaTitle',
     'metaDescription',
   ],
+  additionalProperties: false,
 }
 
 type GeneratedPage = {
@@ -158,7 +159,7 @@ Rules:
 - Never mention "Emergency Hero" or any other company name. Refer to the business as the brand name given, or as "we".
 - The hero headline must contain the location name exactly as given.
 - Keep within every character limit. Short, clear, confident sentences. No exclamation-mark overload, no clichés such as "look no further", "second to none" or "we pride ourselves".
-- Return the content only through the write_page tool.`
+- Return only the JSON object described by the schema.`
 
 type Args = Parameters<CollectionBeforeChangeHook>[0]
 
@@ -193,16 +194,9 @@ const callClaude = async (prompt: string): Promise<GeneratedPage> => {
     },
     body: JSON.stringify({
       model: MODEL,
-      max_tokens: 4096,
+      max_tokens: 8192,
       system: SYSTEM_PROMPT,
-      tools: [
-        {
-          name: 'write_page',
-          description: 'Return the full page copy for this location site.',
-          input_schema: PAGE_SCHEMA,
-        },
-      ],
-      tool_choice: { type: 'tool', name: 'write_page' },
+      output_config: { format: { type: 'json_schema', schema: PAGE_SCHEMA } },
       messages: [{ role: 'user', content: prompt }],
     }),
   })
@@ -213,9 +207,16 @@ const callClaude = async (prompt: string): Promise<GeneratedPage> => {
   }
 
   const result = await response.json()
-  const toolUse = result?.content?.find((block: any) => block.type === 'tool_use')
-  if (!toolUse?.input) throw new Error('Claude did not return page content')
-  return toolUse.input as GeneratedPage
+  if (result?.stop_reason === 'max_tokens')
+    throw new Error('Claude ran out of space writing the page')
+  if (result?.stop_reason === 'refusal') throw new Error('Claude declined to write this page')
+  const text = result?.content?.find((block: any) => block.type === 'text')?.text
+  if (!text) throw new Error('Claude did not return page content')
+  try {
+    return JSON.parse(text) as GeneratedPage
+  } catch {
+    throw new Error('Claude returned content that could not be read')
+  }
 }
 
 const checkPage = (page: GeneratedPage, locationName: string): string | null => {
@@ -225,6 +226,9 @@ const checkPage = (page: GeneratedPage, locationName: string): string | null => 
   if (page.issues?.length !== ISSUE_COUNT) return 'wrong number of issue cards'
   if (page.steps?.length !== STEP_COUNT) return 'wrong number of booking steps'
   if (page.reasons?.length !== REASON_COUNT) return 'wrong number of reasons'
+  if ((page.faqs?.length ?? 0) < 3) return 'fewer than 3 FAQs'
+  if ((page.checkBullets?.length ?? 0) < 3) return 'fewer than 3 tick points'
+  if ((page.areas?.length ?? 0) < 6) return 'fewer than 6 areas'
   if (/emergency\s*hero/i.test(JSON.stringify(page))) return 'mentioned Emergency Hero'
   return null
 }
@@ -325,12 +329,14 @@ ${
         ...toCards('reason', page.reasons),
       }
       data.faqsHeading = page.faqsHeading
-      data.faqs = page.faqs.map((faq) => ({ question: faq.question, answer: faq.answer }))
+      data.faqs = page.faqs
+        .slice(0, 6)
+        .map((faq) => ({ question: faq.question, answer: faq.answer }))
       data.check = {
         heading: page.checkHeading,
-        bullets: page.checkBullets.map((text) => ({ text })),
+        bullets: page.checkBullets.slice(0, 4).map((text) => ({ text })),
       }
-      data.areas = page.areas.map((area) => ({ area }))
+      data.areas = page.areas.slice(0, 8).map((area) => ({ area }))
       data.footerBlurb = page.footerBlurb
       data.seo = { metaTitle: page.metaTitle, metaDescription: page.metaDescription }
 
