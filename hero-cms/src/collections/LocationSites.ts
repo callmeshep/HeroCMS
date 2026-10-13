@@ -535,6 +535,25 @@ const createTradeTab = (service: LocationSiteService) => ({
     },
     {
       type: 'collapsible' as const,
+      label: 'Featured Review',
+      fields: [
+        {
+          name: 'featuredReview',
+          label: 'Featured Review',
+          type: 'relationship',
+          relationTo: 'reviews',
+          filterOptions: {
+            serviceType: { equals: service.slug.replace('location-sites-', '') },
+            visible: { equals: true },
+          },
+          admin: {
+            description: `The pull quote under the hero on every ${service.label} site. Pick one that doesn't mention a place or Emergency Hero.`,
+          },
+        } as Field,
+      ],
+    },
+    {
+      type: 'collapsible' as const,
       label: 'What Seems To Be The Issue',
       fields: numbered('issue', 'Issue', ISSUE_COUNT, [
         {
