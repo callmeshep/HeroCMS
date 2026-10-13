@@ -45,9 +45,28 @@ const PAGE_SCHEMA = {
     issuesHeading: { type: 'string', description: 'Max 45 characters' },
     issuesSubheading: { type: 'string', description: 'Max 90 characters' },
     issues: cards(ISSUE_COUNT, 35, 200),
+    reviewsHeading: {
+      type: 'string',
+      description:
+        'Max 50 characters. Invites the reader to join happy local customers and names the location. No numbers or customer counts.',
+    },
+    reviewsText: {
+      type: 'string',
+      description:
+        'Max 170 characters. One sentence saying we cover the whole of the location, naming 5-7 of its most populated districts or neighbourhoods WITHIN the location.',
+    },
     stepsHeading: { type: 'string', description: 'Max 45 characters' },
     steps: cards(STEP_COUNT, 35, 200),
-    reasonsHeading: { type: 'string', description: 'Max 55 characters' },
+    reasonsHeading: {
+      type: 'string',
+      description:
+        'Max 45 characters, in the style "Why Liverpool Chooses Us", using the location name',
+    },
+    reasonsIntro: {
+      type: 'string',
+      description:
+        'Max 170 characters. Says we also cover the surrounding area, naming 5-7 real towns or areas OUTSIDE the location but nearby. Must not repeat places named in reviewsText.',
+    },
     reasons: cards(REASON_COUNT, 35, 160),
     faqsHeading: { type: 'string', description: 'Max 45 characters' },
     faqs: {
@@ -86,9 +105,12 @@ const PAGE_SCHEMA = {
     'issuesHeading',
     'issuesSubheading',
     'issues',
+    'reviewsHeading',
+    'reviewsText',
     'stepsHeading',
     'steps',
     'reasonsHeading',
+    'reasonsIntro',
     'reasons',
     'faqsHeading',
     'faqs',
@@ -107,9 +129,12 @@ type GeneratedPage = {
   issuesHeading: string
   issuesSubheading: string
   issues: { title: string; text: string }[]
+  reviewsHeading: string
+  reviewsText: string
   stepsHeading: string
   steps: { title: string; text: string }[]
   reasonsHeading: string
+  reasonsIntro: string
   reasons: { title: string; text: string }[]
   faqsHeading: string
   faqs: { question: string; answer: string }[]
@@ -265,7 +290,9 @@ ${approvedClaims || '(none — make no claims beyond the briefs)'}
 
 FAQs: 3 questions a local customer would genuinely ask about emergency ${trade.label.toLowerCase()} in ${locationName}.
 Availability check tick points: 3 short points; at least one should mention ${locationName}.
-Areas: 6 real districts, suburbs or nearby towns covered from ${locationName}.
+Reviews section text: name the most populated districts within ${locationName} itself.
+"Why choose us" intro: name nearby towns and areas surrounding ${locationName} (not inside it), different from the districts above.
+Areas (footer list): 6 real districts, suburbs or nearby towns covered from ${locationName}.
 
 ${
   examples.length
@@ -290,8 +317,13 @@ ${
         subheading: page.issuesSubheading,
         ...toCards('issue', page.issues),
       }
+      data.reviews = { heading: page.reviewsHeading, text: page.reviewsText }
       data.steps = { heading: page.stepsHeading, ...toCards('step', page.steps) }
-      data.reasons = { heading: page.reasonsHeading, ...toCards('reason', page.reasons) }
+      data.reasons = {
+        heading: page.reasonsHeading,
+        intro: page.reasonsIntro,
+        ...toCards('reason', page.reasons),
+      }
       data.faqsHeading = page.faqsHeading
       data.faqs = page.faqs.map((faq) => ({ question: faq.question, answer: faq.answer }))
       data.check = {

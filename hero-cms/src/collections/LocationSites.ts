@@ -279,6 +279,20 @@ const createLocationSiteCollection = (service: LocationSiteService): CollectionC
           ],
         },
         {
+          name: 'reviews',
+          label: 'Reviews Section',
+          type: 'group',
+          fields: [
+            headingField(),
+            {
+              name: 'text',
+              label: 'Text (most populated areas within the location)',
+              type: 'textarea',
+              admin: { rows: 2 },
+            },
+          ],
+        },
+        {
           name: 'steps',
           label: 'Booking Steps',
           type: 'group',
@@ -288,7 +302,16 @@ const createLocationSiteCollection = (service: LocationSiteService): CollectionC
           name: 'reasons',
           label: 'Why Choose Us',
           type: 'group',
-          fields: [headingField(), ...numbered('reason', 'Reason', REASON_COUNT, cardFields)],
+          fields: [
+            headingField(),
+            {
+              name: 'intro',
+              label: 'Intro (surrounding areas)',
+              type: 'textarea',
+              admin: { rows: 2 },
+            },
+            ...numbered('reason', 'Reason', REASON_COUNT, cardFields),
+          ],
         },
         headingField('faqsHeading', 'FAQs Heading'),
         {
@@ -626,7 +649,7 @@ export const LocationSitesGlobals: GlobalConfig = {
                   admin: {
                     width: '33%',
                     placeholder: '07123 456789',
-                    description: 'Used for the phone button on every site',
+                    description: 'Used for every call button and the phone icon on every site',
                   },
                 },
                 {
@@ -634,12 +657,6 @@ export const LocationSitesGlobals: GlobalConfig = {
                   label: 'Nav Button Text',
                   type: 'text',
                   admin: { width: '33%', placeholder: 'Check Availability' },
-                },
-                {
-                  name: 'formLabel',
-                  label: 'Hero Form Label',
-                  type: 'text',
-                  admin: { width: '33%', placeholder: 'Instant Availability Check - Book Now' },
                 },
               ],
             },
