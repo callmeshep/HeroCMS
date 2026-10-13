@@ -538,16 +538,12 @@ const createTradeTab = (service: LocationSiteService) => ({
       label: 'Featured Review',
       fields: [
         {
-          name: 'featuredReview',
-          label: 'Featured Review',
-          type: 'relationship',
-          relationTo: 'reviews',
-          filterOptions: {
-            serviceType: { equals: service.slug.replace('location-sites-', '') },
-            visible: { equals: true },
-          },
+          name: 'featuredQuote',
+          label: 'Featured Review Quote',
+          type: 'textarea',
           admin: {
-            description: `The pull quote under the hero on every ${service.label} site. Pick one that doesn't mention a place or Emergency Hero.`,
+            rows: 3,
+            description: `The pull quote under the hero on every ${service.label} site. Use a genuine customer review, word for word. Avoid ones that mention a place or Emergency Hero.`,
           },
         } as Field,
       ],
