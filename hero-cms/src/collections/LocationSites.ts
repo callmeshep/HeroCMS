@@ -400,7 +400,7 @@ const createLocationSiteCollection = (service: LocationSiteService): CollectionC
           type: 'group',
           admin: {
             description:
-              'Only loads after the visitor accepts cookies. Use GA4 here — not a GTM container that also contains GA4, or visits are counted twice.',
+              'Only loads after the visitor accepts cookies. Normally left blank: tracking runs through the Google Tag Manager container in Globals → All Sites. Only fill these in for a site that needs its own separate GA4 property or Pixel.',
           },
           fields: [
             {
@@ -414,7 +414,11 @@ const createLocationSiteCollection = (service: LocationSiteService): CollectionC
                     !value || /^G-[A-Z0-9]{4,}$/.test(value)
                       ? true
                       : 'Should look like G-XXXXXXXXXX',
-                  admin: { width: '50%', placeholder: 'G-XXXXXXXXXX' },
+                  admin: {
+                    width: '50%',
+                    placeholder: 'G-XXXXXXXXXX',
+                    description: 'Leave blank if GA4 runs through the Google Tag Manager container in Globals',
+                  },
                 },
                 {
                   name: 'metaPixelId',
@@ -422,7 +426,11 @@ const createLocationSiteCollection = (service: LocationSiteService): CollectionC
                   type: 'text',
                   validate: (value: string | null | undefined) =>
                     !value || /^\d{6,20}$/.test(value) ? true : 'Numbers only',
-                  admin: { width: '50%', placeholder: '123456789012345' },
+                  admin: {
+                    width: '50%',
+                    placeholder: '123456789012345',
+                    description: 'Leave blank if the Pixel runs through the Google Tag Manager container in Globals',
+                  },
                 },
               ],
             },
@@ -907,6 +915,25 @@ export const LocationSitesGlobals: GlobalConfig = {
                       'Optional. Each site\'s own tag (e.g. "Location Sites - Liverpool") is always added. Tags here can use {Location}, {brandName}, {domain} and {trade}.',
                   },
                   fields: [{ name: 'tag', label: 'Tag', type: 'text', required: true }],
+                },
+              ],
+            },
+            {
+              type: 'collapsible',
+              label: 'Google Tag Manager (all sites)',
+              admin: { initCollapsed: true },
+              fields: [
+                {
+                  name: 'gtmId',
+                  label: 'GTM Container ID',
+                  type: 'text',
+                  validate: (value: string | null | undefined) =>
+                    !value || /^GTM-[A-Z0-9]{4,}$/.test(value) ? true : 'Should look like GTM-XXXXXXX',
+                  admin: {
+                    placeholder: 'GTM-XXXXXXX',
+                    description:
+                      'One container for every location site. Loads only after the visitor accepts cookies. Every page sends site_location, site_trade, site_brand and site_domain to the data layer, and a successful availability check sends the event "generate_lead". If GA4 or the Meta Pixel are set up inside GTM, leave the GA4 and Meta Pixel fields on each site blank, or visits are counted twice.',
+                  },
                 },
               ],
             },
