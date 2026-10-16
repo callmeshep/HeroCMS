@@ -608,15 +608,19 @@ const createTradeTab = (service: LocationSiteService) => ({
       type: 'row' as const,
       fields: [
         {
-          ...imageField(
-            'logoIcon',
-            'Logo Icon',
-            'Shown next to the location name in the logo. SVG preferred.',
-          ),
+          ...imageField('logoIcon', 'Logo Icon (Nav)'),
           admin: {
             width: '50%',
             description:
-              'Shown next to the brand name in the logo, and used as the browser tab icon. SVG or PNG preferred.',
+              'Shown next to the brand name in the top nav, and used as the browser tab icon. Shown in its own colours. SVG or PNG preferred.',
+          },
+        } as Field,
+        {
+          ...imageField('logoIconFooter', 'Logo Icon (Footer)'),
+          admin: {
+            width: '50%',
+            description:
+              'Shown in the footer (on the primary colour background) in its own colours. Leave blank to use the nav icon. SVG or PNG preferred.',
           },
         } as Field,
       ],
