@@ -936,7 +936,7 @@ export const LocationSitesGlobals: GlobalConfig = {
                         width: '50%',
                         placeholder: 'leads@tradeclicks.co.uk',
                         description:
-                          'Must be on a domain verified in the Resend account whose API key is set on the CMS server (RESEND_API_KEY).',
+                          'Must be on a domain verified in the Resend account whose API key is set on the CMS server as LOCATION_SITES_RESEND_API_KEY.',
                       },
                     },
                   ],

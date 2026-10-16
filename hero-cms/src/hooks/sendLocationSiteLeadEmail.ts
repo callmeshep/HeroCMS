@@ -1,8 +1,9 @@
 import type { CollectionAfterChangeHook } from 'payload'
 
 // Emails every new Location Sites lead, independently of GHL, so a lead still arrives if GHL is down.
-// Runs before the GHL hook. Uses Resend (RESEND_API_KEY on the CMS server). Recipients and sender come
-// from Globals → All Sites → Lead Emails, independent of any tenant.
+// Runs before the GHL hook. Uses Resend with LOCATION_SITES_RESEND_API_KEY (falls back to RESEND_API_KEY,
+// which the CMS's other forms use). Recipients and sender come from Globals → All Sites → Lead Emails,
+// independent of any tenant.
 // The result is written back to the submission as Email: Sent / Failed (+ Email Error).
 
 const TRADE_LABELS: Record<string, string> = {
@@ -38,8 +39,8 @@ export const sendLocationSiteLeadEmail: CollectionAfterChangeHook = async ({ doc
   }
 
   try {
-    const apiKey = process.env.RESEND_API_KEY
-    if (!apiKey) throw new Error('RESEND_API_KEY is not set on the CMS server')
+    const apiKey = process.env.LOCATION_SITES_RESEND_API_KEY || process.env.RESEND_API_KEY
+    if (!apiKey) throw new Error('LOCATION_SITES_RESEND_API_KEY is not set on the CMS server')
 
     const globals: any = await req.payload.findGlobal({
       slug: 'location-sites-globals',
