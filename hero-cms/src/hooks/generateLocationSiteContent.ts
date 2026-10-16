@@ -88,7 +88,6 @@ const PAGE_SCHEMA = {
         additionalProperties: false,
       },
     },
-    checkHeading: { type: 'string', description: 'Max 40 characters' },
     checkBullets: {
       type: 'array',
       description: 'Exactly 3 items',
@@ -118,7 +117,6 @@ const PAGE_SCHEMA = {
     'reasons',
     'faqsHeading',
     'faqs',
-    'checkHeading',
     'checkBullets',
     'areas',
     'footerBlurb',
@@ -143,7 +141,6 @@ type GeneratedPage = {
   reasons: { title: string; text: string }[]
   faqsHeading: string
   faqs: { question: string; answer: string }[]
-  checkHeading: string
   checkBullets: string[]
   areas: string[]
   footerBlurb: string
@@ -330,7 +327,7 @@ Approved Facts & Promises (the only claims you may make):
 ${approvedClaims || '(none — make no claims beyond the briefs)'}
 
 FAQs: 3 questions a local customer would genuinely ask about emergency ${trade.label.toLowerCase()} in ${locationName}.
-Availability check tick points: 3 short points; at least one should mention ${locationName}.
+Availability check points (under the heading "Instant Availability Check!"): 3 short points; at least one should mention ${locationName}.
 Reviews section text: name the most populated districts within ${locationName} itself.
 "Why choose us" intro: name nearby towns and areas surrounding ${locationName} (not inside it), different from the districts above.
 Areas (footer list): 18 different real districts, suburbs or nearby towns covered from ${locationName}, closest and best-known first. Do not include ${locationName} itself.
@@ -373,7 +370,6 @@ ${
         .slice(0, 6)
         .map((faq) => ({ question: faq.question, answer: faq.answer }))
       data.check = {
-        heading: page.checkHeading,
         bullets: page.checkBullets.slice(0, 4).map((text) => ({ text })),
       }
       data.areas = [...new Set(page.areas.map((area) => area.trim()).filter(Boolean))]

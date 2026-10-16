@@ -331,14 +331,14 @@ const createLocationSiteCollection = (service: LocationSiteService): CollectionC
           name: 'check',
           label: 'Availability Check',
           type: 'group',
+          admin: { description: 'The heading is always "Instant Availability Check!"' },
           fields: [
-            headingField(),
             {
               name: 'bullets',
-              label: 'Tick Points',
+              label: 'Points',
               type: 'array',
               maxRows: 4,
-              labels: { singular: 'Tick Point', plural: 'Tick Points' },
+              labels: { singular: 'Point', plural: 'Points' },
               fields: [{ name: 'text', label: 'Text', type: 'text', required: true }],
             },
           ],
@@ -615,18 +615,8 @@ const createTradeTab = (service: LocationSiteService) => ({
           ),
           admin: {
             width: '50%',
-            description: 'Shown next to the location name in the logo. SVG preferred.',
-          },
-        } as Field,
-        {
-          name: 'logoSubtitle',
-          label: 'Logo Subtitle',
-          type: 'text',
-          admin: {
-            width: '50%',
-            placeholder: `Emergency ${service.noun}`,
             description:
-              "Only used if a site's Brand Name doesn't start with its location (the logo normally comes from the Brand Name)",
+              'Shown next to the brand name in the logo, and used as the browser tab icon. SVG or PNG preferred.',
           },
         } as Field,
       ],
