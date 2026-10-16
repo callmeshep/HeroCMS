@@ -152,6 +152,7 @@ const SYSTEM_PROMPT = `You write copy for single-page local emergency trades web
 
 Rules:
 - British English spelling and phrasing throughout.
+- Voice: WE are the tradespeople doing the work. Always write as the business that turns up and fixes the problem ("our plumbers", "we fix", "call us"). Never suggest we find, connect, match, refer or send the customer to someone else, and never tell the reader to "call a plumber", "find a plumber", "get an electrician" or similar. Say "call us" or "call our plumbers" instead.
 - Punctuation: never use em dashes (—), en dashes (–) or colons (:) anywhere in the copy. Use a comma, a full stop or a new sentence instead.
 - Write genuinely local copy: mention real districts, neighbourhoods, nearby towns or well-known local features of the location where it fits naturally. Only use places you are confident exist in or near that location.
 - Every site must read differently. Never reuse the example phrasing you are shown from other sites; find fresh angles and wording.
@@ -232,9 +233,22 @@ const checkPage = (page: GeneratedPage, locationName: string): string | null => 
   if ((page.checkBullets?.length ?? 0) < 3) return 'fewer than 3 tick points'
   if ((page.areas?.length ?? 0) < 12) return 'area list had fewer than 18 areas'
   if (/emergency\s*hero/i.test(JSON.stringify(page))) return 'mentioned Emergency Hero'
+  if (MIDDLEMAN_WORDING.test(allText(page))) {
+    return 'copy read as if we find or refer the customer to a tradesperson (e.g. "call a plumber") instead of being the tradespeople ourselves'
+  }
   if (BANNED_PUNCTUATION.test(allText(page))) return 'copy used em dashes, en dashes or colons'
   return null
 }
+
+// Wording that makes us sound like a directory or referral service rather than the tradespeople,
+// e.g. "Call a Plumber Now", "find an electrician", "we'll match you with an engineer"
+const TRADESPERSON = '(?:local\\s+)?(?:plumbers?|electricians?|heating\\s+engineers?|gas\\s+engineers?|tradesp(?:erson|eople)|tradesmen|tradesman)'
+const MIDDLEMAN_WORDING = new RegExp(
+  `\\b(?:call|find|get|book|hire|contact)\\s+(?:a|an|the\\s+right)\\s+${TRADESPERSON}\\b` +
+    `|\\b(?:match|connect|put)\\s+you\\s+(?:with|in\\s+touch\\s+with)\\b` +
+    `|\\b(?:find|source|send)\\s+you\\s+(?:a|an)\\s+${TRADESPERSON}\\b`,
+  'i',
+)
 
 // Em dashes, en dashes and colons (colons inside times such as 9:30 are allowed)
 const BANNED_PUNCTUATION = /[—–]|:(?!\d)/
