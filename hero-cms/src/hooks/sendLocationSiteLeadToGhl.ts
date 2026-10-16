@@ -105,10 +105,10 @@ export const sendLocationSiteLeadToGhl: CollectionAfterChangeHook = async ({
       throw new Error("The chosen tenant's API Keys record has no GHL location ID or token")
     }
 
-    // The site's own tag: its GHL Tag field, or "Location Sites - <Location>"
-    let siteTag = doc.locationName ? `Location Sites - ${doc.locationName}` : ''
+    // The site record (for its location, brand and GHL Tag override)
+    let site: any = null
     if (doc.service && doc.domain && doc.domain !== '(preview)') {
-      const site = await req.payload.find({
+      const found = await req.payload.find({
         collection: `location-sites-${doc.service}` as any,
         where: { domain: { equals: doc.domain } },
         limit: 1,
@@ -116,13 +116,29 @@ export const sendLocationSiteLeadToGhl: CollectionAfterChangeHook = async ({
         overrideAccess: true,
         req,
       })
-      siteTag = ((site.docs[0] as any)?.tracking?.ghlTag || siteTag).trim()
+      site = found.docs[0] ?? null
     }
+    const locationName = (site?.locationName || doc.locationName || '').trim()
+
+    // Tags can use {Location}, {locationName}, {brandName}, {domain} and {trade}
+    const fill = (text: string) =>
+      text
+        .replace(/[{｛]\s*(?:location|locationname)\s*[}｝]/gi, locationName)
+        .replace(/[{｛]\s*brandname\s*[}｝]/gi, site?.brandName || doc.brandName || '')
+        .replace(/[{｛]\s*domain\s*[}｝]/gi, doc.domain || '')
+        .replace(/[{｛]\s*trade\s*[}｝]/gi, TRADE_LABELS[doc.service] ?? doc.service ?? '')
+        .replace(/\s+/g, ' ')
+        .replace(/\s*-\s*$/, '')
+        .trim()
+
+    // The site's own tag: its GHL Tag field, or "Location Sites - <Location>"
+    const siteTag = fill(site?.tracking?.ghlTag || (locationName ? 'Location Sites - {Location}' : ''))
 
     const tags = [
-      ...(settings.ghlTags ?? []).map((t: any) => (t?.tag ?? '').trim()),
-      siteTag,
-    ].filter(Boolean)
+      ...new Set(
+        [...(settings.ghlTags ?? []).map((t: any) => fill(t?.tag ?? '')), siteTag].filter(Boolean),
+      ),
+    ]
 
     const upsert = await ghlRequest('/contacts/upsert', 'POST', apiKey, {
       locationId,

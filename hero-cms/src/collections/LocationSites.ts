@@ -432,7 +432,7 @@ const createLocationSiteCollection = (service: LocationSiteService): CollectionC
               type: 'text',
               admin: {
                 description:
-                  'Added to every lead from this site, alongside any tags in Globals. Leave blank to use "Location Sites - {Location}".',
+                  'Added to every lead from this site, alongside any tags in Globals. Leave blank to use "Location Sites - <this site\'s location>", e.g. "Location Sites - Liverpool". You can use {Location}, {brandName}, {domain} and {trade}.',
               },
             },
           ],
@@ -900,7 +900,7 @@ export const LocationSitesGlobals: GlobalConfig = {
                   labels: { singular: 'Tag', plural: 'Tags' },
                   admin: {
                     description:
-                      'Optional. Each site\'s own tag ("Location Sites - {Location}" unless overridden) is always added.',
+                      'Optional. Each site\'s own tag (e.g. "Location Sites - Liverpool") is always added. Tags here can use {Location}, {brandName}, {domain} and {trade}.',
                   },
                   fields: [{ name: 'tag', label: 'Tag', type: 'text', required: true }],
                 },
