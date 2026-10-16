@@ -915,8 +915,31 @@ export const LocationSitesGlobals: GlobalConfig = {
                   admin: {
                     placeholder: 'leads@example.co.uk, office@example.co.uk',
                     description:
-                      "Every lead is emailed here as well as sent to GHL, so leads still arrive if GHL is down. Separate several addresses with commas. Leave blank to use the Admin Notification Email on the GHL tenant's API Keys record. Sent through Resend, from that API Keys record's Resend From Name and Email.",
+                      'Every lead is emailed here as well as sent to GHL, so leads still arrive if GHL is down. Separate several addresses with commas.',
                   },
+                },
+                {
+                  type: 'row',
+                  fields: [
+                    {
+                      name: 'leadEmailFromName',
+                      label: 'From name',
+                      type: 'text',
+                      defaultValue: 'Location Sites',
+                      admin: { width: '50%', placeholder: 'TradeClicks Leads' },
+                    },
+                    {
+                      name: 'leadEmailFromEmail',
+                      label: 'From email',
+                      type: 'email',
+                      admin: {
+                        width: '50%',
+                        placeholder: 'leads@tradeclicks.co.uk',
+                        description:
+                          'Must be on a domain verified in the Resend account whose API key is set on the CMS server (RESEND_API_KEY).',
+                      },
+                    },
+                  ],
                 },
               ],
             },

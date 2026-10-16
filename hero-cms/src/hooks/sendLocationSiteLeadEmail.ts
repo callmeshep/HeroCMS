@@ -1,9 +1,8 @@
 import type { CollectionAfterChangeHook } from 'payload'
 
 // Emails every new Location Sites lead, independently of GHL, so a lead still arrives if GHL is down.
-// Runs before the GHL hook. Uses Resend (RESEND_API_KEY on the CMS server) and the sender name/address
-// from the API Keys record of the tenant chosen in Globals → All Sites → GHL ("Use GHL connection from").
-// Recipients: Globals → All Sites → Lead Emails, or that API Keys record's Admin Notification Email.
+// Runs before the GHL hook. Uses Resend (RESEND_API_KEY on the CMS server). Recipients and sender come
+// from Globals → All Sites → Lead Emails, independent of any tenant.
 // The result is written back to the submission as Email: Sent / Failed (+ Email Error).
 
 const TRADE_LABELS: Record<string, string> = {
@@ -50,36 +49,18 @@ export const sendLocationSiteLeadEmail: CollectionAfterChangeHook = async ({ doc
     } as any)
     const settings = globals?.allSites ?? {}
 
-    const tenantId =
-      typeof settings.ghlTenant === 'object' ? settings.ghlTenant?.id : settings.ghlTenant
-    let config: any = null
-    if (tenantId) {
-      const keys = await req.payload.find({
-        collection: 'api-keys' as any,
-        where: { tenant: { equals: tenantId } },
-        limit: 1,
-        depth: 0,
-        overrideAccess: true,
-        req,
-      })
-      config = keys.docs[0] ?? null
-    }
-
     const recipients = String(settings.leadEmails ?? '')
       .split(/[\s,;]+/)
       .map((email) => email.trim())
       .filter((email) => EMAIL_PATTERN.test(email))
-    if (!recipients.length && config?.adminNotificationEmail) recipients.push(config.adminNotificationEmail)
     if (!recipients.length) {
       throw new Error('No lead email address set (Globals → All Sites → Lead Emails)')
     }
 
-    const fromEmail = config?.resendFromEmail
-    const fromName = config?.resendFromName || 'Location Sites'
+    const fromEmail = String(settings.leadEmailFromEmail ?? '').trim()
+    const fromName = String(settings.leadEmailFromName ?? '').trim().replace(/[<>"]/g, '') || 'Location Sites'
     if (!fromEmail) {
-      throw new Error(
-        "No sender address: add Resend From Email to the API Keys record of the tenant chosen under Globals → All Sites → GHL",
-      )
+      throw new Error('No From email set (Globals → All Sites → Lead Emails)')
     }
 
     const trade = TRADE_LABELS[doc.service] ?? doc.service ?? 'Lead'
