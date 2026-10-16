@@ -36,7 +36,7 @@ const STEP_COUNT = 3
 const REASON_COUNT = 3
 
 const PLACEHOLDER_HELP =
-  'You can use {brandName}, {locationName}, {domain} and {year} — they are filled in automatically for each site.'
+  'You can use {brandName}, {locationName}, {tradePeople} (plumbers, heating engineers or electricians), {domain} and {year}. They are filled in automatically for each site.'
 
 const BRIEF_HELP =
   'What this card is about. Guides the AI when it writes each site — not shown on the site.'
@@ -184,7 +184,8 @@ const createLocationSiteCollection = (service: LocationSiteService): CollectionC
           admin: {
             width: '50%',
             placeholder: service.example,
-            description: 'Used in headings, the footer and page titles',
+            description:
+              'Also the logo. Start it with the location, e.g. "Liverpool Plumber 24/7" shows as LIVERPOOL with "Plumber 24/7" underneath',
           },
         },
       ],
@@ -253,7 +254,12 @@ const createLocationSiteCollection = (service: LocationSiteService): CollectionC
           label: 'Hero',
           type: 'group',
           fields: [
-            { name: 'eyebrow', label: 'Small Line Above Headline', type: 'text' },
+            {
+              name: 'eyebrow',
+              label: 'Small Line Above Headline',
+              type: 'text',
+              admin: { description: 'Shown next to a pulsing green "live" dot, e.g. "Plumbers Available Right Now"' },
+            },
             {
               name: 'headline',
               label: 'Headline',
@@ -341,9 +347,9 @@ const createLocationSiteCollection = (service: LocationSiteService): CollectionC
           name: 'areas',
           label: 'Areas Covered',
           type: 'array',
-          maxRows: 8,
+          maxRows: 18,
           labels: { singular: 'Area', plural: 'Areas' },
-          admin: { description: 'Shown in the footer under "{Location} Areas"' },
+          admin: { description: 'Shown in the footer under "{Location} Areas", in three columns of six' },
           fields: [{ name: 'area', label: 'Area', type: 'text', required: true }],
         },
         {
@@ -426,7 +432,7 @@ const createLocationSiteCollection = (service: LocationSiteService): CollectionC
               type: 'text',
               admin: {
                 description:
-                  'Added to every lead from this site, alongside the tags in Globals. Leave blank to use the domain.',
+                  'Added to every lead from this site, alongside any tags in Globals. Leave blank to use "Location Sites - {Location}".',
               },
             },
           ],
@@ -619,7 +625,8 @@ const createTradeTab = (service: LocationSiteService) => ({
           admin: {
             width: '50%',
             placeholder: `Emergency ${service.noun}`,
-            description: 'Second line of the logo, under the location name',
+            description:
+              "Only used if a site's Brand Name doesn't start with its location (the logo normally comes from the Brand Name)",
           },
         } as Field,
       ],
@@ -676,6 +683,7 @@ const createTradeTab = (service: LocationSiteService) => ({
               description: BRIEF_HELP,
             },
           },
+          imageField('image', 'Image', 'Shown above the step text'),
         ]),
       ],
     },
@@ -835,6 +843,34 @@ export const LocationSitesGlobals: GlobalConfig = {
             },
             {
               type: 'collapsible',
+              label: 'Availability Check Form',
+              admin: { initCollapsed: true },
+              fields: [
+                {
+                  name: 'formHeading',
+                  label: 'Form Heading',
+                  type: 'text',
+                  defaultValue: 'Get an SMS with instant availability!',
+                  admin: { description: 'Small heading inside the white form box. ' + PLACEHOLDER_HELP },
+                },
+                {
+                  name: 'thankYouHeading',
+                  label: 'Success Heading',
+                  type: 'text',
+                  defaultValue: 'We have found {tradePeople} within less than a mile!',
+                  admin: { description: 'Replaces the form once it is sent. ' + PLACEHOLDER_HELP },
+                },
+                {
+                  name: 'thankYouText',
+                  label: 'Success Message',
+                  type: 'textarea',
+                  defaultValue: 'Call now to get booked in!',
+                  admin: { rows: 2, description: 'Shown under the success heading, above the Call button. ' + PLACEHOLDER_HELP },
+                },
+              ],
+            },
+            {
+              type: 'collapsible',
               label: 'GHL (leads)',
               admin: { initCollapsed: false },
               fields: [
@@ -873,7 +909,8 @@ export const LocationSitesGlobals: GlobalConfig = {
                   type: 'array',
                   labels: { singular: 'Tag', plural: 'Tags' },
                   admin: {
-                    description: "Each site's own GHL Tag (or its domain) is added as well.",
+                    description:
+                      'Optional. Each site\'s own tag ("Location Sites - {Location}" unless overridden) is always added.',
                   },
                   fields: [{ name: 'tag', label: 'Tag', type: 'text', required: true }],
                 },

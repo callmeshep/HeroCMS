@@ -2,7 +2,8 @@ import type { CollectionAfterChangeHook } from 'payload'
 
 // Sends each new Location Sites form submission to GHL:
 //   1. creates/updates the contact (phone, postcode)
-//   2. adds the tags from Globals → All Sites plus the site's own GHL Tag (or its domain)
+//   2. adds the tags from Globals → All Sites plus the site's own tag
+//      (its GHL Tag field, or "Location Sites - <Location>" if that's blank)
 //   3. creates an opportunity in the chosen pipeline and stage, named "<postcode> – <trade>"
 // The result is written back to the submission as GHL Sync: Sent / Failed (+ GHL Error).
 // Automations (notifications, follow-ups) are built as GHL workflows, not here.
@@ -104,8 +105,8 @@ export const sendLocationSiteLeadToGhl: CollectionAfterChangeHook = async ({
       throw new Error("The chosen tenant's API Keys record has no GHL location ID or token")
     }
 
-    // The site's own tag (falls back to its domain)
-    let siteTag = ''
+    // The site's own tag: its GHL Tag field, or "Location Sites - <Location>"
+    let siteTag = doc.locationName ? `Location Sites - ${doc.locationName}` : ''
     if (doc.service && doc.domain && doc.domain !== '(preview)') {
       const site = await req.payload.find({
         collection: `location-sites-${doc.service}` as any,
@@ -115,7 +116,7 @@ export const sendLocationSiteLeadToGhl: CollectionAfterChangeHook = async ({
         overrideAccess: true,
         req,
       })
-      siteTag = ((site.docs[0] as any)?.tracking?.ghlTag || doc.domain || '').trim()
+      siteTag = ((site.docs[0] as any)?.tracking?.ghlTag || siteTag).trim()
     }
 
     const tags = [

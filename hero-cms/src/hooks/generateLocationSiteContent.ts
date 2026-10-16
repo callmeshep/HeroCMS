@@ -39,7 +39,11 @@ const cards = (count: number, titleMax: number, textMax: number) => ({
 const PAGE_SCHEMA = {
   type: 'object',
   properties: {
-    heroEyebrow: { type: 'string', description: 'Max 60 characters' },
+    heroEyebrow: {
+      type: 'string',
+      description:
+        'Max 35 characters. A short live-availability line shown next to a pulsing green dot, in the style "Plumbers Available Right Now". Title Case, no location name',
+    },
     heroHeadline: {
       type: 'string',
       description: 'Max 60 characters. Must contain the location name exactly as given.',
@@ -92,7 +96,7 @@ const PAGE_SCHEMA = {
     },
     areas: {
       type: 'array',
-      description: 'Exactly 6 items',
+      description: 'Exactly 18 items, no duplicates',
       items: { type: 'string', description: 'A real district, suburb or nearby town' },
     },
     footerBlurb: { type: 'string', description: 'Max 140 characters' },
@@ -151,6 +155,7 @@ const SYSTEM_PROMPT = `You write copy for single-page local emergency trades web
 
 Rules:
 - British English spelling and phrasing throughout.
+- Punctuation: never use em dashes (—), en dashes (–) or colons (:) anywhere in the copy. Use a comma, a full stop or a new sentence instead.
 - Write genuinely local copy: mention real districts, neighbourhoods, nearby towns or well-known local features of the location where it fits naturally. Only use places you are confident exist in or near that location.
 - Every site must read differently. Never reuse the example phrasing you are shown from other sites; find fresh angles and wording.
 - Use the target keywords naturally. Never stuff keywords or repeat the same phrase.
@@ -228,9 +233,41 @@ const checkPage = (page: GeneratedPage, locationName: string): string | null => 
   if (page.reasons?.length !== REASON_COUNT) return 'wrong number of reasons'
   if ((page.faqs?.length ?? 0) < 3) return 'fewer than 3 FAQs'
   if ((page.checkBullets?.length ?? 0) < 3) return 'fewer than 3 tick points'
-  if ((page.areas?.length ?? 0) < 6) return 'fewer than 6 areas'
+  if ((page.areas?.length ?? 0) < 12) return 'area list had fewer than 18 areas'
   if (/emergency\s*hero/i.test(JSON.stringify(page))) return 'mentioned Emergency Hero'
+  if (BANNED_PUNCTUATION.test(allText(page))) return 'copy used em dashes, en dashes or colons'
   return null
+}
+
+// Em dashes, en dashes and colons (colons inside times such as 9:30 are allowed)
+const BANNED_PUNCTUATION = /[—–]|:(?!\d)/
+
+const allText = (value: unknown): string =>
+  typeof value === 'string'
+    ? value
+    : Array.isArray(value)
+      ? value.map(allText).join('\n')
+      : value && typeof value === 'object'
+        ? Object.values(value).map(allText).join('\n')
+        : ''
+
+// Last-resort clean-up if the retry still slipped one in: dashes and colons become commas
+const cleanPunctuation = <T>(value: T): T => {
+  if (typeof value === 'string') {
+    return value
+      .replace(/\s*[—–]\s*/g, ', ')
+      .replace(/\s*:(?!\d)\s*/g, ', ')
+      .replace(/,\s*,/g, ',')
+      .replace(/^,\s*|,\s*$/g, '')
+      .replace(/,\s*([.!?])/g, '$1') as T
+  }
+  if (Array.isArray(value)) return value.map(cleanPunctuation) as T
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value).map(([k, v]) => [k, cleanPunctuation(v)]),
+    ) as T
+  }
+  return value
 }
 
 const toCards = (prefix: string, items: { title: string; text: string }[]) =>
@@ -296,7 +333,7 @@ FAQs: 3 questions a local customer would genuinely ask about emergency ${trade.l
 Availability check tick points: 3 short points; at least one should mention ${locationName}.
 Reviews section text: name the most populated districts within ${locationName} itself.
 "Why choose us" intro: name nearby towns and areas surrounding ${locationName} (not inside it), different from the districts above.
-Areas (footer list): 6 real districts, suburbs or nearby towns covered from ${locationName}.
+Areas (footer list): 18 different real districts, suburbs or nearby towns covered from ${locationName}, closest and best-known first. Do not include ${locationName} itself.
 
 ${
   examples.length
@@ -312,8 +349,11 @@ ${
           `${prompt}\n\nYour previous attempt was rejected because the ${problem}. Fix this.`,
         )
         problem = checkPage(page, locationName)
-        if (problem) throw new Error(`generated content was rejected (${problem})`)
+        if (problem && !problem.includes('dashes')) {
+          throw new Error(`generated content was rejected (${problem})`)
+        }
       }
+      page = cleanPunctuation(page)
 
       data.hero = { eyebrow: page.heroEyebrow, headline: page.heroHeadline }
       data.issues = {
@@ -336,7 +376,9 @@ ${
         heading: page.checkHeading,
         bullets: page.checkBullets.slice(0, 4).map((text) => ({ text })),
       }
-      data.areas = page.areas.slice(0, 8).map((area) => ({ area }))
+      data.areas = [...new Set(page.areas.map((area) => area.trim()).filter(Boolean))]
+        .slice(0, 18)
+        .map((area) => ({ area }))
       data.footerBlurb = page.footerBlurb
       data.seo = { metaTitle: page.metaTitle, metaDescription: page.metaDescription }
 
