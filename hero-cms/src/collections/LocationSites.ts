@@ -4,6 +4,7 @@ import { isAdminOrSuperAdmin } from '../access/isAdminOrSuperAdmin'
 import { hasTenantAccess } from '../access/hasTenantAccess'
 import { generateLocationSiteContent } from '../hooks/generateLocationSiteContent'
 import { sendLocationSiteLeadToGhl } from '../hooks/sendLocationSiteLeadToGhl'
+import { sendLocationSiteLeadEmail } from '../hooks/sendLocationSiteLeadEmail'
 
 // Services covered by Location Sites.
 // Each one becomes its own sidebar item (and its own database table).
@@ -500,11 +501,12 @@ export const LocationSitesSubmissions: CollectionConfig = {
   admin: {
     group: 'Location Sites',
     useAsTitle: 'phone',
-    defaultColumns: ['phone', 'postcode', 'service', 'brandName', 'ghlSync', 'createdAt'],
+    defaultColumns: ['phone', 'postcode', 'service', 'brandName', 'emailSync', 'ghlSync', 'createdAt'],
     description: 'Availability checks submitted on any location site',
   },
   hooks: {
-    afterChange: [sendLocationSiteLeadToGhl],
+    // Email first, then GHL: each runs independently, so a GHL outage can't stop the email
+    afterChange: [sendLocationSiteLeadEmail, sendLocationSiteLeadToGhl],
   },
   access: {
     read: hasTenantAccess('tenant'),
@@ -543,6 +545,28 @@ export const LocationSitesSubmissions: CollectionConfig = {
         { name: 'locationName', label: 'Location', type: 'text', admin: { width: '33%' } },
         { name: 'domain', label: 'Domain', type: 'text', admin: { width: '33%' } },
       ],
+    },
+    {
+      name: 'emailSync',
+      label: 'Email',
+      type: 'select',
+      defaultValue: 'pending',
+      options: [
+        { label: 'Pending', value: 'pending' },
+        { label: 'Sent', value: 'sent' },
+        { label: 'Failed', value: 'failed' },
+      ],
+      admin: { position: 'sidebar', readOnly: true },
+    },
+    {
+      name: 'emailError',
+      label: 'Email Error',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+        condition: (data) => data?.emailSync === 'failed',
+      },
     },
     {
       name: 'ghlSync',
@@ -868,6 +892,31 @@ export const LocationSitesGlobals: GlobalConfig = {
                   type: 'textarea',
                   defaultValue: 'Call now to get booked in!',
                   admin: { rows: 2, description: 'Shown under the success heading, above the Call button. ' + PLACEHOLDER_HELP },
+                },
+              ],
+            },
+            {
+              type: 'collapsible',
+              label: 'Lead Emails',
+              admin: { initCollapsed: true },
+              fields: [
+                {
+                  name: 'leadEmails',
+                  label: 'Lead email addresses',
+                  type: 'text',
+                  validate: (value: string | null | undefined) => {
+                    if (!value) return true
+                    const bad = value
+                      .split(/[\s,;]+/)
+                      .filter(Boolean)
+                      .filter((email) => !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+                    return bad.length ? `Not a valid email address: ${bad.join(', ')}` : true
+                  },
+                  admin: {
+                    placeholder: 'leads@example.co.uk, office@example.co.uk',
+                    description:
+                      "Every lead is emailed here as well as sent to GHL, so leads still arrive if GHL is down. Separate several addresses with commas. Leave blank to use the Admin Notification Email on the GHL tenant's API Keys record. Sent through Resend, from that API Keys record's Resend From Name and Email.",
+                  },
                 },
               ],
             },
